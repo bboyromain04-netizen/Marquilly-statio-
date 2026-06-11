@@ -54,6 +54,11 @@ export default function About() {
             langage : mon moyen de faire vibrer le public, de créer des
             moments inoubliables et de partager des émotions fortes.
           </p>
+          <p className="mt-4 text-base leading-relaxed text-neutral-300">
+            Je fais partie du crew{' '}
+            <span className="text-white">From The North</span>, une équipe qui
+            représente fièrement Lille et sa scène breaking à l'international.
+          </p>
 
           <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4">
             {STATS.map((stat) => (

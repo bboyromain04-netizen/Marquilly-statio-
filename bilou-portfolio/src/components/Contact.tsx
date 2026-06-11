@@ -73,7 +73,7 @@ export default function Contact() {
             className="flex items-center gap-2 rounded-full border border-white/10 px-5 py-3 text-sm text-neutral-300 transition-colors hover:border-bilou-yellow hover:text-bilou-yellow"
           >
             <Music2 size={18} />
-            @bboy_bilou
+            @Youngbilou
           </a>
         </motion.div>
       </div>

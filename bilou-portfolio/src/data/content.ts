@@ -77,6 +77,12 @@ export const GALLERY = [
     span: 'large',
   },
   {
+    src: 'media/stade-calais.jpg',
+    title: 'ouverture du trophée des 6 bourgeois — stade de calais',
+    tag: 'événement sportif',
+    span: 'normal',
+  },
+  {
     src: 'media/flip-1.jpg',
     title: 'salto arrière — grand paris sud',
     tag: 'spectacle',

@@ -6,10 +6,7 @@ export const SOCIALS = {
   phoneHref: '+33781700454',
 }
 
-// Clé d'accès gratuite à récupérer sur https://web3forms.com (entrer son email,
-// la clé arrive instantanément, aucune création de compte nécessaire).
-// Remplacer la valeur ci-dessous par cette clé pour activer le formulaire de réservation.
-export const WEB3FORMS_ACCESS_KEY = 'YOUR_WEB3FORMS_ACCESS_KEY'
+export const WEB3FORMS_ACCESS_KEY = '0ad7c610-8abe-47fc-a59e-8817c6e0eb5a'
 
 export const NAV_LINKS = [
   { label: 'accueil', href: '#hero' },

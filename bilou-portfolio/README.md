@@ -1,6 +1,6 @@
 # Bilou — Portfolio Danseur Pro Breaking
 
-Site vitrine de Romain "Bilou" Marquilly, danseur de breakdance professionnel,
+Site vitrine de Bilou, danseur de breakdance professionnel,
 performer et acrobate.
 
 ## Stack

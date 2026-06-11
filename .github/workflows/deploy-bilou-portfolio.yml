@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - claude/bilou-portfolio-site
+      - claude/securify-hero-section-gn115k
       - main
     paths:
       - 'bilou-portfolio/**'

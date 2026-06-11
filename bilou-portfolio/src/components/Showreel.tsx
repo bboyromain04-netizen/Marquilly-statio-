@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Pause, Play, Volume2, VolumeX } from 'lucide-react'
+import { asset } from '../lib/media'
 
 export default function Showreel() {
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -59,7 +60,7 @@ export default function Showreel() {
             loop
             muted
             playsInline
-            src="/media/showreel.mp4"
+            src={asset('media/showreel.mp4')}
           />
 
           <div className="absolute bottom-4 left-4 flex gap-2 sm:bottom-6 sm:left-6">

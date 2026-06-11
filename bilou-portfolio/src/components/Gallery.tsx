@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { GALLERY } from '../data/content'
+import { asset } from '../lib/media'
 import TiltCard from './TiltCard'
 
 const SPAN_CLASSES: Record<string, string> = {
@@ -43,7 +44,7 @@ export default function Gallery() {
             >
               <TiltCard className="group relative h-full w-full overflow-hidden rounded-3xl border border-white/10">
                 <img
-                  src={item.src}
+                  src={asset(item.src)}
                   alt={item.title}
                   loading="lazy"
                   className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"

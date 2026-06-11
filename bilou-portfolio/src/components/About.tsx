@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { STATS } from '../data/content'
+import { asset } from '../lib/media'
 
 export default function About() {
   return (
@@ -15,8 +16,8 @@ export default function About() {
           <div className="absolute -inset-4 -z-10 rounded-[2rem] bg-gradient-to-br from-bilou-yellow/30 to-bilou-orange/20 blur-2xl" />
           <div className="overflow-hidden rounded-[2rem] border border-white/10">
             <img
-              src="/media/portrait.jpg"
-              alt="Bilou - Romain Marquilly, danseur breakdance"
+              src={asset('media/portrait.jpg')}
+              alt="Bilou, danseur breakdance"
               className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
             />
           </div>
@@ -36,9 +37,7 @@ export default function About() {
             qui suis-je ?
           </span>
           <h2 className="mt-4 font-display text-4xl leading-[0.95] text-white sm:text-5xl md:text-6xl">
-            romain marquilly
-            <br />
-            alias <span className="text-gradient">bilou</span>
+            qui est <span className="text-gradient">bilou</span> ?
           </h2>
 
           <p className="mt-6 text-base leading-relaxed text-neutral-300">

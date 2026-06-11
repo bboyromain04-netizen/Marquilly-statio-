@@ -1,6 +1,6 @@
 export const SOCIALS = {
   instagram: 'https://www.instagram.com/bboy_bilou',
-  tiktok: 'https://www.tiktok.com/@bboy_bilou',
+  tiktok: 'https://www.tiktok.com/@Youngbilou',
   email: 'bboyromain04@gmail.com',
   phone: '07 81 70 04 54',
   phoneHref: '+33781700454',
@@ -50,43 +50,43 @@ export const SKILLS = [
 
 export const GALLERY = [
   {
-    src: '/media/stadium.jpg',
+    src: 'media/stadium.jpg',
     title: 'tour de france — étape de lille',
     tag: 'événement sportif',
     span: 'large',
   },
   {
-    src: '/media/street-flip.jpg',
+    src: 'media/street-flip.jpg',
     title: 'performance street — flip public',
     tag: 'show de rue',
     span: 'tall',
   },
   {
-    src: '/media/jump-1.jpg',
+    src: 'media/jump-1.jpg',
     title: 'flying steps — battle officiel',
     tag: 'compétition',
     span: 'normal',
   },
   {
-    src: '/media/crashfest.jpg',
+    src: 'media/crashfest.jpg',
     title: 'crashfest — crew legend',
     tag: 'battle',
     span: 'large',
   },
   {
-    src: '/media/flip-1.jpg',
+    src: 'media/flip-1.jpg',
     title: 'salto arrière — grand paris sud',
     tag: 'spectacle',
     span: 'normal',
   },
   {
-    src: '/media/flip-2.jpg',
+    src: 'media/flip-2.jpg',
     title: 'figure aérienne — crew legend',
     tag: 'spectacle',
     span: 'tall',
   },
   {
-    src: '/media/portrait.jpg',
+    src: 'media/portrait.jpg',
     title: 'bilou — portrait officiel',
     tag: 'portrait',
     span: 'normal',

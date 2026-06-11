@@ -45,7 +45,7 @@ export default function Footer() {
       </div>
 
       <p className="mt-8 text-center text-xs text-neutral-500">
-        © {new Date().getFullYear()} Romain "Bilou" Marquilly — tous droits réservés.
+        © {new Date().getFullYear()} Bilou — tous droits réservés.
       </p>
     </footer>
   )

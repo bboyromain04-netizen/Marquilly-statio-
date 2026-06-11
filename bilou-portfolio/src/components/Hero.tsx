@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { ArrowDown, Music2 } from 'lucide-react'
 import { SOCIALS } from '../data/content'
+import { asset } from '../lib/media'
 import InstagramIcon from './icons/InstagramIcon'
 
 export default function Hero() {
@@ -12,7 +13,7 @@ export default function Hero() {
         loop
         muted
         playsInline
-        src="/media/showreel.mp4"
+        src={asset('media/showreel.mp4')}
       />
       <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black" />
       <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
@@ -42,9 +43,9 @@ export default function Hero() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="mt-2 max-w-xl text-sm text-neutral-300 sm:text-base md:text-lg"
         >
-          romain marquilly — danseur de breakdance professionnel depuis plus de
-          10 ans. acrobate &amp; performer disponible pour spectacles, stages,
-          workshops et battles partout en france.
+          danseur de breakdance professionnel depuis plus de 10 ans. acrobate
+          &amp; performer disponible pour spectacles, stages, workshops et
+          battles partout en france.
         </motion.p>
 
         <motion.div

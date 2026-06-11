@@ -53,9 +53,9 @@ export const SKILLS = [
 
 export const GALLERY = [
   {
-    src: 'media/stade-calais.jpg',
-    title: 'ouverture du trophée des 6 bourgeois — stade de calais',
-    tag: 'événement sportif',
+    src: 'media/battle-pro.jpg',
+    title: 'battle pro — théâtre du châtelet, paris',
+    tag: 'compétition internationale',
     span: 'large',
   },
   {

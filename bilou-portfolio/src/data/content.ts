@@ -53,8 +53,8 @@ export const SKILLS = [
 
 export const GALLERY = [
   {
-    src: 'media/stadium.jpg',
-    title: 'tour de france — étape de lille',
+    src: 'media/stade-calais.jpg',
+    title: 'ouverture du trophée des 6 bourgeois — stade de calais',
     tag: 'événement sportif',
     span: 'large',
   },

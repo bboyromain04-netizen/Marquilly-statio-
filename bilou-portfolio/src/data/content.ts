@@ -89,6 +89,7 @@ export const GALLERY = [
     title: 'ouverture du trophée des 6 bourgeois — stade de calais',
     tag: 'événement sportif',
     span: 'normal',
+    video: 'https://www.instagram.com/reel/DZNhLDVs6jj/',
   },
   {
     src: 'media/flip-1.jpg',

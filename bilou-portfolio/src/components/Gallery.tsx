@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { Play } from 'lucide-react'
 import { GALLERY } from '../data/content'
 import { asset } from '../lib/media'
 import TiltCard from './TiltCard'
@@ -51,6 +52,19 @@ export default function Gallery() {
                   className="h-full w-full object-contain transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent opacity-80 transition-opacity duration-300 group-hover:opacity-100" />
+                {item.video && (
+                  <a
+                    href={item.video}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={`Voir la vidéo : ${item.title}`}
+                    className="absolute inset-0 flex items-center justify-center"
+                  >
+                    <span className="flex h-14 w-14 items-center justify-center rounded-full bg-bilou-yellow/90 text-black transition-transform group-hover:scale-110">
+                      <Play size={24} fill="currentColor" />
+                    </span>
+                  </a>
+                )}
                 <div className="absolute bottom-0 left-0 right-0 p-5">
                   <span className="inline-block rounded-full bg-bilou-yellow/90 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-black">
                     {item.tag}

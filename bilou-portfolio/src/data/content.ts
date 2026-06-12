@@ -105,6 +105,7 @@ export const GALLERY = [
     title: 'salto arrière — spectacle dans un musée',
     tag: 'spectacle',
     span: 'tall',
+    video: 'https://youtu.be/6Ks4Gf7kew8',
   },
 ]
 

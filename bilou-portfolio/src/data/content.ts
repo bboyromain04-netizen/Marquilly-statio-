@@ -82,7 +82,7 @@ export const GALLERY = [
     title: 'crashfest — crew legend',
     tag: 'battle',
     span: 'large',
-    video: 'https://youtu.be/jfwNE4E5s8U',
+    video: 'https://youtu.be/AOqzl4uaeYQ',
   },
   {
     src: 'media/stade-calais.jpg',

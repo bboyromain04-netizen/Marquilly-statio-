@@ -37,7 +37,7 @@ export default function About() {
             qui suis-je ?
           </span>
           <h2 className="mt-4 font-display text-4xl leading-[0.95] text-white sm:text-5xl md:text-6xl">
-            qui est <span className="text-gradient">bilou</span> ?
+            qui est <span className="text-gradient">Bilou</span> ?
           </h2>
 
           <p className="mt-6 text-base leading-relaxed text-neutral-300">

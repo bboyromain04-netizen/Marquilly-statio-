@@ -55,6 +55,15 @@ export default function About() {
             moments inoubliables et de partager des émotions fortes.
           </p>
           <p className="mt-4 text-base leading-relaxed text-neutral-300">
+            Cette passion m'a fait voyager pour danser en{' '}
+            <span className="text-white">Hollande</span>, à{' '}
+            <span className="text-white">New York</span>, au{' '}
+            <span className="text-white">Portugal</span>, en{' '}
+            <span className="text-white">Corse</span>, en{' '}
+            <span className="text-white">Espagne</span>, en{' '}
+            <span className="text-white">Belgique</span> et partout en France.
+          </p>
+          <p className="mt-4 text-base leading-relaxed text-neutral-300">
             Je fais partie du crew{' '}
             <span className="text-white">From The North</span>, une équipe qui
             représente fièrement Lille et sa scène breaking à l'international.

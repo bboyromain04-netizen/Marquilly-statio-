@@ -100,6 +100,12 @@ export const GALLERY = [
     tag: 'spectacle',
     span: 'tall',
   },
+  {
+    src: 'media/musee.jpg',
+    title: 'salto arrière — spectacle dans un musée',
+    tag: 'spectacle',
+    span: 'tall',
+  },
 ]
 
 export const SERVICES = [

@@ -102,7 +102,7 @@ export const GALLERY = [
   },
   {
     src: 'media/musee.jpg',
-    title: 'salto arrière — spectacle dans un musée',
+    title: 'salto arrière — musée de flandre, cassel',
     tag: 'spectacle',
     span: 'tall',
     video: 'https://youtu.be/6Ks4Gf7kew8',

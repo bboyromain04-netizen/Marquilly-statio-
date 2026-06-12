@@ -2,7 +2,7 @@ const ITEMS = [
   'breaking',
   'acrobatie',
   'spectacles',
-  'workshops',
+  'workshops acro',
   'battles',
   'événementiel',
   'crew legend',

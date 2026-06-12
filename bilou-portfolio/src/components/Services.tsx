@@ -22,7 +22,7 @@ export default function Services() {
             disponible pour <span className="text-gradient">toute prestation</span>
           </h2>
           <p className="mt-4 text-sm text-neutral-400 sm:text-base">
-            spectacles, stages, workshops, battles, événements d'entreprise —
+            spectacles, stages, workshops acro, battles, événements d'entreprise —
             partout en france et à l'étranger.
           </p>
         </motion.div>

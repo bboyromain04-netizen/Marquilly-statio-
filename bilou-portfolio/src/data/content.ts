@@ -119,7 +119,7 @@ export const SERVICES = [
       "Performances solo ou en crew pour vos événements : galas, soirées privées, festivals, ouvertures de matchs.",
   },
   {
-    title: 'stages & workshops',
+    title: 'stages & workshops acro',
     description:
       "Cours et stages de breaking pour tous niveaux, écoles, associations ou centres de loisirs.",
   },

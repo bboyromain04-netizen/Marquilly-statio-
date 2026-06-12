@@ -44,7 +44,7 @@ export default function Hero() {
           className="mt-2 max-w-xl text-sm text-neutral-300 sm:text-base md:text-lg"
         >
           danseur de breakdance professionnel depuis plus de 10 ans. acrobate
-          &amp; performer disponible pour spectacles, stages, workshops et
+          &amp; performer disponible pour spectacles, stages, workshops acro et
           battles partout en france.
         </motion.p>
 

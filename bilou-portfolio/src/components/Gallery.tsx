@@ -7,6 +7,7 @@ const SPAN_CLASSES: Record<string, string> = {
   large: 'sm:col-span-2 aspect-[16/10]',
   tall: 'row-span-2 aspect-[3/4] sm:aspect-auto sm:h-full',
   normal: 'aspect-square',
+  featured: 'row-span-2 aspect-[3/4] sm:aspect-auto sm:h-full ring-1 ring-bilou-yellow/40',
 }
 
 export default function Gallery() {

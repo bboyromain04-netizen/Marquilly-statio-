@@ -53,6 +53,12 @@ export const SKILLS = [
 
 export const GALLERY = [
   {
+    src: 'media/portrait.jpg',
+    title: 'bilou — portrait officiel',
+    tag: 'portrait',
+    span: 'featured',
+  },
+  {
     src: 'media/battle-pro.jpg',
     title: 'battle pro — théâtre du châtelet, paris',
     tag: 'compétition internationale',
@@ -93,12 +99,6 @@ export const GALLERY = [
     title: 'figure aérienne — crew legend',
     tag: 'spectacle',
     span: 'tall',
-  },
-  {
-    src: 'media/portrait.jpg',
-    title: 'bilou — portrait officiel',
-    tag: 'portrait',
-    span: 'normal',
   },
 ]
 

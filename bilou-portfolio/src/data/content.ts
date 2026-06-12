@@ -63,6 +63,7 @@ export const GALLERY = [
     title: 'battle pro — théâtre du châtelet, paris',
     tag: 'compétition internationale',
     span: 'large',
+    video: 'https://youtu.be/tltPbu8zYZY',
   },
   {
     src: 'media/street-flip.jpg',

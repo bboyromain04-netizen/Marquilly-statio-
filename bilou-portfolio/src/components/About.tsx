@@ -14,11 +14,11 @@ export default function About() {
           className="relative mx-auto w-full max-w-sm"
         >
           <div className="absolute -inset-4 -z-10 rounded-[2rem] bg-gradient-to-br from-bilou-yellow/30 to-bilou-orange/20 blur-2xl" />
-          <div className="overflow-hidden rounded-[2rem] border border-white/10">
+          <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-black">
             <img
               src={asset('media/portrait.jpg')}
               alt="Bilou, danseur breakdance"
-              className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
+              className="h-full w-full object-contain transition-transform duration-700 hover:scale-105"
             />
           </div>
           <div className="absolute -bottom-6 -right-6 rounded-2xl border border-white/10 bg-black/80 px-5 py-4 backdrop-blur">

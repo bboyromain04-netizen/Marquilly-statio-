@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Pause, Play, Volume2, VolumeX } from 'lucide-react'
+import { Maximize, Pause, Play, Volume2, VolumeX } from 'lucide-react'
 import { asset } from '../lib/media'
 
 export default function Showreel() {
@@ -25,6 +25,12 @@ export default function Showreel() {
     if (!video) return
     video.muted = !video.muted
     setMuted(video.muted)
+  }
+
+  const enterFullscreen = () => {
+    const video = videoRef.current
+    if (!video) return
+    video.requestFullscreen()
   }
 
   return (
@@ -55,7 +61,7 @@ export default function Showreel() {
           <div className="absolute -inset-1 -z-10 bg-gradient-to-r from-bilou-yellow via-bilou-orange to-bilou-yellow opacity-30 blur-2xl" />
           <video
             ref={videoRef}
-            className="aspect-video w-full bg-black object-cover"
+            className="aspect-video w-full bg-black object-contain"
             autoPlay
             loop
             muted
@@ -79,6 +85,14 @@ export default function Showreel() {
               className="flex h-12 w-12 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur transition-colors hover:bg-bilou-yellow hover:text-black"
             >
               {muted ? <VolumeX size={20} /> : <Volume2 size={20} />}
+            </button>
+            <button
+              type="button"
+              onClick={enterFullscreen}
+              aria-label="Plein écran"
+              className="flex h-12 w-12 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur transition-colors hover:bg-bilou-yellow hover:text-black"
+            >
+              <Maximize size={20} />
             </button>
           </div>
         </motion.div>

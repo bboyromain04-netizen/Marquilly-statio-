@@ -1,10 +1,16 @@
 import { motion } from 'framer-motion'
 import { STATS } from '../data/content'
 import { asset } from '../lib/media'
+import Counter from './Counter'
+import FloatingOrb from './FloatingOrb'
+import TiltCard from './TiltCard'
 
 export default function About() {
   return (
-    <section id="about" className="relative bg-black px-4 py-24 md:py-32">
+    <section id="about" className="relative overflow-hidden bg-black px-4 py-24 md:py-32">
+      <FloatingOrb className="-left-20 top-10 h-72 w-72 bg-bilou-orange/10" duration={11} />
+      <FloatingOrb className="right-0 bottom-0 h-80 w-80 bg-bilou-yellow/10" duration={13} delay={2} />
+
       <div className="mx-auto grid max-w-6xl gap-12 md:grid-cols-2 md:items-center md:gap-16">
         <motion.div
           initial={{ opacity: 0, x: -40, rotate: -2 }}
@@ -14,17 +20,23 @@ export default function About() {
           className="relative mx-auto w-full max-w-sm"
         >
           <div className="absolute -inset-4 -z-10 rounded-[2rem] bg-gradient-to-br from-bilou-yellow/30 to-bilou-orange/20 blur-2xl" />
-          <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-black">
+          <TiltCard className="overflow-hidden rounded-[2rem] border border-white/10 bg-black">
             <img
               src={asset('media/portrait.jpg')}
               alt="Bilou, danseur breakdance"
               className="h-full w-full object-contain transition-transform duration-700 hover:scale-105"
             />
-          </div>
-          <div className="absolute -bottom-6 -right-6 rounded-2xl border border-white/10 bg-black/80 px-5 py-4 backdrop-blur">
+          </TiltCard>
+          <motion.div
+            initial={{ opacity: 0, y: 20, rotate: 6 }}
+            whileInView={{ opacity: 1, y: 0, rotate: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="absolute -bottom-6 -right-6 rounded-2xl border border-white/10 bg-black/80 px-5 py-4 backdrop-blur"
+          >
             <p className="font-display text-2xl text-bilou-yellow">vice-champion</p>
             <p className="text-xs uppercase tracking-widest text-neutral-400">de france — gymnastique</p>
-          </div>
+          </motion.div>
         </motion.div>
 
         <motion.div
@@ -70,16 +82,23 @@ export default function About() {
           </p>
 
           <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4">
-            {STATS.map((stat) => (
-              <div
+            {STATS.map((stat, i) => (
+              <motion.div
                 key={stat.label}
-                className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-center"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.5 }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                whileHover={{ y: -4, scale: 1.05 }}
+                className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-center transition-colors hover:border-bilou-yellow/40"
               >
-                <p className="font-display text-3xl text-bilou-yellow sm:text-4xl">{stat.value}</p>
+                <p className="font-display text-3xl text-bilou-yellow sm:text-4xl">
+                  <Counter value={stat.value} />
+                </p>
                 <p className="mt-1 text-[11px] uppercase leading-tight tracking-wider text-neutral-400">
                   {stat.label}
                 </p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </motion.div>

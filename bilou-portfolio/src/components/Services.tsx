@@ -1,12 +1,15 @@
 import { motion } from 'framer-motion'
 import { Building2, Mic2, Swords, Users2 } from 'lucide-react'
 import { SERVICES } from '../data/content'
+import FloatingOrb from './FloatingOrb'
+import TiltCard from './TiltCard'
 
 const ICONS = [Mic2, Users2, Swords, Building2]
 
 export default function Services() {
   return (
-    <section id="services" className="relative bg-black px-4 py-24 md:py-32">
+    <section id="services" className="relative overflow-hidden bg-black px-4 py-24 md:py-32">
+      <FloatingOrb className="left-[-8%] bottom-[-5%] h-80 w-80 bg-bilou-orange/10" duration={13} delay={1} />
       <div className="mx-auto max-w-6xl">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -37,18 +40,19 @@ export default function Services() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{ duration: 0.5, delay: (i % 2) * 0.1 }}
-                className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-8"
               >
-                <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-gradient-to-br from-bilou-yellow/20 to-bilou-orange/10 blur-2xl transition-transform duration-500 group-hover:scale-150" />
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-bilou-yellow/30 text-bilou-yellow">
-                  <Icon size={26} />
-                </div>
-                <h3 className="mt-6 font-display text-2xl uppercase tracking-wide text-white">
-                  {service.title}
-                </h3>
-                <p className="mt-3 text-sm leading-relaxed text-neutral-400">
-                  {service.description}
-                </p>
+                <TiltCard className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-8">
+                  <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-gradient-to-br from-bilou-yellow/20 to-bilou-orange/10 blur-2xl transition-transform duration-500 group-hover:scale-150" />
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-bilou-yellow/30 text-bilou-yellow">
+                    <Icon size={26} />
+                  </div>
+                  <h3 className="mt-6 font-display text-2xl uppercase tracking-wide text-white">
+                    {service.title}
+                  </h3>
+                  <p className="mt-3 text-sm leading-relaxed text-neutral-400">
+                    {service.description}
+                  </p>
+                </TiltCard>
               </motion.div>
             )
           })}

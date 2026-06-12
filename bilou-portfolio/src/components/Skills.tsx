@@ -8,12 +8,15 @@ import {
   Zap,
 } from 'lucide-react'
 import { SKILLS } from '../data/content'
+import FloatingOrb from './FloatingOrb'
+import TiltCard from './TiltCard'
 
 const ICONS = [Flame, Lightbulb, Timer, Sparkles, Zap, Users]
 
 export default function Skills() {
   return (
-    <section id="skills" className="relative bg-black px-4 py-24 md:py-32">
+    <section id="skills" className="relative overflow-hidden bg-black px-4 py-24 md:py-32">
+      <FloatingOrb className="right-[-10%] top-1/3 h-72 w-72 bg-bilou-yellow/10" duration={12} />
       <div className="mx-auto max-w-6xl">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -40,18 +43,18 @@ export default function Skills() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{ duration: 0.5, delay: (i % 3) * 0.1 }}
-                whileHover={{ y: -6, rotate: -1 }}
-                className="group rounded-3xl border border-white/10 bg-white/[0.03] p-6 transition-colors hover:border-bilou-yellow/40"
               >
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-bilou-yellow to-bilou-orange text-black transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6">
-                  <Icon size={22} />
-                </div>
-                <h3 className="mt-5 font-display text-xl uppercase tracking-wide text-white">
-                  {skill.title}
-                </h3>
-                <p className="mt-3 text-sm leading-relaxed text-neutral-400">
-                  {skill.description}
-                </p>
+                <TiltCard className="group rounded-3xl border border-white/10 bg-white/[0.03] p-6 transition-colors hover:border-bilou-yellow/40">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-bilou-yellow to-bilou-orange text-black transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6">
+                    <Icon size={22} />
+                  </div>
+                  <h3 className="mt-5 font-display text-xl uppercase tracking-wide text-white">
+                    {skill.title}
+                  </h3>
+                  <p className="mt-3 text-sm leading-relaxed text-neutral-400">
+                    {skill.description}
+                  </p>
+                </TiltCard>
               </motion.div>
             )
           })}

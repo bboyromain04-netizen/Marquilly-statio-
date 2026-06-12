@@ -68,6 +68,19 @@ body {
   animation: marquee 28s linear infinite;
 }
 
+@keyframes marquee-reverse {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.animate-marquee-reverse {
+  animation: marquee-reverse 34s linear infinite;
+}
+
 @keyframes float-slow {
   0%, 100% {
     transform: translateY(0) rotate(0deg);

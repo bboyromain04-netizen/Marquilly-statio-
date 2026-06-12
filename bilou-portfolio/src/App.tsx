@@ -1,6 +1,7 @@
 import About from './components/About'
 import BookingForm from './components/BookingForm'
 import Contact from './components/Contact'
+import CursorGlow from './components/CursorGlow'
 import Footer from './components/Footer'
 import Gallery from './components/Gallery'
 import Hero from './components/Hero'
@@ -13,6 +14,7 @@ import Skills from './components/Skills'
 function App() {
   return (
     <>
+      <CursorGlow />
       <Navbar />
       <Hero />
       <Marquee />

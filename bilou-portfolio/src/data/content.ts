@@ -53,7 +53,7 @@ export const SKILLS = [
 
 export const GALLERY = [
   {
-    src: 'media/portrait.jpg',
+    src: 'media/portrait-1.jpg',
     title: 'Bilou — portrait officiel',
     tag: 'portrait',
     span: 'featured',

@@ -1,0 +1,1087 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<title>Marquilly Studio — Offre commerciale</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+  @page cover {
+    margin: 0;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #1a1a1a;
+    font-size: 11px;
+    line-height: 1.55;
+  }
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 16mm 16mm 18mm 16mm;
+    position: relative;
+    page-break-after: always;
+  }
+  .page:last-child { page-break-after: avoid; }
+
+  /* ---------- Palette ---------- */
+  :root {}
+  .accent { color: #5b5bf5; }
+  .accent-bg { background: linear-gradient(120deg, #5b5bf5 0%, #00c2d1 100%); }
+  .text-gradient {
+    background: linear-gradient(120deg, #5b5bf5 0%, #00c2d1 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* ---------- Cover ---------- */
+  .cover {
+    background: #0a0a14;
+    color: #fff;
+    page: cover;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .cover-top {
+    padding: 18mm 16mm 0 16mm;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .cover-logo {
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: 2px;
+  }
+  .cover-logo span { color: #00c2d1; }
+  .cover-tag {
+    font-size: 9px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #9b9bd6;
+    border: 1px solid #3a3a6e;
+    border-radius: 999px;
+    padding: 5px 12px;
+  }
+  .cover-mid {
+    padding: 0 16mm;
+  }
+  .cover-mid .kicker {
+    font-size: 10px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: #00c2d1;
+    margin-bottom: 14px;
+  }
+  .cover-mid h1 {
+    font-size: 56px;
+    font-weight: 800;
+    line-height: 1.05;
+    margin: 0 0 18px 0;
+    letter-spacing: -1px;
+  }
+  .cover-mid h1 .grad {
+    background: linear-gradient(120deg, #5b5bf5 0%, #00c2d1 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .cover-mid p {
+    font-size: 13px;
+    color: #c7c7e8;
+    max-width: 320px;
+  }
+  .cover-bottom {
+    background: #11112a;
+    padding: 14mm 16mm;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-top: 1px solid #2a2a55;
+  }
+  .cover-bottom .block { font-size: 9px; color: #8a8ac0; letter-spacing: 1px; }
+  .cover-bottom .block strong { display:block; color:#fff; font-size:12px; margin-bottom:4px; letter-spacing: 0.5px;}
+  .cover-orbs {
+    position: absolute;
+    top: 60mm; right: -40mm;
+    width: 220mm; height: 220mm;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(91,91,245,0.35), transparent 60%),
+                radial-gradient(circle at 70% 70%, rgba(0,194,209,0.25), transparent 60%);
+    filter: blur(10px);
+  }
+
+  /* ---------- Generic page header / footer ---------- */
+  .pagehead {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #111;
+    padding-bottom: 8px;
+    margin-bottom: 14px;
+  }
+  .pagehead .brand { font-weight: 800; font-size: 12px; letter-spacing: 1px; }
+  .pagehead .brand span { color: #5b5bf5; }
+  .pagehead .section-tag {
+    font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: #888;
+  }
+  .pagefoot {
+    position: absolute;
+    bottom: 8mm; left: 16mm; right: 16mm;
+    display: flex; justify-content: space-between;
+    font-size: 8px; color: #999;
+    border-top: 1px solid #eee; padding-top: 6px;
+  }
+
+  h2.title {
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin: 4px 0 4px 0;
+  }
+  h2.title .grad {
+    background: linear-gradient(120deg, #5b5bf5 0%, #00c2d1 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .lede {
+    font-size: 11.5px;
+    color: #444;
+    margin: 0 0 16px 0;
+    max-width: 165mm;
+  }
+  .kicker {
+    font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: #5b5bf5; font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  /* ---------- Cards / grids ---------- */
+  .grid2 { display: flex; gap: 8mm; flex-wrap: wrap; }
+  .grid2 > div { flex: 1 1 76mm; }
+  .grid3 > div { flex: 1 1 50mm; }
+  .card {
+    border: 1px solid #e4e4ec;
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    background: #fafafe;
+  }
+  .card h3 {
+    font-size: 12px; margin: 0 0 4px 0; font-weight: 700;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .card .num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: linear-gradient(120deg, #5b5bf5, #00c2d1);
+    color: #fff; font-size: 9px; font-weight: 800; flex-shrink: 0;
+  }
+  .card p { margin: 0; font-size: 10px; color: #555; }
+
+  ul.checklist { list-style: none; padding: 0; margin: 0; }
+  ul.checklist li {
+    padding-left: 16px; position: relative; margin-bottom: 5px; font-size: 10.5px; color: #333;
+  }
+  ul.checklist li::before {
+    content: "✓"; position: absolute; left: 0; top: 0;
+    color: #00a3b3; font-weight: 800; font-size: 10px;
+  }
+
+  table.pricing {
+    width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 10px;
+  }
+  table.pricing th, table.pricing td {
+    border: 1px solid #e4e4ec; padding: 6px 8px; text-align: left; vertical-align: top;
+  }
+  table.pricing th { background: #11112a; color: #fff; font-size: 9px; letter-spacing: 1px; text-transform: uppercase;}
+  table.pricing td.center, table.pricing th.center { text-align: center; }
+
+  .pkg-grid { display: flex; gap: 6mm; margin-top: 10px; }
+  .pkg {
+    flex: 1; border: 1px solid #e4e4ec; border-radius: 8px; overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  .pkg.featured { border: 2px solid #5b5bf5; }
+  .pkg-head { padding: 10px 12px; background: #11112a; color: #fff; }
+  .pkg.featured .pkg-head { background: linear-gradient(120deg, #5b5bf5 0%, #00c2d1 100%); }
+  .pkg-head .pkg-name { font-size: 13px; font-weight: 800; letter-spacing: 0.5px; }
+  .pkg-head .pkg-target { font-size: 8.5px; opacity: 0.8; margin-top: 2px;}
+  .pkg-price { padding: 10px 12px; border-bottom: 1px solid #eee; }
+  .pkg-price .amount { font-size: 22px; font-weight: 800; }
+  .pkg-price .amount span { font-size: 10px; font-weight: 500; color: #888; }
+  .pkg-price .delay { font-size: 9px; color: #888; margin-top: 2px; }
+  .pkg-body { padding: 10px 12px; flex: 1; }
+  .pkg-body ul { list-style:none; padding:0; margin:0; }
+  .pkg-body li { font-size: 9.5px; padding-left: 14px; position: relative; margin-bottom: 4px; color: #333;}
+  .pkg-body li::before { content:"✓"; position:absolute; left:0; color:#00a3b3; font-weight:800; font-size: 9px;}
+  .pkg-badge {
+    display:inline-block; font-size: 8px; letter-spacing:2px; text-transform:uppercase;
+    background:#00c2d1; color:#fff; padding: 2px 8px; border-radius:999px; margin-bottom:6px; font-weight:700;
+  }
+
+  .steps { margin-top: 10px; }
+  .step {
+    display: flex; gap: 10px; margin-bottom: 10px; align-items: flex-start;
+  }
+  .step .stepnum {
+    flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%;
+    background: linear-gradient(120deg, #5b5bf5, #00c2d1); color:#fff;
+    display:flex; align-items:center; justify-content:center; font-weight:800; font-size: 11px;
+  }
+  .step .steptxt h3 { margin: 0 0 2px 0; font-size: 11.5px; font-weight: 700; }
+  .step .steptxt p { margin: 0; font-size: 10px; color: #555; }
+
+  .case {
+    border: 1px solid #e4e4ec; border-radius: 8px; overflow:hidden; margin-bottom: 12px;
+  }
+  .case-head {
+    padding: 10px 14px; color: #fff; background: #0a0a14;
+    display:flex; justify-content: space-between; align-items:center;
+  }
+  .case-head .ctitle { font-size: 13px; font-weight: 800; }
+  .case-head .ctag {
+    font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: #00c2d1; border:1px solid #2a2a55;
+    border-radius: 999px; padding: 3px 10px;
+  }
+  .case-body { padding: 10px 14px; display:flex; gap: 10mm; }
+  .case-body .col { flex: 1; }
+  .case-body h4 { font-size: 10px; margin: 0 0 4px 0; color: #5b5bf5; text-transform: uppercase; letter-spacing: 1px;}
+  .case-body p, .case-body li { font-size: 10px; color: #444; }
+  .case-body ul { margin: 0; padding-left: 14px; }
+
+  .quote {
+    border-left: 3px solid #5b5bf5; padding: 8px 14px; background: #f5f5fc; border-radius: 0 6px 6px 0;
+    font-size: 10.5px; font-style: italic; color: #333; margin: 10px 0;
+  }
+  .quote .who { display:block; margin-top:6px; font-style: normal; font-weight: 700; font-size: 9.5px; color:#5b5bf5;}
+
+  .cta {
+    margin-top: 14px; border-radius: 10px; padding: 16px 18px;
+    background: linear-gradient(120deg, #5b5bf5 0%, #00c2d1 100%); color: #fff;
+    display:flex; justify-content: space-between; align-items: center;
+  }
+  .cta h3 { margin: 0 0 4px 0; font-size: 14px; font-weight: 800; }
+  .cta p { margin: 0; font-size: 10px; opacity: 0.9; }
+  .cta .contact { text-align: right; font-size: 10px; }
+  .cta .contact strong { font-size: 12px; }
+
+  .small { font-size: 9px; color: #888; }
+  .divider { height: 1px; background: #eee; margin: 12px 0; }
+
+  table.simple { width: 100%; border-collapse: collapse; font-size: 10px; }
+  table.simple th, table.simple td { border-bottom: 1px solid #eee; padding: 6px 4px; text-align: left; }
+  table.simple th { color: #888; text-transform: uppercase; font-size: 8.5px; letter-spacing: 1px; }
+
+  .toc-list { list-style: none; padding: 0; margin-top: 16px; }
+  .toc-list li {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 8px 0; border-bottom: 1px dotted #ddd; font-size: 12px;
+  }
+  .toc-list li .n { color: #5b5bf5; font-weight: 800; margin-right: 10px; }
+  .toc-list li .p { color: #aaa; font-size: 10px; }
+</style>
+</head>
+<body>
+
+<!-- ================= PAGE 1 — COVER ================= -->
+<div class="page cover">
+  <div class="cover-orbs"></div>
+  <div class="cover-top">
+    <div class="cover-logo">MARQUILLY <span>STUDIO</span></div>
+    <div class="cover-tag">Offre commerciale 2026</div>
+  </div>
+  <div class="cover-mid">
+    <div class="kicker">Studio créatif web · Lille &amp; à distance</div>
+    <h1>Des sites web qui<br/>se <span class="grad">démarquent</span><br/>et qui convertissent.</h1>
+    <p>
+      Conception, design et développement de sites vitrines et applications web
+      sur-mesure : animations 3D, motion design, performance et identité de marque —
+      tout est pensé pour marquer les esprits.
+    </p>
+  </div>
+  <div class="cover-bottom">
+    <div class="block">
+      <strong>Romain « Bilou » Marquilly</strong>
+      Fondateur · Développeur &amp; Designer web
+    </div>
+    <div class="block">
+      <strong>Contact</strong>
+      bboyromain04@gmail.com<br/>07 81 70 04 54
+    </div>
+    <div class="block">
+      <strong>Document</strong>
+      Dossier d'offre commerciale<br/>Valable 30 jours
+    </div>
+  </div>
+</div>
+
+<!-- ================= PAGE 2 — SOMMAIRE ================= -->
+<div class="page">
+  <div class="pagehead">
+    <div class="brand">MARQUILLY <span>STUDIO</span></div>
+    <div class="section-tag">Sommaire</div>
+  </div>
+
+  <h2 class="title">Sommaire <span class="grad">du dossier</span></h2>
+  <p class="lede">
+    Ce dossier a été conçu pour vous donner une vision complète et transparente de notre
+    studio, de notre méthode de travail, de nos réalisations et de nos offres — afin que
+    votre décision soit la plus éclairée possible.
+  </p>
+
+  <ul class="toc-list">
+    <li><span><span class="n">01</span>Qui sommes-nous ?</span><span class="p">p. 3</span></li>
+    <li><span><span class="n">02</span>Pourquoi choisir Marquilly Studio</span><span class="p">p. 4</span></li>
+    <li><span><span class="n">03</span>Nos services</span><span class="p">p. 5</span></li>
+    <li><span><span class="n">04</span>Notre méthodologie de travail</span><span class="p">p. 6</span></li>
+    <li><span><span class="n">05</span>Réalisations &amp; études de cas</span><span class="p">p. 7</span></li>
+    <li><span><span class="n">06</span>Nos formules &amp; tarifs</span><span class="p">p. 8</span></li>
+    <li><span><span class="n">07</span>Services complémentaires &amp; maintenance</span><span class="p">p. 9</span></li>
+    <li><span><span class="n">08</span>Garanties, engagements &amp; sécurité</span><span class="p">p. 10</span></li>
+    <li><span><span class="n">09</span>Modalités, planning &amp; conditions</span><span class="p">p. 11</span></li>
+    <li><span><span class="n">10</span>Prochaines étapes &amp; contact</span><span class="p">p. 12</span></li>
+  </ul>
+
+  <div class="divider"></div>
+  <div class="quote">
+    « Un site web n'est pas une dépense, c'est l'outil commercial qui travaille pour vous
+    24h/24, 7j/7. Notre objectif : qu'il soit aussi percutant que votre meilleur commercial. »
+    <span class="who">— Romain Marquilly, fondateur de Marquilly Studio</span>
+  </div>
+
+  <div class="pagefoot">
+    <span>Marquilly Studio — Offre commerciale 2026</span>
+    <span>Page 2 / 12</span>
+  </div>
+</div>
+
+<!-- ================= PAGE 3 — QUI SOMMES-NOUS ================= -->
+<div class="page">
+  <div class="pagehead">
+    <div class="brand">MARQUILLY <span>STUDIO</span></div>
+    <div class="section-tag">01 — Qui sommes-nous</div>
+  </div>
+
+  <div class="kicker">Notre identité</div>
+  <h2 class="title">Un studio à taille humaine,<br/><span class="grad">une exigence de studio premium</span></h2>
+  <p class="lede">
+    Marquilly Studio est un studio de création web fondé par Romain « Bilou » Marquilly,
+    danseur professionnel de breakdance et développeur web passionné. Cette double casquette
+    n'est pas un hasard : elle se traduit directement dans nos créations, où la performance
+    technique rencontre la créativité visuelle et le mouvement.
+  </p>
+
+  <div class="grid2">
+    <div>
+      <div class="card">
+        <h3><span class="num">1</span> Notre ADN</h3>
+        <p>
+          Nous concevons des sites qui ne se contentent pas d'être « jolis » : ils racontent
+          une histoire, créent une émotion et guident le visiteur vers l'action — réservation,
+          contact, achat. Chaque détail (animation, micro-interaction, typographie, rythme de
+          scroll) est pensé pour servir votre objectif business.
+        </p>
+      </div>
+      <div class="card">
+        <h3><span class="num">2</span> Notre approche technique</h3>
+        <p>
+          Stack moderne (React, TypeScript, Tailwind CSS, Framer Motion) pour des sites rapides,
+          responsive, accessibles et faciles à maintenir. Animations 3D, effets de profondeur,
+          parallax, micro-interactions au curseur : nous créons des expériences « vivantes »
+          dignes des plus grandes agences, sans la facture qui va avec.
+        </p>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <h3><span class="num">3</span> Pour qui travaillons-nous ?</h3>
+        <p>
+          Indépendants, artistes &amp; sportifs professionnels, startups tech, commerces locaux
+          et entreprises en croissance qui veulent une présence en ligne à la hauteur de leur
+          ambition — sans les délais ni les coûts d'une grosse agence.
+        </p>
+      </div>
+      <div class="card">
+        <h3><span class="num">4</span> Nos valeurs</h3>
+        <ul class="checklist">
+          <li>Transparence totale sur les délais et les coûts, du premier devis à la livraison</li>
+          <li>Réactivité : un interlocuteur unique, disponible et impliqué</li>
+          <li>Exigence : rien n'est laissé au hasard, chaque pixel a une raison d'être</li>
+          <li>Pédagogie : vous comprenez et maîtrisez votre outil une fois livré</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="quote">
+    « Basé à Lille, j'accompagne mes clients partout en France et à l'international —
+    visioconférence, points d'avancement réguliers et outils collaboratifs pour un suivi
+    fluide, où que vous soyez. »
+    <span class="who">— Romain Marquilly</span>
+  </div>
+
+  <div class="pagefoot">
+    <span>Marquilly Studio — Offre commerciale 2026</span>
+    <span>Page 3 / 12</span>
+  </div>
+</div>
+
+<!-- ================= PAGE 4 — POURQUOI NOUS CHOISIR ================= -->
+<div class="page">
+  <div class="pagehead">
+    <div class="brand">MARQUILLY <span>STUDIO</span></div>
+    <div class="section-tag">02 — Pourquoi nous choisir</div>
+  </div>
+
+  <div class="kicker">Notre différence</div>
+  <h2 class="title">5 raisons de travailler<br/><span class="grad">avec Marquilly Studio</span></h2>
+  <p class="lede">
+    Le marché regorge de prestataires. Voici, concrètement, ce qui change quand vous
+    travaillez avec nous.
+  </p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="stepnum">1</div>
+      <div class="steptxt">
+        <h3>Un site « vivant », pas une simple brochure</h3>
+        <p>Animations 3D, effets de tilt au survol, parallax au scroll, compteurs animés,
+        micro-interactions : votre site capte l'attention dès les 3 premières secondes —
+        l'élément déterminant pour réduire le taux de rebond.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="stepnum">2</div>
+      <div class="steptxt">
+        <h3>Performance &amp; technique au cœur du projet</h3>
+        <p>Code propre, léger et maintenable (React / TypeScript / Tailwind CSS) : temps de
+        chargement optimisés, compatibilité mobile parfaite, et base technique saine pour
+        évoluer dans le temps sans tout reconstruire.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="stepnum">3</div>
+      <div class="steptxt">
+        <h3>Un accompagnement de A à Z</h3>
+        <p>De la stratégie de contenu à la mise en ligne, en passant par le design, le
+        développement et la formation à l'autonomie : vous n'êtes jamais seul, et vous savez
+        toujours où en est votre projet.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="stepnum">4</div>
+      <div class="steptxt">
+        <h3>Des tarifs justes, sans surprise</h3>
+        <p>Devis détaillé et figé avant le démarrage, jalons de paiement clairs, aucun frais
+        caché. Ce que vous validez est ce que vous payez — point final.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="stepnum">5</div>
+      <div class="steptxt">
+        <h3>Un suivi qui ne s'arrête pas à la livraison</h3>
+        <p>Période de garantie incluse, formules de maintenance évolutives, et un studio qui
+        reste disponible pour faire grandir votre site avec votre activité.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="grid3" style="display:flex; gap:6mm;">
+    <div class="card" style="text-align:center;">
+      <h3 style="justify-content:center; font-size:20px; font-weight:800;" class="text-gradient grad">100%</h3>
+      <p style="text-align:center;">sur-mesure — aucun template générique</p>
+    </div>
+    <div class="card" style="text-align:center;">
+      <h3 style="justify-content:center; font-size:20px; font-weight:800;" class="text-gradient grad">&lt; 4 sem.</h3>
+      <p style="text-align:center;">délai moyen pour un site vitrine complet</p>
+    </div>
+    <div class="card" style="text-align:center;">
+      <h3 style="justify-content:center; font-size:20px; font-weight:800;" class="text-gradient grad">1</h3>
+      <p style="text-align:center;">interlocuteur unique du brief à la livraison</p>
+    </div>
+  </div>
+
+  <div class="pagefoot">
+    <span>Marquilly Studio — Offre commerciale 2026</span>
+    <span>Page 4 / 12</span>
+  </div>
+</div>
+
+<!-- ================= PAGE 5 — NOS SERVICES ================= -->
+<div class="page">
+  <div class="pagehead">
+    <div class="brand">MARQUILLY <span>STUDIO</span></div>
+    <div class="section-tag">03 — Nos services</div>
+  </div>
+
+  <div class="kicker">Ce que nous faisons</div>
+  <h2 class="title">Des services complets,<br/><span class="grad">pensés pour s'articuler ensemble</span></h2>
+  <p class="lede">
+    Chaque service peut être commandé séparément, mais c'est leur combinaison qui crée
+    un site réellement performant et différenciant.
+  </p>
+
+  <div class="grid2">
+    <div>
+      <div class="card">
+        <h3><span class="num">★</span> Design &amp; identité visuelle</h3>
+        <p>Direction artistique, palette de couleurs, typographies, moodboard, et déclinaison
+        cohérente sur l'ensemble du site (et au-delà : réseaux sociaux, supports imprimés).</p>
+      </div>
+      <div class="card">
+        <h3><span class="num">★</span> Développement web sur-mesure</h3>
+        <p>Sites vitrines, portfolios, landing pages, sites e-commerce, applications web :
+        développement React / TypeScript, responsive sur tous les écrans, code propre et
+        documenté.</p>
+      </div>
+      <div class="card">
+        <h3><span class="num">★</span> Animations &amp; motion design 3D</h3>
+        <p>Effets de tilt 3D au survol, parallax au scroll, transitions fluides, particules
+        et orbes animés, vidéos plein écran, compteurs animés — pour une expérience
+        immersive et mémorable.</p>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <h3><span class="num">★</span> Référencement &amp; performance (SEO)</h3>
+        <p>Structure optimisée pour les moteurs de recherche, temps de chargement réduits,
+        balises méta, données structurées, accessibilité — pour être visible et bien classé.</p>
+      </div>
+      <div class="card">
+        <h3><span class="num">★</span> Intégration d'outils métier</h3>
+        <p>Formulaires de contact &amp; de réservation, prise de rendez-vous, paiement en ligne,
+        intégration calendrier, newsletters, espaces membres — connectés aux outils que vous
+        utilisez déjà.</p>
+      </div>
+      <div class="card">
+        <h3><span class="num">★</span> Mise en ligne, hébergement &amp; maintenance</h3>
+        <p>Nom de domaine, hébergement, certificats de sécurité (HTTPS), mises à jour de
+        contenu, sauvegardes régulières et support technique continu.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="kicker">Secteurs d'expertise</div>
+  <p class="lede" style="margin-bottom:6px;">
+    Une expérience particulière sur les profils suivants — mais notre méthode s'adapte à
+    tout secteur d'activité :
+  </p>
+  <ul class="checklist" style="columns:2;">
+    <li>Artistes, sportifs &amp; créateurs de contenu (portfolios, book, booking)</li>
+    <li>Startups &amp; SaaS (landing pages à fort impact, présentation produit)</li>
+    <li>Commerces &amp; restaurants (vitrines, réservation, menus)</li>
+    <li>Professions libérales &amp; consultants (crédibilité, prise de RDV)</li>
+    <li>Associations &amp; événements (mise en avant, inscriptions)</li>
+    <li>Marques &amp; e-commerce (catalogues, identité, conversion)</li>
+  </ul>
+
+  <div class="pagefoot">
+    <span>Marquilly Studio — Offre commerciale 2026</span>
+    <span>Page 5 / 12</span>
+  </div>
+</div>
+
+<!-- ================= PAGE 6 — METHODOLOGIE ================= -->
+<div class="page">
+  <div class="pagehead">
+    <div class="brand">MARQUILLY <span>STUDIO</span></div>
+    <div class="section-tag">04 — Méthodologie</div>
+  </div>
+
+  <div class="kicker">Comment nous travaillons</div>
+  <h2 class="title">Un processus clair,<br/><span class="grad">en 6 étapes</span></h2>
+  <p class="lede">
+    Chaque projet suit le même cadre rigoureux, gage de qualité et de respect des délais —
+    tout en restant flexible sur le contenu créatif.
+  </p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="stepnum">1</div>
+      <div class="steptxt">
+        <h3>Découverte &amp; brief (1 à 3 jours)</h3>
+        <p>Échange approfondi sur vos objectifs, votre cible, vos contenus existants et vos
+        références visuelles. Cette étape aboutit à un cahier des charges partagé et à un
+        devis détaillé et figé.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="stepnum">2</div>
+      <div class="steptxt">
+        <h3>Architecture &amp; maquettage (3 à 5 jours)</h3>
+        <p>Définition de l'arborescence du site, du parcours utilisateur et des premières
+        maquettes visuelles (direction artistique). Validation avant de passer au
+        développement.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="stepnum">3</div>
+      <div class="steptxt">
+        <h3>Développement &amp; animations (1 à 3 semaines)</h3>
+        <p>Intégration technique complète : responsive, animations 3D et motion design,
+        formulaires, intégrations tierces. Des points d'avancement réguliers vous permettent
+        de suivre la construction en temps réel.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="stepnum">4</div>
+      <div class="steptxt">
+        <h3>Recette &amp; ajustements (3 à 5 jours)</h3>
+        <p>Phase de tests croisés (navigateurs, mobiles, tablettes) et de retours. Un nombre
+        de tours de modifications est inclus selon la formule choisie (voir p. 8).</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="stepnum">5</div>
+      <div class="steptxt">
+        <h3>Mise en ligne</h3>
+        <p>Configuration du nom de domaine, de l'hébergement et des certificats de sécurité,
+        puis publication. Vérification finale et formation à la prise en main.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="stepnum">6</div>
+      <div class="steptxt">
+        <h3>Suivi &amp; accompagnement</h3>
+        <p>Période de garantie incluse pour corriger toute anomalie, puis bascule vers la
+        formule de maintenance de votre choix pour faire évoluer le site dans la durée.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="quote">
+    « Vous recevez un calendrier prévisionnel dès la signature du devis, avec des jalons
+    précis. Aucune mauvaise surprise sur les délais. »
+    <span class="who">— Marquilly Studio</span>
+  </div>
+
+  <div class="pagefoot">
+    <span>Marquilly Studio — Offre commerciale 2026</span>
+    <span>Page 6 / 12</span>
+  </div>
+</div>
+
+<!-- ================= PAGE 7 — REALISATIONS ================= -->
+<div class="page">
+  <div class="pagehead">
+    <div class="brand">MARQUILLY <span>STUDIO</span></div>
+    <div class="section-tag">05 — Réalisations</div>
+  </div>
+
+  <div class="kicker">Études de cas</div>
+  <h2 class="title">Des projets récents,<br/><span class="grad">conçus avec les mêmes standards</span></h2>
+  <p class="lede">
+    Deux exemples représentatifs de notre niveau d'exigence — du site portfolio artistique
+    à la landing page produit haut de gamme.
+  </p>
+
+  <div class="case">
+    <div class="case-head">
+      <span class="ctitle">BILOU — Portfolio danseur professionnel</span>
+      <span class="ctag">Site vitrine &amp; booking</span>
+    </div>
+    <div class="case-body">
+      <div class="col">
+        <h4>Objectif</h4>
+        <p>Offrir une vitrine professionnelle à un breakdancer pour décrocher des
+        prestations (spectacles, stages, battles, événements d'entreprise).</p>
+        <h4 style="margin-top:8px;">Réalisations clés</h4>
+        <ul>
+          <li>Hero vidéo plein écran avec titre animé en 3D au survol</li>
+          <li>Galerie de prestations avec effet tilt 3D et lightbox vidéo</li>
+        </ul>
+      </div>
+      <div class="col">
+        <h4>Fonctionnalités</h4>
+        <ul>
+          <li>Section « À propos » avec statistiques animées (compteurs)</li>
+          <li>Formulaire de réservation connecté + génération d'événement calendrier</li>
+          <li>Orbes lumineux flottants &amp; halo qui suit le curseur</li>
+        </ul>
+        <h4 style="margin-top:8px;">Résultat</h4>
+        <p>Un site rapide, immersif et 100% responsive qui valorise le parcours sportif
+        et artistique du client, avec un canal de contact direct et structuré.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="case">
+    <div class="case-head">
+      <span class="ctitle">SECURIFY — Landing page produit (SaaS)</span>
+      <span class="ctag">Landing page premium</span>
+    </div>
+    <div class="case-body">
+      <div class="col">
+        <h4>Objectif</h4>
+        <p>Présenter un produit de cybersécurité avec un design « tech » impactant,
+        digne des standards des plus grandes startups.</p>
+        <h4 style="margin-top:8px;">Réalisations clés</h4>
+        <ul>
+          <li>Typographie géante avec effet de profondeur 3D suivant la souris</li>
+          <li>Apparition séquencée des éléments avec rotation 3D à l'entrée</li>
+        </ul>
+      </div>
+      <div class="col">
+        <h4>Fonctionnalités</h4>
+        <ul>
+          <li>Vidéo de fond avec effet de parallax au scroll</li>
+          <li>Statistiques clés animées (+65k, +1,5 milliard, +300k)</li>
+          <li>Navigation animée et halo lumineux interactif</li>
+        </ul>
+        <h4 style="margin-top:8px;">Résultat</h4>
+        <p>Une première impression « waouh » qui inspire confiance et incite à l'action
+        dès l'arrivée sur la page.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="quote">
+    Ces deux projets illustrent notre capacité à adapter le ton, le rythme et l'univers
+    visuel à chaque marque — tout en conservant le même niveau de finition technique.
+    <span class="who">— Marquilly Studio</span>
+  </div>
+
+  <div class="pagefoot">
+    <span>Marquilly Studio — Offre commerciale 2026</span>
+    <span>Page 7 / 12</span>
+  </div>
+</div>
+
+<!-- ================= PAGE 8 — TARIFS ================= -->
+<div class="page">
+  <div class="pagehead">
+    <div class="brand">MARQUILLY <span>STUDIO</span></div>
+    <div class="section-tag">06 — Nos formules</div>
+  </div>
+
+  <div class="kicker">Investissement</div>
+  <h2 class="title">Des formules claires,<br/><span class="grad">adaptées à chaque ambition</span></h2>
+  <p class="lede">
+    Tarifs indicatifs de base — un devis personnalisé et figé est systématiquement établi
+    après l'étape de découverte (p. 6), en fonction du nombre de pages, du contenu et des
+    fonctionnalités souhaitées.
+  </p>
+
+  <div class="pkg-grid">
+    <div class="pkg">
+      <div class="pkg-head">
+        <div class="pkg-name">ESSENTIEL</div>
+        <div class="pkg-target">Indépendants &amp; petites structures</div>
+      </div>
+      <div class="pkg-price">
+        <div class="amount">890 € <span>HT à partir de</span></div>
+        <div class="delay">Livraison estimée : 1 à 2 semaines</div>
+      </div>
+      <div class="pkg-body">
+        <ul>
+          <li>Site vitrine jusqu'à 3 sections / pages</li>
+          <li>Design sur-mesure (1 univers visuel)</li>
+          <li>Responsive mobile / tablette / desktop</li>
+          <li>Animations d'entrée &amp; transitions douces</li>
+          <li>Formulaire de contact</li>
+          <li>Optimisation SEO de base</li>
+          <li>1 tour de modifications inclus</li>
+          <li>Mise en ligne incluse</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pkg featured">
+      <div class="pkg-head">
+        <div class="pkg-badge">Le plus choisi</div>
+        <div class="pkg-name">PERFORMANCE</div>
+        <div class="pkg-target">Indépendants confirmés &amp; PME</div>
+      </div>
+      <div class="pkg-price">
+        <div class="amount">1 690 € <span>HT à partir de</span></div>
+        <div class="delay">Livraison estimée : 2 à 4 semaines</div>
+      </div>
+      <div class="pkg-body">
+        <ul>
+          <li>Site vitrine jusqu'à 6 sections / pages</li>
+          <li>Direction artistique complète &amp; moodboard</li>
+          <li>Animations 3D : tilt au survol, parallax, orbes flottants</li>
+          <li>Compteurs animés &amp; micro-interactions</li>
+          <li>Galerie / portfolio avec lightbox</li>
+          <li>Formulaire de contact &amp; / ou de réservation connecté</li>
+          <li>SEO avancé + structure optimisée</li>
+          <li>2 tours de modifications inclus</li>
+          <li>Mise en ligne + 30 jours de garantie</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pkg">
+      <div class="pkg-head">
+        <div class="pkg-name">SIGNATURE</div>
+        <div class="pkg-target">Marques, startups &amp; projets premium</div>
+      </div>
+      <div class="pkg-price">
+        <div class="amount">2 990 € <span>HT à partir de</span></div>
+        <div class="delay">Livraison estimée : 3 à 6 semaines</div>
+      </div>
+      <div class="pkg-body">
+        <ul>
+          <li>Site multi-pages ou application web sur-mesure</li>
+          <li>Identité visuelle complète (logo, charte, déclinaisons)</li>
+          <li>Animations 3D avancées &amp; motion design complet</li>
+          <li>Vidéos plein écran, effets de parallax multi-couches</li>
+          <li>Intégrations métier (paiement, RDV, espace membre…)</li>
+          <li>SEO technique approfondi + plan de contenu</li>
+          <li>3 tours de modifications inclus</li>
+          <li>Mise en ligne + 60 jours de garantie + formation</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="small" style="margin-top:8px;">
+    Tarifs hors taxes, hors options complémentaires (p. 9) et hors frais tiers
+    (nom de domaine, hébergement, licences). Paiement en 3 fois : 30% à la commande,
+    40% à la validation des maquettes, 30% à la livraison.
+  </div>
+
+  <div class="pagefoot">
+    <span>Marquilly Studio — Offre commerciale 2026</span>
+    <span>Page 8 / 12</span>
+  </div>
+</div>
+
+<!-- ================= PAGE 9 — OPTIONS & MAINTENANCE ================= -->
+<div class="page">
+  <div class="pagehead">
+    <div class="brand">MARQUILLY <span>STUDIO</span></div>
+    <div class="section-tag">07 — Options &amp; maintenance</div>
+  </div>
+
+  <div class="kicker">Pour aller plus loin</div>
+  <h2 class="title">Services complémentaires<br/><span class="grad">&amp; formules de maintenance</span></h2>
+  <p class="lede">
+    À ajouter à n'importe quelle formule, ou à activer plus tard — votre site continue
+    d'évoluer avec votre activité.
+  </p>
+
+  <table class="pricing">
+    <tr><th>Option complémentaire</th><th>Description</th><th class="center">Tarif indicatif</th></tr>
+    <tr><td>Page supplémentaire</td><td>Conception et intégration d'une page additionnelle dans le même univers visuel</td><td class="center">à partir de 150 € HT</td></tr>
+    <tr><td>Module e-commerce</td><td>Catalogue produits, panier, paiement en ligne sécurisé</td><td class="center">à partir de 690 € HT</td></tr>
+    <tr><td>Identité visuelle complète</td><td>Logo, charte graphique, déclinaisons réseaux sociaux</td><td class="center">à partir de 390 € HT</td></tr>
+    <tr><td>Rédaction de contenu</td><td>Textes optimisés SEO rédigés avec vous, par section</td><td class="center">à partir de 60 € HT / page</td></tr>
+    <tr><td>Multilingue</td><td>Ajout d'une ou plusieurs langues avec sélecteur dynamique</td><td class="center">à partir de 290 € HT / langue</td></tr>
+    <tr><td>Animation 3D sur-mesure</td><td>Scène ou interaction 3D spécifique (au-delà du standard inclus)</td><td class="center">sur devis</td></tr>
+    <tr><td>Formation prise en main</td><td>Session d'1h pour gérer vos contenus en autonomie</td><td class="center">incluse / 80 € HT</td></tr>
+  </table>
+
+  <div class="divider"></div>
+
+  <div class="kicker">Formules de maintenance mensuelle</div>
+  <table class="pricing">
+    <tr><th>Formule</th><th>Contenu</th><th class="center">Tarif / mois</th></tr>
+    <tr>
+      <td><strong>Sereine</strong></td>
+      <td>Hébergement, nom de domaine, mises à jour de sécurité, sauvegardes hebdomadaires, support email sous 48h</td>
+      <td class="center">29 € HT</td>
+    </tr>
+    <tr>
+      <td><strong>Active</strong></td>
+      <td>Tout « Sereine » + jusqu'à 1h de modifications de contenu / mois, suivi de performance, support sous 24h</td>
+      <td class="center">79 € HT</td>
+    </tr>
+    <tr>
+      <td><strong>Croissance</strong></td>
+      <td>Tout « Active » + jusqu'à 3h d'évolutions / mois (nouvelles sections, animations, optimisations SEO continues), rapport mensuel</td>
+      <td class="center">149 € HT</td>
+    </tr>
+  </table>
+
+  <div class="quote">
+    Sans contrat de maintenance, votre site reste pleinement fonctionnel : ces formules sont
+    une option de confort et de tranquillité d'esprit, sans engagement de durée
+    (résiliation possible avec un mois de préavis).
+  </div>
+
+  <div class="pagefoot">
+    <span>Marquilly Studio — Offre commerciale 2026</span>
+    <span>Page 9 / 12</span>
+  </div>
+</div>
+
+<!-- ================= PAGE 10 — GARANTIES ================= -->
+<div class="page">
+  <div class="pagehead">
+    <div class="brand">MARQUILLY <span>STUDIO</span></div>
+    <div class="section-tag">08 — Garanties &amp; engagements</div>
+  </div>
+
+  <div class="kicker">Notre engagement envers vous</div>
+  <h2 class="title">Travailler avec nous,<br/><span class="grad">c'est travailler en confiance</span></h2>
+
+  <div class="grid2">
+    <div>
+      <div class="card">
+        <h3><span class="num">✓</span> Garantie de conformité</h3>
+        <p>Le site livré correspond au cahier des charges validé. Toute non-conformité est
+        corrigée sans frais pendant la période de garantie (30 à 60 jours selon la formule).</p>
+      </div>
+      <div class="card">
+        <h3><span class="num">✓</span> Garantie de délais</h3>
+        <p>Le calendrier est fixé d'un commun accord avant le démarrage. En cas de retard
+        de notre fait, une compensation (réduction ou prestation offerte) est appliquée.</p>
+      </div>
+      <div class="card">
+        <h3><span class="num">✓</span> Propriété &amp; portabilité</h3>
+        <p>À la livraison finale (et solde réglé), le code source, les contenus et les accès
+        vous appartiennent intégralement. Aucune dépendance forcée à notre studio.</p>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <h3><span class="num">✓</span> Sécurité &amp; bonnes pratiques</h3>
+        <p>Certificat HTTPS, formulaires protégés contre le spam, dépendances à jour,
+        sauvegardes — votre site respecte les standards actuels de sécurité web.</p>
+      </div>
+      <div class="card">
+        <h3><span class="num">✓</span> Accessibilité &amp; compatibilité</h3>
+        <p>Tests sur les principaux navigateurs (Chrome, Safari, Firefox, Edge) et appareils
+        (mobile, tablette, desktop). Respect des bonnes pratiques d'accessibilité (contrastes,
+        navigation clavier, balises sémantiques).</p>
+      </div>
+      <div class="card">
+        <h3><span class="num">✓</span> Confidentialité</h3>
+        <p>Vos contenus, données et informations stratégiques restent strictement
+        confidentiels, avant, pendant et après le projet. Accord de confidentialité (NDA)
+        disponible sur demande.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="kicker">Ce qui n'est jamais laissé au hasard</div>
+  <ul class="checklist" style="columns:2;">
+    <li>Devis détaillé poste par poste, sans ligne floue</li>
+    <li>Maquettes validées avant tout développement</li>
+    <li>Tests sur mobile, tablette et desktop systématiques</li>
+    <li>Vérification orthographique &amp; cohérence des contenus</li>
+    <li>Optimisation des images et temps de chargement</li>
+    <li>Vérification des liens, formulaires et intégrations</li>
+    <li>Référencement de base (titres, balises, sitemap)</li>
+    <li>Sauvegarde complète avant mise en ligne</li>
+  </ul>
+
+  <div class="pagefoot">
+    <span>Marquilly Studio — Offre commerciale 2026</span>
+    <span>Page 10 / 12</span>
+  </div>
+</div>
+
+<!-- ================= PAGE 11 — MODALITES ================= -->
+<div class="page">
+  <div class="pagehead">
+    <div class="brand">MARQUILLY <span>STUDIO</span></div>
+    <div class="section-tag">09 — Modalités</div>
+  </div>
+
+  <div class="kicker">Conditions de collaboration</div>
+  <h2 class="title">Modalités, planning<br/><span class="grad">&amp; conditions générales</span></h2>
+
+  <table class="simple">
+    <tr><th>Sujet</th><th>Détail</th></tr>
+    <tr><td>Validation du projet</td><td>Acceptation du devis détaillé (signature électronique) + versement de l'acompte de 30%</td></tr>
+    <tr><td>Échéancier de paiement</td><td>30% à la commande · 40% à la validation des maquettes · 30% à la livraison finale</td></tr>
+    <tr><td>Moyens de paiement</td><td>Virement bancaire ou paiement en ligne sécurisé</td></tr>
+    <tr><td>Contenus à fournir</td><td>Textes, photos/vidéos et éléments de marque à transmettre dans les 5 jours suivant la commande (sauf option rédaction)</td></tr>
+    <tr><td>Tours de modifications</td><td>Nombre inclus selon la formule (p. 8) ; tours supplémentaires facturés sur devis</td></tr>
+    <tr><td>Délais</td><td>Démarrent à réception de l'acompte ET des contenus nécessaires</td></tr>
+    <tr><td>Garantie post-livraison</td><td>30 à 60 jours selon formule, pour correction de bugs et anomalies</td></tr>
+    <tr><td>Propriété intellectuelle</td><td>Transfert intégral des droits sur les livrables à réception du paiement final</td></tr>
+    <tr><td>Hébergement &amp; nom de domaine</td><td>Souscrits au nom du client (recommandé) ou gérés par le studio en option maintenance</td></tr>
+    <tr><td>Communication</td><td>Email, visioconférence et espace de suivi de projet partagé</td></tr>
+    <tr><td>Validité de l'offre</td><td>Tarifs de ce dossier valables 30 jours à compter de sa date de remise</td></tr>
+  </table>
+
+  <div class="quote">
+    Un contrat de prestation détaillé reprenant l'ensemble de ces points est systématiquement
+    fourni et signé avant le démarrage de toute mission — pour la protection des deux parties.
+  </div>
+
+  <div class="pagefoot">
+    <span>Marquilly Studio — Offre commerciale 2026</span>
+    <span>Page 11 / 12</span>
+  </div>
+</div>
+
+<!-- ================= PAGE 12 — CONTACT ================= -->
+<div class="page" style="background:#0a0a14; color:#fff;">
+  <div class="pagehead" style="border-bottom: 2px solid #2a2a55;">
+    <div class="brand" style="color:#fff;">MARQUILLY <span style="color:#00c2d1;">STUDIO</span></div>
+    <div class="section-tag" style="color:#9b9bd6;">10 — Passons à l'action</div>
+  </div>
+
+  <div class="kicker" style="color:#00c2d1;">Prêt à démarrer ?</div>
+  <h2 class="title" style="color:#fff;">Donnons à votre projet<br/><span class="grad">l'élan qu'il mérite</span></h2>
+  <p class="lede" style="color:#c7c7e8;">
+    Chaque grand site a commencé par une simple conversation. Discutons de votre projet,
+    sans engagement : nous identifierons ensemble la formule la plus adaptée à votre besoin
+    et à votre budget.
+  </p>
+
+  <div class="steps" style="margin-top:20px;">
+    <div class="step">
+      <div class="stepnum">1</div>
+      <div class="steptxt">
+        <h3 style="color:#fff;">Premier échange (gratuit, 20-30 min)</h3>
+        <p style="color:#c7c7e8;">Par téléphone ou visio, pour comprendre votre projet, vos objectifs et répondre à vos questions.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="stepnum">2</div>
+      <div class="steptxt">
+        <h3 style="color:#fff;">Devis personnalisé sous 48h</h3>
+        <p style="color:#c7c7e8;">Détaillé, transparent, et basé sur votre besoin réel — pas une formule générique.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="stepnum">3</div>
+      <div class="steptxt">
+        <h3 style="color:#fff;">Lancement du projet</h3>
+        <p style="color:#c7c7e8;">Dès validation du devis et de l'acompte, votre projet démarre selon le calendrier convenu.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta">
+    <div>
+      <h3>Marquilly Studio</h3>
+      <p>Romain « Bilou » Marquilly — Fondateur, Développeur &amp; Designer web</p>
+    </div>
+    <div class="contact">
+      <strong>bboyromain04@gmail.com</strong><br/>
+      07 81 70 04 54<br/>
+      Lille, France — interventions à distance partout
+    </div>
+  </div>
+
+  <div class="small" style="color:#7a7ab0; margin-top:30px; text-align:center;">
+    Merci d'avoir pris le temps de découvrir Marquilly Studio.<br/>
+    Document confidentiel — usage strictement réservé au destinataire de cette offre.
+  </div>
+
+  <div class="pagefoot" style="border-top:1px solid #2a2a55; color:#7a7ab0;">
+    <span>Marquilly Studio — Offre commerciale 2026</span>
+    <span>Page 12 / 12</span>
+  </div>
+</div>
+
+</body>
+</html>

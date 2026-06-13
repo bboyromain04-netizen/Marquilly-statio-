@@ -3,9 +3,11 @@ import { useRef, useState, type ReactNode } from 'react'
 export default function TiltCard({
   children,
   className = '',
+  onClick,
 }: {
   children: ReactNode
   className?: string
+  onClick?: () => void
 }) {
   const ref = useRef<HTMLDivElement>(null)
   const [style, setStyle] = useState<React.CSSProperties>({})
@@ -33,6 +35,7 @@ export default function TiltCard({
       ref={ref}
       onMouseMove={handleMove}
       onMouseLeave={handleLeave}
+      onClick={onClick}
       style={{ transition: 'transform 0.3s ease-out', ...style }}
       className={className}
     >

@@ -1,7 +1,9 @@
 import { motion } from 'framer-motion'
 import { Play } from 'lucide-react'
+import { useState } from 'react'
 import { GALLERY } from '../data/content'
 import { asset } from '../lib/media'
+import PortraitLightbox from './PortraitLightbox'
 import TiltCard from './TiltCard'
 
 const SPAN_CLASSES: Record<string, string> = {
@@ -12,6 +14,8 @@ const SPAN_CLASSES: Record<string, string> = {
 }
 
 export default function Gallery() {
+  const [lightboxOpen, setLightboxOpen] = useState(false)
+
   return (
     <section id="gallery" className="relative bg-black px-4 py-24 md:py-32">
       <div className="mx-auto max-w-6xl">
@@ -44,7 +48,12 @@ export default function Gallery() {
               transition={{ duration: 0.5, delay: (i % 3) * 0.08 }}
               className={SPAN_CLASSES[item.span]}
             >
-              <TiltCard className="group relative h-full w-full overflow-hidden rounded-3xl border border-white/10 bg-black">
+              <TiltCard
+                onClick={item.tag === 'portrait' ? () => setLightboxOpen(true) : undefined}
+                className={`group relative h-full w-full overflow-hidden rounded-3xl border border-white/10 bg-black ${
+                  item.tag === 'portrait' ? 'cursor-pointer' : ''
+                }`}
+              >
                 <img
                   src={asset(item.src)}
                   alt={item.title}
@@ -78,6 +87,8 @@ export default function Gallery() {
           ))}
         </div>
       </div>
+
+      <PortraitLightbox open={lightboxOpen} onClose={() => setLightboxOpen(false)} />
     </section>
   )
 }

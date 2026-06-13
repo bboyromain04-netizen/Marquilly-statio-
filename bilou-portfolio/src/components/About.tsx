@@ -1,11 +1,15 @@
 import { motion } from 'framer-motion'
+import { useState } from 'react'
 import { STATS } from '../data/content'
 import { asset } from '../lib/media'
 import Counter from './Counter'
 import FloatingOrb from './FloatingOrb'
+import PortraitLightbox from './PortraitLightbox'
 import TiltCard from './TiltCard'
 
 export default function About() {
+  const [lightboxOpen, setLightboxOpen] = useState(false)
+
   return (
     <section id="about" className="relative overflow-hidden bg-black px-4 py-24 md:py-32">
       <FloatingOrb className="-left-20 top-10 h-72 w-72 bg-bilou-orange/10" duration={11} />
@@ -20,13 +24,17 @@ export default function About() {
           className="relative mx-auto w-full max-w-sm"
         >
           <div className="absolute -inset-4 -z-10 rounded-[2rem] bg-gradient-to-br from-bilou-yellow/30 to-bilou-orange/20 blur-2xl" />
-          <TiltCard className="overflow-hidden rounded-[2rem] border border-white/10 bg-black">
+          <TiltCard
+            onClick={() => setLightboxOpen(true)}
+            className="cursor-pointer overflow-hidden rounded-[2rem] border border-white/10 bg-black"
+          >
             <img
-              src={asset('media/portrait.jpg')}
+              src={asset('media/portrait-1.jpg')}
               alt="Bilou, danseur breakdance"
               className="h-full w-full object-contain transition-transform duration-700 hover:scale-105"
             />
           </TiltCard>
+          <PortraitLightbox open={lightboxOpen} onClose={() => setLightboxOpen(false)} />
           <motion.div
             initial={{ opacity: 0, y: 20, rotate: 6 }}
             whileInView={{ opacity: 1, y: 0, rotate: 0 }}

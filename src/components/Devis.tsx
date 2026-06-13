@@ -28,7 +28,7 @@ export default function Devis() {
     const lines = DEVIS_STEPS.map((s) => `${s.question}\n${answers[s.id] ?? '—'}`)
     const body = lines.join('\n\n')
     const subject = `Nouvelle demande de devis — ${answers.name ?? ''}`
-    window.location.href = `mailto:contact.Marquillystudio@gmail.com?subject=${encodeURIComponent(
+    window.location.href = `mailto:contact.marquillystudio@gmail.com?subject=${encodeURIComponent(
       subject,
     )}&body=${encodeURIComponent(body)}`
     setSent(true)

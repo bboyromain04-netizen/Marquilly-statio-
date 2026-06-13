@@ -29,10 +29,10 @@ export default function Contact() {
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
           <a
-            href="mailto:contact.Marquillystudio@gmail.com"
+            href="mailto:contact.marquillystudio@gmail.com"
             className="rounded-full bg-white px-7 py-3 text-sm font-medium text-black transition-transform hover:scale-105"
           >
-            contact.Marquillystudio@gmail.com
+            contact.marquillystudio@gmail.com
           </a>
           <a
             href="tel:0781700454"

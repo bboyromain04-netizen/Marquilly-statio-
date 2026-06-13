@@ -9,7 +9,7 @@ const WELCOME =
   "bonjour ! je suis l'assistant Marquilly Studio. posez-moi une question (tarifs, délais, IA, 3D, problème technique...) et je vous réponds instantanément."
 
 const FALLBACK =
-  "je n'ai pas de réponse exacte à ça pour le moment. décrivez votre problème ou votre question par email à contact.Marquillystudio@gmail.com (ou par téléphone au 07 81 70 04 54) — un membre de l'équipe vous répondra rapidement."
+  "je n'ai pas de réponse exacte à ça pour le moment. décrivez votre problème ou votre question par email à contact.marquillystudio@gmail.com (ou par téléphone au 07 81 70 04 54) — un membre de l'équipe vous répondra rapidement."
 
 function findAnswer(question: string): string {
   const q = question.toLowerCase()

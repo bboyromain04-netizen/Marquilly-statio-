@@ -299,12 +299,12 @@ export const FAQ_ITEMS = [
     keywords: ['contact', 'joindre', 'téléphone', 'telephone', 'email', 'mail', 'appeler'],
     question: 'Comment vous contacter ?',
     answer:
-      'Par email à contact.Marquillystudio@gmail.com ou par téléphone au 07 81 70 04 54. Vous pouvez aussi remplir le questionnaire de devis ci-dessus, nous revenons vers vous rapidement.',
+      'Par email à contact.marquillystudio@gmail.com ou par téléphone au 07 81 70 04 54. Vous pouvez aussi remplir le questionnaire de devis ci-dessus, nous revenons vers vous rapidement.',
   },
   {
     keywords: ['bug', 'panne', 'probleme', 'problème', 'erreur', 'marche pas', 'fonctionne pas', 'cassé', 'casse'],
     question: "Mon site / outil a un problème, que faire ?",
     answer:
-      "Si vous êtes abonné(e) à une formule de maintenance, contactez-nous directement (support prioritaire). Sinon, décrivez le problème ci-dessus ou écrivez-nous à contact.Marquillystudio@gmail.com — nous intervenons dans les meilleurs délais.",
+      "Si vous êtes abonné(e) à une formule de maintenance, contactez-nous directement (support prioritaire). Sinon, décrivez le problème ci-dessus ou écrivez-nous à contact.marquillystudio@gmail.com — nous intervenons dans les meilleurs délais.",
   },
 ]

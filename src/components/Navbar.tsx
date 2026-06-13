@@ -8,7 +8,12 @@ function Logo() {
   )
 }
 
-const navLinks = ['platform', 'solutions', 'company', 'support']
+const navLinks = [
+  { label: 'services', href: '#services' },
+  { label: 'réalisations', href: '#realisations' },
+  { label: 'méthode', href: '#methode' },
+  { label: 'tarifs', href: '#tarifs' },
+]
 
 export default function Navbar() {
   return (
@@ -28,27 +33,29 @@ export default function Navbar() {
         >
           <Logo />
         </motion.div>
-        <span className="text-sm font-normal tracking-tight text-white">securify</span>
+        <span className="text-sm font-normal tracking-tight text-white">
+          marquilly <span className="text-brand-cyan">studio</span>
+        </span>
       </motion.div>
 
       <div className="hidden items-center gap-1 rounded-full bg-neutral-900/90 px-3 py-2 backdrop-blur md:flex">
         {navLinks.map((link, i) => (
           <motion.a
-            key={link}
-            href="#"
+            key={link.label}
+            href={link.href}
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 + i * 0.07 }}
             whileHover={{ scale: 1.08 }}
             className="rounded-full px-5 py-2 text-sm text-neutral-300 transition-colors hover:text-white"
           >
-            {link}
+            {link.label}
           </motion.a>
         ))}
       </div>
 
-      <motion.button
-        type="button"
+      <motion.a
+        href="#contact"
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
@@ -56,8 +63,8 @@ export default function Navbar() {
         whileTap={{ scale: 0.97 }}
         className="rounded-full bg-white px-6 py-3 text-sm font-normal text-black transition-colors hover:bg-neutral-200"
       >
-        get started
-      </motion.button>
+        nous contacter
+      </motion.a>
     </motion.nav>
   )
 }

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { AI_PACKAGES, IMMERSIVE, PRICING, SUBSCRIPTIONS } from '../data/content'
+import { AI_PACKAGES, IMMERSIVE, PRICING, SUBSCRIPTION_NOTE, SUBSCRIPTIONS } from '../data/content'
 import FloatingOrb from './FloatingOrb'
 import TiltCard from './TiltCard'
 
@@ -191,6 +191,10 @@ export default function Pricing() {
               </div>
             ))}
           </div>
+
+          <p className="mx-auto mt-6 max-w-2xl text-center text-xs leading-relaxed text-white/50">
+            {SUBSCRIPTION_NOTE}
+          </p>
         </motion.div>
       </div>
     </section>

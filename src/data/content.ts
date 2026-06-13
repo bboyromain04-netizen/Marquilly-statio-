@@ -205,6 +205,9 @@ export const SUBSCRIPTIONS = [
   },
 ]
 
+export const SUBSCRIPTION_NOTE =
+  "Chaque site livré est accompagné d'un contrat d'engagement minimum de 24 mois (2 ans), renouvelable par tacite reconduction et résiliable avec un préavis de 2 mois à l'issue de cette période. Cet engagement nous permet de vous garantir des tarifs préférentiels et un suivi dans la durée — votre site continue ainsi de générer de la valeur, sans jamais être laissé à l'abandon."
+
 export const DEVIS_STEPS = [
   {
     id: 'service',
@@ -281,7 +284,13 @@ export const FAQ_ITEMS = [
     keywords: ['maintenance', 'abonnement', 'apres', 'après', 'mise a jour', 'mise à jour', 'evolution', 'évolution'],
     question: "Que se passe-t-il après la livraison de mon site ?",
     answer:
-      "Votre site n'est jamais laissé à l'abandon : nos formules d'abonnement (Essentiel+, Croissance, Partenaire) incluent hébergement, sécurité, sauvegardes, retouches et évolutions régulières pour que votre site continue de générer de la valeur dans le temps.",
+      "Votre site n'est jamais laissé à l'abandon : nos formules d'abonnement (Essentiel+, Croissance, Partenaire) incluent hébergement, sécurité, sauvegardes, retouches et évolutions régulières pour que votre site continue de générer de la valeur dans le temps. Ces formules sont engagées pour une durée minimale de 24 mois (2 ans), renouvelable par tacite reconduction.",
+  },
+  {
+    keywords: ['engagement', 'contrat', 'duree du contrat', 'durée du contrat', 'resilier', 'résilier', 'resiliation', 'résiliation', 'annuler', 'annulation'],
+    question: "Quelle est la durée d'engagement de mon contrat ?",
+    answer:
+      "Tout site internet livré est associé à un contrat d'engagement minimum de 24 mois (2 ans), renouvelable ensuite par tacite reconduction et résiliable avec un préavis de 2 mois à l'issue de cette période. Cette durée nous permet de vous proposer des tarifs préférentiels et de garantir un accompagnement de qualité dans le temps.",
   },
   {
     keywords: ['ia', 'intelligence artificielle', 'chatbot', 'assistant', 'automatisation'],

@@ -33,7 +33,7 @@ export default function Pricing() {
           </p>
         </motion.div>
 
-        <div className="mt-14 grid gap-6 md:grid-cols-3">
+        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {PRICING.map((pkg, i) => (
             <motion.div
               key={pkg.name}

@@ -91,6 +91,18 @@ export const SHOWCASE = [
 
 export const PRICING = [
   {
+    name: 'Starter',
+    price: '990€',
+    unit: 'HT à partir de',
+    target: 'Auto-entrepreneurs & projets qui démarrent',
+    features: [
+      'Site vitrine one-page (jusqu’à 4 blocs)',
+      'Design épuré sur gabarit personnalisé à votre image',
+      'Optimisé mobile & responsive',
+      'Formulaire de contact + référencement de base',
+    ],
+  },
+  {
     name: 'Essentiel',
     price: '1 990€',
     unit: 'HT à partir de',
@@ -321,7 +333,7 @@ export const FAQ_ITEMS = [
     keywords: ['prix', 'tarif', 'tarifs', 'coût', 'cout', 'combien', 'budget', 'devis'],
     question: 'Quels sont vos tarifs ?',
     answer:
-      "Nos tarifs vont de 1 990€ pour un site essentiel à plus de 15 000€ pour une solution IA ou une expérience 3D sur-mesure. Chaque projet fait l'objet d'un devis personnalisé établi après un premier échange gratuit — vous pouvez remplir notre questionnaire de devis ci-dessus ou consulter la section « tarifs ».",
+      "Nos tarifs vont de 990€ pour un site vitrine one-page à plus de 15 000€ pour une solution IA ou une expérience 3D sur-mesure. Chaque projet fait l'objet d'un devis personnalisé établi après un premier échange gratuit — vous pouvez remplir notre questionnaire de devis ci-dessus ou consulter la section « tarifs ».",
   },
   {
     keywords: ['délai', 'delai', 'temps', 'durée', 'duree', 'rapide', 'livraison'],

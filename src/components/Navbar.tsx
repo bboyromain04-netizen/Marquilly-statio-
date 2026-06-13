@@ -1,3 +1,5 @@
+import { motion } from 'framer-motion'
+
 function Logo() {
   return (
     <svg viewBox="0 0 256 256" className="h-5 w-5" fill="#ffffff">
@@ -10,30 +12,52 @@ const navLinks = ['platform', 'solutions', 'company', 'support']
 
 export default function Navbar() {
   return (
-    <nav className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between gap-4 px-6 pt-6 md:px-10">
-      <div className="flex items-center gap-2 rounded-full bg-neutral-900/90 py-3 pl-4 pr-6 backdrop-blur">
-        <Logo />
+    <motion.nav
+      initial={{ y: -40, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.6, ease: 'easeOut' }}
+      className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between gap-4 px-6 pt-6 md:px-10"
+    >
+      <motion.div
+        whileHover={{ scale: 1.05 }}
+        className="flex items-center gap-2 rounded-full bg-neutral-900/90 py-3 pl-4 pr-6 backdrop-blur"
+      >
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
+        >
+          <Logo />
+        </motion.div>
         <span className="text-sm font-normal tracking-tight text-white">securify</span>
-      </div>
+      </motion.div>
 
       <div className="hidden items-center gap-1 rounded-full bg-neutral-900/90 px-3 py-2 backdrop-blur md:flex">
-        {navLinks.map((link) => (
-          <a
+        {navLinks.map((link, i) => (
+          <motion.a
             key={link}
             href="#"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 + i * 0.07 }}
+            whileHover={{ scale: 1.08 }}
             className="rounded-full px-5 py-2 text-sm text-neutral-300 transition-colors hover:text-white"
           >
             {link}
-          </a>
+          </motion.a>
         ))}
       </div>
 
-      <button
+      <motion.button
         type="button"
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.97 }}
         className="rounded-full bg-white px-6 py-3 text-sm font-normal text-black transition-colors hover:bg-neutral-200"
       >
         get started
-      </button>
-    </nav>
+      </motion.button>
+    </motion.nav>
   )
 }

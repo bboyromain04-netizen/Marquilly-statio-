@@ -92,7 +92,7 @@ export const SHOWCASE = [
 export const PRICING = [
   {
     name: 'Essentiel',
-    price: '1 490€',
+    price: '1 990€',
     unit: 'HT à partir de',
     target: 'Indépendants & petites structures',
     features: [
@@ -104,7 +104,7 @@ export const PRICING = [
   },
   {
     name: 'Performance',
-    price: '2 890€',
+    price: '3 990€',
     unit: 'HT à partir de',
     target: 'Indépendants confirmés & PME',
     featured: true,
@@ -117,7 +117,7 @@ export const PRICING = [
   },
   {
     name: 'Signature',
-    price: '4 990€',
+    price: '7 990€',
     unit: 'HT à partir de',
     target: 'Marques, startups & projets premium',
     features: [
@@ -131,10 +131,10 @@ export const PRICING = [
 
 export const IMMERSIVE = {
   name: 'Expérience 3D immersive',
-  price: 'à partir de 6 990€',
+  price: 'à partir de 8 990€',
   unit: 'HT, sur devis',
   description:
-    "Visite virtuelle 3D interactive (hôtel, showroom, locaux), configurateur produit en 3D, scène ou environnement explorable depuis ordinateur et mobile — une expérience unique qui démarque totalement votre établissement.",
+    "Visite virtuelle 3D interactive (hôtel, showroom, locaux), configurateur produit en 3D, scène ou environnement explorable depuis ordinateur et mobile — une expérience unique qui démarque totalement votre établissement. Selon la superficie et le niveau d'interactivité, le budget peut atteindre 15 990€ pour les projets les plus ambitieux (ex. visite complète d'un hôtel).",
   features: [
     'Modélisation / capture 3D des espaces',
     'Navigation libre et points d’intérêt interactifs',
@@ -146,8 +146,8 @@ export const IMMERSIVE = {
 export const AI_PACKAGES = [
   {
     name: 'IA Starter',
-    price: '1 490€',
-    unit: 'HT + 49€/mois',
+    price: '1 990€',
+    unit: 'HT + 59€/mois',
     target: 'Premier assistant IA pour votre activité',
     features: [
       'Chatbot / assistant FAQ sur votre site',
@@ -158,8 +158,8 @@ export const AI_PACKAGES = [
   },
   {
     name: 'IA Pro',
-    price: '4 990€',
-    unit: 'HT + 99€/mois',
+    price: '7 990€',
+    unit: 'HT + 129€/mois',
     target: 'Automatiser vos process internes',
     featured: true,
     features: [
@@ -171,9 +171,9 @@ export const AI_PACKAGES = [
   },
   {
     name: 'IA Sur-mesure',
-    price: 'à partir de 12 000€',
+    price: 'à partir de 15 990€',
     unit: 'HT, sur devis',
-    target: 'Solution IA complète & multi-intégrations',
+    target: 'Solution IA complète & multi-intégrations (jusqu’à 29 990€ pour les déploiements enterprise)',
     features: [
       'Agents IA multiples sur-mesure',
       'Intégrations avancées (ERP, CRM, API internes)',
@@ -186,20 +186,20 @@ export const AI_PACKAGES = [
 export const SUBSCRIPTIONS = [
   {
     name: 'Essentiel+',
-    price: '59€',
+    price: '79€',
     unit: 'HT / mois',
     description: 'Hébergement, sécurité, sauvegardes et 1h de retouches par mois.',
   },
   {
     name: 'Croissance',
-    price: '149€',
+    price: '179€',
     unit: 'HT / mois',
     description: 'Évolutions mensuelles, SEO continu, nouvelle fonctionnalité par trimestre.',
     featured: true,
   },
   {
     name: 'Partenaire',
-    price: '299€',
+    price: '349€',
     unit: 'HT / mois',
     description: 'Refonte annuelle, audit stratégique trimestriel, support prioritaire.',
   },

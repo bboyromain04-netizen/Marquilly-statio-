@@ -13,6 +13,8 @@ const navLinks = [
   { label: 'réalisations', href: '#realisations' },
   { label: 'méthode', href: '#methode' },
   { label: 'tarifs', href: '#tarifs' },
+  { label: 'devis', href: '#devis' },
+  { label: 'aide', href: '#aide' },
 ]
 
 export default function Navbar() {

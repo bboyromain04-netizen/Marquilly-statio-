@@ -204,3 +204,107 @@ export const SUBSCRIPTIONS = [
     description: 'Refonte annuelle, audit stratégique trimestriel, support prioritaire.',
   },
 ]
+
+export const DEVIS_STEPS = [
+  {
+    id: 'service',
+    question: 'Quel type de projet vous intéresse ?',
+    type: 'choice' as const,
+    options: [
+      'Site web',
+      'Intelligence artificielle',
+      'Outil de gestion / pilotage',
+      'Expérience 3D immersive',
+      'Plusieurs de ces solutions',
+    ],
+  },
+  {
+    id: 'budget',
+    question: 'Quel budget envisagez-vous pour ce projet ?',
+    type: 'choice' as const,
+    options: [
+      'Moins de 2 000€',
+      'Entre 2 000€ et 5 000€',
+      'Entre 5 000€ et 10 000€',
+      'Plus de 10 000€',
+      'Je ne sais pas encore',
+    ],
+  },
+  {
+    id: 'timeline',
+    question: 'Pour quand souhaitez-vous démarrer ?',
+    type: 'choice' as const,
+    options: ['Le plus vite possible', 'Dans le mois', 'Dans les 3 mois', 'Pas encore défini'],
+  },
+  {
+    id: 'description',
+    question: 'Décrivez votre projet, votre activité et vos objectifs',
+    type: 'text' as const,
+  },
+  {
+    id: 'name',
+    question: 'Votre nom (ou celui de votre entreprise)',
+    type: 'text' as const,
+  },
+  {
+    id: 'email',
+    question: 'Votre adresse email',
+    type: 'text' as const,
+  },
+  {
+    id: 'phone',
+    question: 'Votre téléphone (facultatif)',
+    type: 'text' as const,
+  },
+]
+
+export const FAQ_ITEMS = [
+  {
+    keywords: ['prix', 'tarif', 'tarifs', 'coût', 'cout', 'combien', 'budget', 'devis'],
+    question: 'Quels sont vos tarifs ?',
+    answer:
+      "Nos tarifs vont de 1 990€ pour un site essentiel à plus de 15 000€ pour une solution IA ou une expérience 3D sur-mesure. Chaque projet fait l'objet d'un devis personnalisé établi après un premier échange gratuit — vous pouvez remplir notre questionnaire de devis ci-dessus ou consulter la section « tarifs ».",
+  },
+  {
+    keywords: ['délai', 'delai', 'temps', 'durée', 'duree', 'rapide', 'livraison'],
+    question: 'Quels sont les délais de livraison ?',
+    answer:
+      'Comptez 1 à 2 semaines pour un site Essentiel, 2 à 4 semaines pour Performance, et 3 à 6 semaines pour un projet Signature ou une solution IA / 3D sur-mesure, selon la complexité.',
+  },
+  {
+    keywords: ['paiement', 'payer', 'facture', 'acompte', 'modalité', 'modalite'],
+    question: 'Comment se passe le paiement ?',
+    answer:
+      'Le paiement se fait en 3 fois : 30% à la commande, 40% à la validation des maquettes et 30% à la livraison. Les abonnements (maintenance, IA) sont facturés mensuellement.',
+  },
+  {
+    keywords: ['maintenance', 'abonnement', 'apres', 'après', 'mise a jour', 'mise à jour', 'evolution', 'évolution'],
+    question: "Que se passe-t-il après la livraison de mon site ?",
+    answer:
+      "Votre site n'est jamais laissé à l'abandon : nos formules d'abonnement (Essentiel+, Croissance, Partenaire) incluent hébergement, sécurité, sauvegardes, retouches et évolutions régulières pour que votre site continue de générer de la valeur dans le temps.",
+  },
+  {
+    keywords: ['ia', 'intelligence artificielle', 'chatbot', 'assistant', 'automatisation'],
+    question: 'Quels services IA proposez-vous ?',
+    answer:
+      "Du chatbot connecté à votre site (IA Starter) à des agents IA multiples intégrés à vos outils métier (CRM, ERP, agenda) pour automatiser vos tâches répétitives et analyser vos données (IA Pro et IA Sur-mesure).",
+  },
+  {
+    keywords: ['3d', 'immersif', 'immersive', 'visite virtuelle', 'hotel', 'hôtel', 'showroom'],
+    question: "Qu'est-ce que l'expérience 3D immersive ?",
+    answer:
+      "Une visite virtuelle 3D interactive de vos locaux (hôtel, showroom...) ou un configurateur produit en 3D, explorable depuis ordinateur et mobile, intégré directement à votre site.",
+  },
+  {
+    keywords: ['contact', 'joindre', 'téléphone', 'telephone', 'email', 'mail', 'appeler'],
+    question: 'Comment vous contacter ?',
+    answer:
+      'Par email à contact.Marquillystudio@gmail.com ou par téléphone au 07 81 70 04 54. Vous pouvez aussi remplir le questionnaire de devis ci-dessus, nous revenons vers vous rapidement.',
+  },
+  {
+    keywords: ['bug', 'panne', 'probleme', 'problème', 'erreur', 'marche pas', 'fonctionne pas', 'cassé', 'casse'],
+    question: "Mon site / outil a un problème, que faire ?",
+    answer:
+      "Si vous êtes abonné(e) à une formule de maintenance, contactez-nous directement (support prioritaire). Sinon, décrivez le problème ci-dessus ou écrivez-nous à contact.Marquillystudio@gmail.com — nous intervenons dans les meilleurs délais.",
+  },
+]

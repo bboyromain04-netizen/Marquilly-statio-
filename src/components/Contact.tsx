@@ -20,8 +20,11 @@ export default function Contact() {
           parlons de votre projet
         </h2>
         <p className="mx-auto mt-4 max-w-xl text-sm text-white/70 sm:text-base">
-          site web, intelligence artificielle ou outil de pilotage — un premier échange gratuit
-          de 20 à 30 minutes pour identifier la solution la plus adaptée à votre activité.
+          site web, intelligence artificielle ou outil de pilotage — un premier échange offert
+          et sans engagement de 20 à 30 minutes pour identifier la solution la plus adaptée à
+          votre activité. nous limitons le nombre de nouveaux projets acceptés chaque mois pour
+          garantir un accompagnement de qualité — plus vous nous écrivez tôt, plus vite nous
+          pouvons démarrer.
         </p>
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-4">

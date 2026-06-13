@@ -27,7 +27,9 @@ export default function Pricing() {
             </span>
           </h2>
           <p className="mt-4 text-sm text-white/60 sm:text-base">
-            un devis personnalisé est systématiquement établi selon vos besoins réels.
+            chaque mois sans un site, une IA ou un outil performant, c'est du chiffre d'affaires
+            qui part chez la concurrence. un devis personnalisé est systématiquement établi
+            selon vos besoins réels — considérez-le comme un investissement, pas une dépense.
           </p>
         </motion.div>
 

@@ -112,8 +112,10 @@ export default function Hero() {
           variants={fadeUp}
           className="mt-8 max-w-xl text-sm leading-relaxed text-white/70 md:text-base"
         >
-          Sites web percutants, intelligences artificielles sur-mesure et outils de pilotage —
-          pour organiser, décider et enrichir votre activité, quel que soit votre secteur.
+          Pendant que vos concurrents tâtonnent, votre site, votre IA et vos outils travaillent
+          pour vous — 24h/24, sans pause. Sites web percutants, intelligences artificielles
+          sur-mesure et outils de pilotage, pensés pour transformer chaque visiteur en client et
+          chaque donnée en décision.
         </motion.p>
 
         <motion.div
@@ -124,18 +126,28 @@ export default function Hero() {
           className="mt-8 flex flex-wrap items-center justify-center gap-4"
         >
           <a
-            href="#services"
+            href="#devis"
             className="rounded-full bg-white px-7 py-3 text-sm font-medium text-black transition-transform hover:scale-105"
+          >
+            obtenir mon devis gratuit
+          </a>
+          <a
+            href="#services"
+            className="rounded-full border border-white/20 px-7 py-3 text-sm font-medium text-white transition-colors hover:border-white/40 hover:bg-white/5"
           >
             découvrir nos services
           </a>
-          <a
-            href="#contact"
-            className="rounded-full border border-white/20 px-7 py-3 text-sm font-medium text-white transition-colors hover:border-white/40 hover:bg-white/5"
-          >
-            demander un devis
-          </a>
         </motion.div>
+
+        <motion.p
+          custom={0.8}
+          initial="hidden"
+          animate="visible"
+          variants={fadeUp}
+          className="mt-4 text-xs text-white/40"
+        >
+          premier échange offert, sans engagement — places limitées chaque mois
+        </motion.p>
       </div>
 
       <motion.div

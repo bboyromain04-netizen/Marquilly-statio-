@@ -57,8 +57,8 @@ export default function Devis() {
             </span>
           </h2>
           <p className="mt-4 text-sm text-white/60 sm:text-base">
-            répondez à quelques questions, nous recevons votre demande directement et revenons
-            vers vous rapidement.
+            2 minutes suffisent : répondez à quelques questions, nous recevons votre demande
+            directement et revenons vers vous rapidement — sans engagement de votre part.
           </p>
         </motion.div>
 

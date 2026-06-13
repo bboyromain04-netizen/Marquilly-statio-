@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<title>Marquilly Studio — Flyer prospection hôtels &amp; campings</title>
+<style>
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #1a1a1a;
+    font-size: 11px;
+    line-height: 1.55;
+  }
+  .page {
+    width: 210mm;
+    height: 297mm;
+    position: relative;
+    page-break-after: always;
+    overflow: hidden;
+  }
+  .page:last-child { page-break-after: avoid; }
+
+  .grad {
+    color: #00c2d1;
+  }
+  .accent-bg { background: linear-gradient(120deg, #5b5bf5 0%, #00c2d1 100%); }
+
+  /* ================= PAGE 1 — RECTO ================= */
+  .cover {
+    background: #0a0a14;
+    color: #fff;
+    padding: 16mm 16mm 0 16mm;
+    display: flex;
+    flex-direction: column;
+  }
+  .cover-orbs {
+    position: absolute;
+    top: -30mm; right: -50mm;
+    width: 220mm; height: 220mm;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(91,91,245,0.35), transparent 60%),
+                radial-gradient(circle at 70% 70%, rgba(0,194,209,0.25), transparent 60%);
+    filter: blur(10px);
+  }
+  .cover-top {
+    display: flex; justify-content: space-between; align-items: center;
+    position: relative; z-index: 1;
+  }
+  .cover-logo { font-weight: 800; font-size: 18px; letter-spacing: 2px; }
+  .cover-logo span { color: #00c2d1; }
+  .cover-tag {
+    font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: #9b9bd6;
+    border: 1px solid #3a3a6e; border-radius: 999px; padding: 5px 12px;
+  }
+
+  .cover-hero {
+    position: relative; z-index: 1;
+    margin-top: 22mm;
+  }
+  .cover-hero .kicker {
+    font-size: 10px; letter-spacing: 6px; text-transform: uppercase; color: #00c2d1; font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .cover-hero h1 {
+    font-size: 40px; font-weight: 800; line-height: 1.15; margin: 0 0 14px 0; letter-spacing: -1px;
+    max-width: 160mm;
+  }
+  .cover-hero p {
+    font-size: 13px; color: #c7c7e8; max-width: 145mm;
+  }
+
+  .hero-stats {
+    position: relative; z-index: 1;
+    display: flex; gap: 8mm; margin-top: 14mm;
+  }
+  .hero-stats .stat { flex: 1; }
+  .hero-stats .stat .num { font-size: 28px; font-weight: 800; }
+  .hero-stats .stat .lbl { font-size: 9.5px; color: #9b9bd6; margin-top: 2px; }
+
+  .services {
+    position: relative; z-index: 1;
+    margin-top: 16mm;
+    display: flex; gap: 8mm;
+  }
+  .service {
+    flex: 1; background: rgba(255,255,255,0.04); border: 1px solid #2a2a55; border-radius: 12px;
+    padding: 14px;
+  }
+  .service .icon {
+    width: 30px; height: 30px; border-radius: 8px; background: linear-gradient(120deg, #5b5bf5, #00c2d1);
+    display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px; color: #fff;
+    margin-bottom: 10px;
+  }
+  .service h3 { font-size: 13px; margin: 0 0 5px 0; font-weight: 800; }
+  .service p { font-size: 9.5px; color: #b8b8e0; margin: 0; }
+
+  .cover-bottom {
+    margin-top: auto;
+    position: relative; z-index: 1;
+    background: #11112a;
+    margin-left: -16mm; margin-right: -16mm;
+    padding: 12mm 16mm;
+    border-top: 1px solid #2a2a55;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .cover-bottom .pitch { max-width: 110mm; }
+  .cover-bottom .pitch strong { display: block; font-size: 13px; margin-bottom: 4px; }
+  .cover-bottom .pitch span { font-size: 10px; color: #9b9bd6; }
+  .cover-bottom .contact { text-align: right; font-size: 11px; }
+  .cover-bottom .contact .name { font-weight: 800; font-size: 13px; margin-bottom: 4px; }
+  .cover-bottom .contact .line { color: #c7c7e8; }
+  .cover-bottom .contact .grad { font-weight: 700; }
+
+  /* ================= PAGE 2 — VERSO ================= */
+  .verso {
+    background: #fff;
+    padding: 16mm;
+    display: flex; flex-direction: column;
+    height: 100%;
+  }
+  .verso .kicker {
+    font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: #5b5bf5; font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .verso h2 {
+    font-size: 26px; font-weight: 800; letter-spacing: -0.5px; margin: 0 0 8px 0;
+  }
+  .verso .lede { font-size: 11px; color: #444; max-width: 175mm; margin: 0 0 16px 0; }
+
+  .why-grid { display: flex; gap: 6mm; }
+  .why-grid > div { flex: 1; }
+  .why-card {
+    border: 1px solid #e4e4ec; border-radius: 8px; padding: 12px; margin-bottom: 8px; background: #fafafe;
+  }
+  .why-card h3 {
+    font-size: 11.5px; margin: 0 0 4px 0; font-weight: 800; display: flex; align-items: center; gap: 6px;
+  }
+  .why-card .num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: linear-gradient(120deg, #5b5bf5, #00c2d1);
+    color: #fff; font-size: 9px; font-weight: 800; flex-shrink: 0;
+  }
+  .why-card p { margin: 0; font-size: 9.5px; color: #555; }
+
+  .divider { height: 1px; background: #eee; margin: 14px 0; }
+
+  .pricing-strip {
+    display: flex; gap: 6mm; margin-top: 4px;
+  }
+  .pricing-strip .pkg {
+    flex: 1; border: 1px solid #e4e4ec; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column;
+  }
+  .pricing-strip .pkg.featured { border: 2px solid #5b5bf5; }
+  .pricing-strip .pkg-body { flex: 1; }
+  .pricing-strip .pkg-head { padding: 10px 12px; background: #11112a; color: #fff; }
+  .pricing-strip .pkg.featured .pkg-head { background: linear-gradient(120deg, #5b5bf5 0%, #00c2d1 100%); }
+  .pricing-strip .pkg-head .pkg-name { font-size: 12px; font-weight: 800; letter-spacing: 0.5px; }
+  .pricing-strip .pkg-head .pkg-target { font-size: 8.5px; opacity: 0.85; margin-top: 2px; }
+  .pricing-strip .pkg-body { padding: 10px 12px; }
+  .pricing-strip .amount { font-size: 19px; font-weight: 800; }
+  .pricing-strip .amount span { font-size: 9px; font-weight: 500; color: #888; }
+  .pricing-strip .pkg-body p.desc { font-size: 9.5px; color: #555; margin: 6px 0 0 0; }
+  .pkg-badge {
+    display:inline-block; font-size: 8px; letter-spacing:2px; text-transform:uppercase;
+    background:#00c2d1; color:#fff; padding: 2px 8px; border-radius:999px; margin-bottom:6px; font-weight:700;
+  }
+
+  .steps { margin-top: 6px; display: flex; gap: 6mm; }
+  .steps .step { flex: 1; display: flex; gap: 8px; align-items: flex-start; }
+  .steps .step .stepnum {
+    flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%;
+    background: linear-gradient(120deg, #5b5bf5, #00c2d1); color:#fff;
+    display:flex; align-items:center; justify-content:center; font-weight:800; font-size: 10.5px;
+  }
+  .steps .step h4 { margin: 0 0 2px 0; font-size: 10.5px; font-weight: 700; }
+  .steps .step p { margin: 0; font-size: 9px; color: #555; }
+
+  .big-cta {
+    margin-top: auto;
+    border-radius: 14px; padding: 18px 22px;
+    background: linear-gradient(120deg, #5b5bf5 0%, #00c2d1 100%); color: #fff;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .big-cta h3 { margin: 0 0 4px 0; font-size: 17px; font-weight: 800; }
+  .big-cta p { margin: 0; font-size: 10.5px; opacity: 0.92; max-width: 110mm; }
+  .big-cta .contact { text-align: right; font-size: 11px; }
+  .big-cta .contact strong { display: block; font-size: 13px; margin-bottom: 2px; }
+  .big-cta .contact .small { font-size: 9.5px; opacity: 0.9; }
+
+  .verso-foot {
+    margin-top: 10px; text-align: center; font-size: 8.5px; color: #aaa;
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= PAGE 1 — RECTO ================= -->
+<div class="page cover">
+  <div class="cover-orbs"></div>
+
+  <div class="cover-top">
+    <div class="cover-logo">MARQUILLY <span>STUDIO</span></div>
+    <div class="cover-tag">Studio web · IA · 3D — Lille &amp; à distance</div>
+  </div>
+
+  <div class="cover-hero">
+    <div class="kicker">Hôtels · campings · établissements touristiques</div>
+    <h1>Votre établissement mérite d'être<br/>visité <span class="grad">avant même</span><br/>l'arrivée de vos clients.</h1>
+    <p>
+      Un site internet percutant, une visite virtuelle 3D immersive de vos chambres ou
+      emplacements, et un assistant intelligent qui répond à vos clients 24h/24 — pour
+      transformer chaque visiteur en réservation, même pendant que vous dormez.
+    </p>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="num grad">+30%</div>
+      <div class="lbl">de réservations directes en moyenne avec un site optimisé</div>
+    </div>
+    <div class="stat">
+      <div class="num grad">24/7</div>
+      <div class="lbl">votre établissement reste joignable et visible, jour et nuit</div>
+    </div>
+    <div class="stat">
+      <div class="num grad">100%</div>
+      <div class="lbl">sur-mesure : conçu pour votre activité, votre image, vos clients</div>
+    </div>
+  </div>
+
+  <div class="services">
+    <div class="service">
+      <div class="icon">①</div>
+      <h3>Site web vitrine</h3>
+      <p>Présentez votre établissement, vos chambres ou emplacements, vos tarifs et un système
+      de réservation clair — avec un design moderne qui inspire confiance dès le premier coup d'œil.</p>
+    </div>
+    <div class="service">
+      <div class="icon">②</div>
+      <h3>Visite virtuelle 3D</h3>
+      <p>Vos futurs clients explorent votre hôtel, vos chambres ou votre camping en 3D, depuis
+      leur téléphone ou ordinateur — avant même de réserver. Un argument de poids face à la concurrence.</p>
+    </div>
+    <div class="service">
+      <div class="icon">③</div>
+      <h3>Assistant IA 24/7</h3>
+      <p>Un assistant intelligent répond instantanément aux questions de vos clients (horaires,
+      tarifs, disponibilités, accès...) — même la nuit, même le week-end, même pendant vos congés.</p>
+    </div>
+  </div>
+
+  <div class="cover-bottom">
+    <div class="pitch">
+      <strong>Premier échange offert &amp; sans engagement</strong>
+      <span>20 à 30 minutes pour étudier votre activité et identifier ce qui peut réellement
+      augmenter vos réservations — sans pression, sans jargon technique.</span>
+    </div>
+    <div class="contact">
+      <div class="name">Romain « Bilou » Marquilly</div>
+      <div class="line grad">contact.marquillystudio@gmail.com</div>
+      <div class="line">07 81 70 04 54</div>
+      <div class="line">Lille, France — interventions à distance partout</div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= PAGE 2 — VERSO ================= -->
+<div class="page verso">
+  <div class="kicker">Pourquoi nous faire confiance</div>
+  <h2>Ce que change <span class="grad">un site, une IA et une visite 3D</span><br/>pour votre activité</h2>
+  <p class="lede">
+    Chaque mois sans présence digitale efficace, c'est du chiffre d'affaires qui part chez la
+    concurrence — celle qui est visible, rassurante et joignable à toute heure. Voici ce que
+    nous mettons en place pour vous, concrètement.
+  </p>
+
+  <div class="why-grid">
+    <div>
+      <div class="why-card">
+        <h3><span class="num">1</span> Plus de réservations directes</h3>
+        <p>Un site clair et rassurant pousse vos visiteurs à réserver directement chez vous,
+        plutôt que via une plateforme tierce qui prend une commission sur chaque réservation.</p>
+      </div>
+      <div class="why-card">
+        <h3><span class="num">2</span> Une visite 3D qui rassure</h3>
+        <p>Voir avant de réserver réduit les hésitations et les annulations : vos clients savent
+        exactement à quoi s'attendre, ce qui valorise vos prestations et justifie vos tarifs.</p>
+      </div>
+    </div>
+    <div>
+      <div class="why-card">
+        <h3><span class="num">3</span> Disponibilité permanente</h3>
+        <p>Un assistant IA répond aux questions fréquentes (horaires, accès, animaux, tarifs...)
+        à toute heure — vos clients n'attendent plus, et vous gagnez un temps précieux au quotidien.</p>
+      </div>
+      <div class="why-card">
+        <h3><span class="num">4</span> Une image à la hauteur de votre accueil</h3>
+        <p>Votre établissement mérite une vitrine digitale aussi soignée que l'accueil que vous
+        réservez à vos clients — un site daté ou absent envoie le mauvais signal avant même leur arrivée.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="kicker">Nos formules</div>
+  <h2 style="font-size:20px;">Des tarifs clairs, <span class="grad">un devis sur-mesure</span></h2>
+
+  <div class="pricing-strip">
+    <div class="pkg">
+      <div class="pkg-head">
+        <div class="pkg-name">SITE WEB VITRINE</div>
+        <div class="pkg-target">Présence digitale professionnelle</div>
+      </div>
+      <div class="pkg-body">
+        <div class="amount">1 990 € <span>HT à partir de</span></div>
+        <p class="desc">Design sur-mesure, responsive, formulaire de réservation/contact et
+        référencement de base — votre établissement, en ligne et crédible.</p>
+      </div>
+    </div>
+    <div class="pkg featured">
+      <div class="pkg-head">
+        <div class="pkg-name">VISITE VIRTUELLE 3D</div>
+        <div class="pkg-target">L'offre signature</div>
+      </div>
+      <div class="pkg-body">
+        <span class="pkg-badge">Le plus demandé</span>
+        <div class="amount">8 990 € <span>HT à partir de</span></div>
+        <p class="desc">Exploration 3D immersive de vos chambres, espaces ou emplacements,
+        intégrée à votre site — explorable sur ordinateur et mobile.</p>
+      </div>
+    </div>
+    <div class="pkg">
+      <div class="pkg-head">
+        <div class="pkg-name">ASSISTANT IA</div>
+        <div class="pkg-target">Disponibilité 24h/24</div>
+      </div>
+      <div class="pkg-body">
+        <div class="amount">1 990 € <span>HT + 59 €/mois</span></div>
+        <p class="desc">Un assistant intelligent qui répond à vos clients automatiquement,
+        à toute heure, sur votre site ou par message.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="stepnum">1</div>
+      <div>
+        <h4>Échange découverte</h4>
+        <p>20 à 30 min, gratuit et sans engagement, pour comprendre votre activité et vos besoins.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="stepnum">2</div>
+      <div>
+        <h4>Devis &amp; conception</h4>
+        <p>Un devis clair et détaillé, puis une création sur-mesure adaptée à votre image.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="stepnum">3</div>
+      <div>
+        <h4>Mise en ligne &amp; suivi</h4>
+        <p>Votre site est publié, et nous restons disponibles pour le faire évoluer dans le temps.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="big-cta">
+    <div>
+      <h3>Discutons de votre projet</h3>
+      <p>Premier échange offert, sans engagement — places limitées chaque mois pour garantir
+      un accompagnement de qualité à chaque client.</p>
+    </div>
+    <div class="contact">
+      <strong>contact.marquillystudio@gmail.com</strong>
+      <span class="small">07 81 70 04 54 — Lille, France</span><br/>
+      <span class="small">Interventions à distance partout en France</span>
+    </div>
+  </div>
+
+  <div class="verso-foot">Marquilly Studio — Studio créatif web, IA &amp; 3D — contact.marquillystudio@gmail.com — 07 81 70 04 54</div>
+</div>
+
+</body>
+</html>

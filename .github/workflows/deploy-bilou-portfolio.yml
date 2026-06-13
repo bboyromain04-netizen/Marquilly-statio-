@@ -1,4 +1,4 @@
-name: Deploy Bilou Portfolio to GitHub Pages
+name: Deploy sites to GitHub Pages
 
 on:
   push:
@@ -6,8 +6,6 @@ on:
       - claude/bilou-portfolio-site
       - claude/securify-hero-section-gn115k
       - main
-    paths:
-      - 'bilou-portfolio/**'
   workflow_dispatch:
 
 permissions:
@@ -22,22 +20,35 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: bilou-portfolio
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
-          cache-dependency-path: bilou-portfolio/package-lock.json
-      - run: npm ci
-      - run: npm run build -- --base=/${{ github.event.repository.name }}/
+
+      - name: Build Bilou Portfolio
+        working-directory: bilou-portfolio
+        run: |
+          npm ci
+          npm run build -- --base=/${{ github.event.repository.name }}/
+
+      - name: Build Marquilly Studio
+        run: |
+          npm ci
+          npm run build -- --base=/${{ github.event.repository.name }}/marquilly-studio/
+
+      - name: Combine builds
+        run: |
+          mkdir -p combined
+          cp -r bilou-portfolio/dist/. combined/
+          mkdir -p combined/marquilly-studio
+          cp -r dist/. combined/marquilly-studio/
+
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: bilou-portfolio/dist
+          path: combined
 
   deploy:
     needs: build

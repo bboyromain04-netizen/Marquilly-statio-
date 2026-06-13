@@ -9,6 +9,7 @@ import { STATS } from '../data/content'
 import Counter from './Counter'
 import FloatingOrb from './FloatingOrb'
 import Navbar from './Navbar'
+import ParticleField from './ParticleField'
 
 const titleVariants: Variants = {
   hidden: { opacity: 0, y: 60, rotateX: -40 },
@@ -57,6 +58,7 @@ export default function Hero() {
     >
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(91,91,245,0.18),transparent_45%),radial-gradient(circle_at_80%_70%,rgba(0,194,209,0.16),transparent_45%)]" />
       <div className="absolute inset-0 bg-[linear-gradient(transparent_0,transparent_calc(100%-1px),rgba(255,255,255,0.03)_100%),linear-gradient(90deg,transparent_0,transparent_calc(100%-1px),rgba(255,255,255,0.03)_100%)] bg-[size:60px_60px]" />
+      <ParticleField className="opacity-70" />
 
       <FloatingOrb className="left-[5%] top-[10%] h-72 w-72 bg-brand-violet/15" duration={9} />
       <FloatingOrb className="right-[8%] top-[45%] h-80 w-80 bg-brand-cyan/15" duration={12} delay={1.5} />

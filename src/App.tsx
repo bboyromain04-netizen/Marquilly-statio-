@@ -3,17 +3,21 @@ import CursorGlow from './components/CursorGlow'
 import Devis from './components/Devis'
 import Footer from './components/Footer'
 import Hero from './components/Hero'
+import Marquee from './components/Marquee'
 import Pillars from './components/Pillars'
 import Pricing from './components/Pricing'
 import Process from './components/Process'
+import ScrollProgress from './components/ScrollProgress'
 import Showcase from './components/Showcase'
 import Support from './components/Support'
 
 function App() {
   return (
     <>
+      <ScrollProgress />
       <CursorGlow />
       <Hero />
+      <Marquee />
       <Pillars />
       <Showcase />
       <Process />

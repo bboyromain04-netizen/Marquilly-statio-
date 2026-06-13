@@ -1,16 +1,20 @@
 import { useState } from 'react'
+import emailjs from '@emailjs/browser'
 import { motion, AnimatePresence } from 'framer-motion'
 import FloatingOrb from './FloatingOrb'
 import { DEVIS_STEPS } from '../data/content'
+import { EMAILJS_CONFIG, PDF_URL, isEmailConfigured } from '../lib/emailConfig'
+
+type Status = 'idle' | 'sending' | 'sent' | 'error'
 
 export default function Devis() {
   const [step, setStep] = useState(0)
   const [answers, setAnswers] = useState<Record<string, string>>({})
-  const [sent, setSent] = useState(false)
+  const [status, setStatus] = useState<Status>('idle')
 
   const current = DEVIS_STEPS[step]
   const isLast = step === DEVIS_STEPS.length - 1
-  const canContinue = (answers[current.id] ?? '').trim().length > 0
+  const canContinue = current.optional || (answers[current.id] ?? '').trim().length > 0
 
   function setAnswer(value: string) {
     setAnswers((prev) => ({ ...prev, [current.id]: value }))
@@ -24,14 +28,53 @@ export default function Devis() {
     }
   }
 
-  function sendRequest() {
-    const lines = DEVIS_STEPS.map((s) => `${s.question}\n${answers[s.id] ?? '—'}`)
-    const body = lines.join('\n\n')
+  function buildSummary() {
+    return DEVIS_STEPS.map((s) => `${s.question}\n${(answers[s.id] ?? '').trim() || '—'}`).join('\n\n')
+  }
+
+  function sendByMailto() {
+    const summary = buildSummary()
     const subject = `Nouvelle demande de devis — ${answers.name ?? ''}`
     window.location.href = `mailto:contact.marquillystudio@gmail.com?subject=${encodeURIComponent(
       subject,
-    )}&body=${encodeURIComponent(body)}`
-    setSent(true)
+    )}&body=${encodeURIComponent(summary)}`
+    setStatus('sent')
+  }
+
+  async function sendRequest() {
+    if (!isEmailConfigured()) {
+      sendByMailto()
+      return
+    }
+
+    setStatus('sending')
+    const summary = buildSummary()
+    const templateParams = {
+      client_name: answers.name ?? '',
+      client_email: answers.email ?? '',
+      client_phone: (answers.phone ?? '').trim() || 'non renseigné',
+      to_email: answers.email ?? '',
+      summary,
+      pdf_link: PDF_URL,
+    }
+
+    try {
+      await emailjs.send(
+        EMAILJS_CONFIG.SERVICE_ID,
+        EMAILJS_CONFIG.TEMPLATE_ID_STUDIO,
+        templateParams,
+        EMAILJS_CONFIG.PUBLIC_KEY,
+      )
+      await emailjs.send(
+        EMAILJS_CONFIG.SERVICE_ID,
+        EMAILJS_CONFIG.TEMPLATE_ID_CLIENT,
+        templateParams,
+        EMAILJS_CONFIG.PUBLIC_KEY,
+      )
+      setStatus('sent')
+    } catch {
+      setStatus('error')
+    }
   }
 
   return (
@@ -69,7 +112,7 @@ export default function Devis() {
           transition={{ duration: 0.6, delay: 0.1 }}
           className="mt-10 rounded-3xl border border-white/10 bg-white/[0.03] p-6 md:p-10"
         >
-          {!sent ? (
+          {status === 'idle' || status === 'sending' || status === 'error' ? (
             <>
               <div className="mb-6 flex items-center gap-2">
                 {DEVIS_STEPS.map((_, i) => (
@@ -126,11 +169,21 @@ export default function Devis() {
                 </motion.div>
               </AnimatePresence>
 
+              {status === 'error' && (
+                <p className="mt-4 text-sm text-red-400">
+                  l'envoi automatique a échoué.{' '}
+                  <button type="button" onClick={sendByMailto} className="underline hover:text-white">
+                    ouvrir un email à la place
+                  </button>
+                  .
+                </p>
+              )}
+
               <div className="mt-8 flex items-center justify-between">
                 <button
                   type="button"
                   onClick={() => setStep((s) => Math.max(0, s - 1))}
-                  disabled={step === 0}
+                  disabled={step === 0 || status === 'sending'}
                   className="rounded-full border border-white/10 px-5 py-2 text-sm text-white/60 transition-colors hover:text-white disabled:opacity-0"
                 >
                   retour
@@ -138,10 +191,10 @@ export default function Devis() {
                 <button
                   type="button"
                   onClick={next}
-                  disabled={!canContinue}
+                  disabled={!canContinue || status === 'sending'}
                   className="rounded-full bg-white px-7 py-3 text-sm font-medium text-black transition-transform hover:scale-105 disabled:cursor-not-allowed disabled:opacity-40"
                 >
-                  {isLast ? 'envoyer ma demande' : 'suivant'}
+                  {status === 'sending' ? 'envoi…' : isLast ? 'envoyer ma demande' : 'suivant'}
                 </button>
               </div>
             </>
@@ -153,10 +206,18 @@ export default function Devis() {
             >
               <span className="text-3xl">✓</span>
               <h3 className="mt-3 text-xl font-medium text-white">demande envoyée</h3>
-              <p className="mt-2 text-sm text-white/60">
-                votre messagerie s'est ouverte avec un récapitulatif pré-rempli — il ne reste
-                qu'à cliquer sur « envoyer ». nous revenons vers vous très rapidement.
-              </p>
+              {isEmailConfigured() ? (
+                <p className="mt-2 text-sm text-white/60">
+                  votre demande vient de nous être transmise par email, et un email vous a été
+                  envoyé avec notre offre commerciale complète. nous revenons vers vous très
+                  rapidement.
+                </p>
+              ) : (
+                <p className="mt-2 text-sm text-white/60">
+                  votre messagerie s'est ouverte avec un récapitulatif pré-rempli — il ne reste
+                  qu'à cliquer sur « envoyer ». nous revenons vers vous très rapidement.
+                </p>
+              )}
             </motion.div>
           )}
         </motion.div>

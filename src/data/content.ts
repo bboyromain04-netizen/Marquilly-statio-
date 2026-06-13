@@ -245,6 +245,60 @@ export const DEVIS_STEPS = [
     type: 'text' as const,
   },
   {
+    id: 'audience',
+    question: 'À qui s\'adresse votre site ou projet ? Décrivez votre clientèle cible (âge, profil, attentes...)',
+    type: 'text' as const,
+  },
+  {
+    id: 'ambiance',
+    question: 'Quelle ambiance, quelle énergie voulez-vous transmettre ?',
+    type: 'choice' as const,
+    options: [
+      'Dynamique & énergique',
+      'Épuré & minimaliste',
+      'Chaleureux & convivial',
+      'Premium & haut de gamme',
+      'Ludique & créatif',
+      'Sérieux & institutionnel',
+    ],
+  },
+  {
+    id: 'emotion',
+    question: 'Quelle émotion voulez-vous que vos visiteurs ressentent en arrivant sur votre site ?',
+    type: 'text' as const,
+  },
+  {
+    id: 'direction',
+    question: 'Avez-vous une direction artistique en tête ? (couleurs, styles, ambiances visuelles, exemples de sites ou de marques que vous aimez...)',
+    type: 'text' as const,
+  },
+  {
+    id: 'references',
+    question: 'Des sites, comptes ou concurrents qui vous inspirent (ou au contraire, à éviter) ? Partagez les liens si possible',
+    type: 'text' as const,
+  },
+  {
+    id: 'longterm',
+    question: 'Où voyez-vous votre activité dans 1 à 3 ans ? Comment ce projet doit-il vous accompagner dans cette évolution ?',
+    type: 'text' as const,
+  },
+  {
+    id: 'assets',
+    question: 'Disposez-vous déjà d\'éléments de marque (logo, charte graphique, textes, photos, vidéos) ?',
+    type: 'choice' as const,
+    options: [
+      'Logo et charte graphique complets',
+      'Logo seulement',
+      'Quelques éléments (textes ou photos)',
+      'Rien, tout est à créer',
+    ],
+  },
+  {
+    id: 'mustHave',
+    question: 'Y a-t-il une fonctionnalité, une page ou un élément indispensable pour vous sur ce projet ?',
+    type: 'text' as const,
+  },
+  {
     id: 'name',
     question: 'Votre nom (ou celui de votre entreprise)',
     type: 'text' as const,
@@ -258,6 +312,7 @@ export const DEVIS_STEPS = [
     id: 'phone',
     question: 'Votre téléphone (facultatif)',
     type: 'text' as const,
+    optional: true,
   },
 ]
 

@@ -3,845 +3,379 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Grand Hôtel de Calvi — Un Palace Légendaire en Corse</title>
-<meta name="description" content="Le Grand Hôtel de Calvi : un Palace légendaire face à la Méditerranée. 58 chambres d'exception au cœur de Calvi, à deux pas de la plage, du port et de la citadelle.">
+<title>Grand Hôtel de Calvi — Palace Légendaire, Corse</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/three@0.152.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
 <style>
-/* ─── VARIABLES ─────────────────────────────────────────── */
-:root {
-  --mid:  #070e1d;
-  --deep: #0b1828;
-  --navy: #102035;
-  --gold: #c9a462;
-  --gold-l: #e8c885;
-  --gold-d: #9e7d48;
-  --ivory: #faf7f0;
-  --sand:  #ede5d5;
-  --txt-d: #1a1a28;
-  --txt-m: #4a4a5a;
-  --txt-g: rgba(255,255,255,.72);
-  --sf: 'Cormorant Garamond', Georgia, serif;
-  --ss: 'Inter', system-ui, sans-serif;
-  --ease: cubic-bezier(.16,1,.3,1);
+:root{
+  --mid:#070e1d;--deep:#0b1828;--navy:#0f2035;
+  --gold:#c9a462;--gold-l:#e8c885;--gold-d:#9e7d48;
+  --ivory:#faf7f0;--sand:#ede5d5;
+  --txt-d:#1a1a28;--txt-m:#4a4a5a;
+  --sf:'Cormorant Garamond',Georgia,serif;
+  --ss:'Inter',system-ui,sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1);
 }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--ss);color:var(--txt-d);background:var(--mid);overflow-x:hidden;cursor:none}
+a{text-decoration:none;color:inherit}
+button{font-family:inherit;cursor:none;border:none}
 
-/* TIME-OF-DAY HERO TONES */
-body.time-morning  { --hero-from:#0d1830; --hero-mid:#162745; --hero-to:#0a1a2e; }
-body.time-day      { --hero-from:#071525; --hero-mid:#0e2240; --hero-to:#050f1c; }
-body.time-evening  { --hero-from:#1a1020; --hero-mid:#2a1a0a; --hero-to:#100818; }
-body.time-night    { --hero-from:#040810; --hero-mid:#070e1d; --hero-to:#030608; }
-body { --hero-from:#070e1d; --hero-mid:#0f2040; --hero-to:#040b18; }
+/* CURSOR */
+#cur,#cur-f{position:fixed;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%)}
+#cur{width:8px;height:8px;background:var(--gold);transition:width .2s,height .2s,background .2s}
+#cur-f{width:36px;height:36px;border:1px solid rgba(201,164,98,.5);transition:width .3s,height .3s}
+body.hovered #cur{width:56px;height:56px;background:transparent;border:1px solid var(--gold);mix-blend-mode:difference}
+body.hovered #cur-f{opacity:0}
 
-/* ─── RESET ─────────────────────────────────────────────── */
-*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
-html { scroll-behavior:smooth; }
-body { font-family:var(--ss); color:var(--txt-d); background:var(--mid); overflow-x:hidden; }
-a { text-decoration:none; color:inherit; }
-button { font-family:inherit; cursor:pointer; border:none; }
-img { display:block; width:100%; height:100%; object-fit:cover; }
+/* LOADER */
+#loader{position:fixed;inset:0;z-index:9998;background:var(--mid);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.5rem;transition:opacity .8s ease,visibility .8s ease}
+#loader.out{opacity:0;visibility:hidden}
+.ld-name{font-family:var(--sf);font-size:clamp(1.2rem,3.5vw,2rem);font-weight:300;letter-spacing:.4em;text-transform:uppercase;color:#fff;overflow:hidden}
+.ld-name span{display:inline-block;transform:translateY(110%);animation:charUp .7s var(--ease) forwards}
+.ld-bar{width:100px;height:1px;background:rgba(255,255,255,.1);overflow:hidden}
+.ld-bar-fill{height:100%;background:linear-gradient(to right,var(--gold),var(--gold-l));animation:barW 1.8s var(--ease) forwards}
+.ld-sub{font-family:var(--ss);font-size:.58rem;letter-spacing:.6em;text-transform:uppercase;color:var(--gold)}
+@keyframes charUp{to{transform:none}}
+@keyframes barW{from{width:0}to{width:100%}}
 
-/* ─── LOADER ─────────────────────────────────────────────── */
-#loader {
-  position:fixed; inset:0; z-index:9999;
-  background:var(--mid);
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-  gap:2.5rem;
-  transition:opacity .7s ease, visibility .7s ease;
-}
-#loader.hidden { opacity:0; visibility:hidden; }
-.loader-name {
-  font-family:var(--sf);
-  font-size:clamp(1.2rem,4vw,2rem);
-  font-weight:300;
-  letter-spacing:.35em;
-  text-transform:uppercase;
-  color:#fff;
-  display:flex; gap:.04em;
-  overflow:hidden;
-}
-.loader-name span {
-  opacity:0;
-  transform:translateY(20px);
-  animation:letterIn .6s var(--ease) forwards;
-}
-.loader-bar-wrap {
-  width:120px; height:1px;
-  background:rgba(255,255,255,.1);
-  overflow:hidden;
-}
-.loader-bar {
-  height:100%;
-  background:linear-gradient(to right, var(--gold), var(--gold-l));
-  animation:barFill 1.8s var(--ease) forwards;
-}
-.loader-calvi {
-  font-family:var(--ss);
-  font-size:.6rem;
-  letter-spacing:.6em;
-  text-transform:uppercase;
-  color:var(--gold);
-}
-@keyframes letterIn {
-  to { opacity:1; transform:none; }
-}
-@keyframes barFill {
-  from { width:0; }
-  to   { width:100%; }
-}
+/* SOUND TOGGLE */
+#sound-btn{position:fixed;bottom:2rem;right:2rem;z-index:200;background:rgba(7,14,29,.7);border:1px solid rgba(201,164,98,.3);backdrop-filter:blur(10px);color:rgba(255,255,255,.5);font-family:var(--ss);font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;padding:.6rem 1.1rem;cursor:none;transition:all .3s;display:flex;align-items:center;gap:.5rem}
+#sound-btn::before{content:'';display:block;width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.3);transition:background .3s}
+#sound-btn.on{color:var(--gold-l);border-color:rgba(201,164,98,.6)}
+#sound-btn.on::before{background:var(--gold);box-shadow:0 0 8px var(--gold)}
 
-/* ─── NAV ───────────────────────────────────────────────── */
-.nav {
-  position:fixed; top:0; left:0; right:0; z-index:100;
-  padding:1.8rem 3rem;
-  display:flex; align-items:center; justify-content:space-between;
-  transition:background .45s ease, padding .4s ease, backdrop-filter .4s;
-}
-.nav.scrolled {
-  background:rgba(7,14,29,.9);
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
-  padding:1rem 3rem;
-  border-bottom:1px solid rgba(201,164,98,.08);
-}
-.nav-logo {
-  font-family:var(--sf);
-  font-size:1.2rem;
-  font-weight:400;
-  color:var(--gold-l);
-  letter-spacing:.05em;
-  line-height:1.25;
-}
-.nav-logo small {
-  display:block;
-  font-family:var(--ss);
-  font-size:.54rem;
-  letter-spacing:.4em;
-  color:rgba(255,255,255,.35);
-  text-transform:uppercase;
-  margin-top:2px;
-}
-.nav-links { display:flex; gap:2.5rem; list-style:none; }
-.nav-links a {
-  font-size:.7rem; font-weight:400;
-  letter-spacing:.18em; text-transform:uppercase;
-  color:rgba(255,255,255,.65);
-  transition:color .3s;
-}
-.nav-links a:hover { color:var(--gold-l); }
-.btn-nav {
-  background:transparent;
-  border:1px solid rgba(201,164,98,.6);
-  color:var(--gold-l);
-  font-size:.68rem; font-weight:500;
-  letter-spacing:.22em; text-transform:uppercase;
-  padding:.65rem 1.6rem;
-  transition:all .3s;
-}
-.btn-nav:hover { background:var(--gold); color:var(--mid); border-color:var(--gold); }
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.8rem 3.5rem;display:flex;align-items:center;justify-content:space-between;transition:padding .4s,background .4s,backdrop-filter .4s}
+.nav.solid{background:rgba(7,14,29,.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:1.1rem 3.5rem;border-bottom:1px solid rgba(201,164,98,.07)}
+.logo{font-family:var(--sf);font-size:1.15rem;font-weight:400;color:var(--gold-l);letter-spacing:.04em;line-height:1.2}
+.logo small{display:block;font-family:var(--ss);font-size:.52rem;letter-spacing:.42em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-top:2px}
+.nav-links{display:flex;gap:2.5rem;list-style:none}
+.nav-links a{font-size:.68rem;font-weight:400;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.6);transition:color .3s}
+.nav-links a:hover{color:var(--gold-l)}
+.btn-res{background:transparent;border:1px solid rgba(201,164,98,.55);color:var(--gold-l);font-size:.65rem;font-weight:500;letter-spacing:.25em;text-transform:uppercase;padding:.65rem 1.7rem;transition:all .3s}
+.btn-res:hover{background:var(--gold);color:var(--mid);border-color:var(--gold)}
 
-/* ─── HERO ───────────────────────────────────────────────── */
-.hero {
-  position:relative; height:100vh; min-height:680px;
-  display:flex; flex-direction:column;
-  align-items:center; justify-content:center;
-  overflow:hidden;
-}
-.hero-bg {
-  position:absolute; inset:0;
-  background:
-    radial-gradient(ellipse 90% 70% at 50% 110%, rgba(15,32,64,.95) 0%, transparent 65%),
-    linear-gradient(170deg, var(--hero-from) 0%, var(--hero-mid) 40%, var(--hero-mid) 65%, var(--hero-to) 100%);
-  transition:background 2s ease;
-  will-change:transform;
-}
-.hero-shimmer {
-  position:absolute; inset:0; pointer-events:none;
-  background:
-    radial-gradient(ellipse 50% 40% at 25% 55%, rgba(201,164,98,.07) 0%, transparent 55%),
-    radial-gradient(ellipse 35% 30% at 80% 35%, rgba(201,164,98,.04) 0%, transparent 50%);
-  animation:shimPulse 9s ease-in-out infinite alternate;
-}
-@keyframes shimPulse {
-  from { opacity:.7; transform:scale(1); }
-  to   { opacity:1;  transform:scale(1.04); }
-}
-#c-hero { position:absolute; inset:0; z-index:1; pointer-events:none; }
-.hero-sea {
-  position:absolute; bottom:0; left:0; right:0; z-index:1;
-  height:38%;
-  background:linear-gradient(to top, rgba(5,12,28,.85), transparent);
-}
-.hero-seaLine {
-  position:absolute; bottom:30%; left:0; right:0; z-index:2;
-  height:1px;
-  background:linear-gradient(to right, transparent, rgba(201,164,98,.18), rgba(201,164,98,.45), rgba(201,164,98,.18), transparent);
-}
-.citadelle {
-  position:absolute; bottom:28%; right:7%; z-index:2;
-  opacity:.1; pointer-events:none;
-}
-.hero-content {
-  position:relative; z-index:3;
-  text-align:center; padding:0 1.5rem;
-  will-change:transform, opacity;
-}
-.hero-eyebrow {
-  font-family:var(--ss); font-size:.62rem; font-weight:500;
-  letter-spacing:.55em; text-transform:uppercase;
-  color:var(--gold); margin-bottom:2rem;
-  opacity:0; animation:fadeUp 1s var(--ease) .4s forwards;
-}
-.hero-title {
-  font-family:var(--sf);
-  font-size:clamp(3.8rem,9.5vw,8rem);
-  font-weight:300; color:#fff;
-  line-height:.92; letter-spacing:-.015em;
-  margin-bottom:1.8rem;
-  opacity:0; animation:fadeUp 1.3s var(--ease) .6s forwards;
-}
-.hero-title em { font-style:italic; color:var(--gold-l); }
-.hero-sub {
-  font-family:var(--sf); font-size:clamp(.95rem,2vw,1.25rem);
-  font-weight:300; font-style:italic;
-  color:rgba(255,255,255,.45); margin-bottom:3rem;
-  opacity:0; animation:fadeUp 1s var(--ease) .9s forwards;
-}
-.hero-btns {
-  display:flex; gap:1.2rem; align-items:center; justify-content:center;
-  opacity:0; animation:fadeUp 1s var(--ease) 1.1s forwards;
-}
-.btn-gold {
-  background:var(--gold); color:var(--mid);
-  font-family:var(--ss); font-size:.68rem; font-weight:600;
-  letter-spacing:.22em; text-transform:uppercase;
-  padding:1.1rem 2.6rem; border:none;
-  position:relative; overflow:hidden;
-  transition:transform .3s var(--ease), box-shadow .3s;
-}
-.btn-gold::after {
-  content:''; position:absolute; inset:0;
-  background:rgba(255,255,255,.18);
-  transform:translateX(-105%); transition:transform .35s ease;
-}
-.btn-gold:hover::after { transform:translateX(0); }
-.btn-gold:hover { transform:translateY(-2px); box-shadow:0 12px 40px rgba(201,164,98,.35); }
-.btn-ghost {
-  background:transparent; border:none;
-  color:rgba(255,255,255,.6);
-  font-family:var(--ss); font-size:.68rem; font-weight:400;
-  letter-spacing:.18em; text-transform:uppercase;
-  padding:.9rem 0;
-  border-bottom:1px solid rgba(255,255,255,.2);
-  transition:color .3s, border-color .3s;
-}
-.btn-ghost:hover { color:var(--gold-l); border-color:var(--gold); }
-.hero-scroller {
-  position:absolute; bottom:2.5rem; left:50%; transform:translateX(-50%);
-  z-index:3;
-  display:flex; flex-direction:column; align-items:center; gap:.5rem;
-  opacity:0; animation:fadeIn 1s ease 1.6s forwards;
-}
-.hero-scroller span {
-  font-family:var(--ss); font-size:.55rem; letter-spacing:.4em;
-  text-transform:uppercase; color:rgba(255,255,255,.3);
-}
-.scroll-wire {
-  width:1px; height:52px;
-  background:linear-gradient(to bottom, var(--gold) 50%, transparent);
-  animation:wireDown 1.8s ease-in-out infinite;
-}
-@keyframes wireDown {
-  0%   { transform:scaleY(0) translateY(-50%); opacity:1; }
-  50%  { transform:scaleY(1) translateY(0);    opacity:1; }
-  100% { transform:scaleY(0) translateY(50%);  opacity:0; }
-}
-@keyframes fadeUp { from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none} }
-@keyframes fadeIn { to{opacity:1} }
+/* HERO */
+.hero{position:relative;height:100vh;min-height:700px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:0;background:linear-gradient(170deg,#04080f 0%,#070e1d 35%,#0a1525 65%,#05101e 100%)}
+.hero-photo-overlay{position:absolute;inset:0;z-index:1;background-image:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80');background-size:cover;background-position:center bottom;opacity:.1;mix-blend-mode:luminosity}
+#three-canvas{position:absolute;inset:0;z-index:2;pointer-events:none}
+.hero-veil{position:absolute;inset:0;z-index:3;pointer-events:none;background:linear-gradient(to bottom,rgba(4,8,15,1) 0%,rgba(7,14,29,.7) 30%,rgba(7,14,29,.2) 55%,rgba(7,14,29,.6) 80%,rgba(4,8,15,.95) 100%)}
+.hero-content{position:relative;z-index:10;text-align:center;padding:0 2rem}
+.hero-eyebrow{font-family:var(--ss);font-size:.62rem;font-weight:500;letter-spacing:.55em;text-transform:uppercase;color:var(--gold);margin-bottom:2rem;opacity:0}
+.hero-title{font-family:var(--sf);font-size:clamp(4rem,10vw,9rem);font-weight:300;color:#fff;line-height:.9;letter-spacing:-.02em;margin-bottom:2rem;overflow:hidden}
+.hero-title .line{display:block;overflow:hidden}
+.hero-title .line span{display:inline-block;transform:translateY(110%)}
+.hero-title em{font-style:italic;color:var(--gold-l)}
+.hero-sub{font-family:var(--sf);font-size:clamp(1rem,2.2vw,1.3rem);font-style:italic;font-weight:300;color:rgba(255,255,255,.45);margin-bottom:3.5rem;opacity:0}
+.hero-btns{display:flex;gap:1.2rem;align-items:center;justify-content:center;opacity:0}
+.btn-gold{background:var(--gold);color:var(--mid);font-family:var(--ss);font-size:.68rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;padding:1.1rem 2.8rem;position:relative;overflow:hidden;transition:transform .3s var(--ease),box-shadow .3s}
+.btn-gold::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,.2);transform:translateX(-110%);transition:transform .35s ease}
+.btn-gold:hover::after{transform:translateX(0)}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 15px 50px rgba(201,164,98,.4)}
+.btn-outline{background:transparent;color:rgba(255,255,255,.6);font-family:var(--ss);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;padding:1rem 0;border-bottom:1px solid rgba(255,255,255,.2);transition:color .3s,border-color .3s}
+.btn-outline:hover{color:var(--gold-l);border-color:var(--gold)}
+.hero-scroll{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);z-index:10;display:flex;flex-direction:column;align-items:center;gap:.5rem;opacity:0}
+.hero-scroll span{font-family:var(--ss);font-size:.55rem;letter-spacing:.4em;text-transform:uppercase;color:rgba(255,255,255,.3)}
+.wire{width:1px;height:52px;background:linear-gradient(to bottom,var(--gold),transparent);animation:wireAnim 1.8s ease-in-out infinite}
+@keyframes wireAnim{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
 
-/* ─── NUMBERS ────────────────────────────────────────────── */
-.numbers {
-  background:var(--gold);
-  display:flex; justify-content:center; flex-wrap:wrap;
-}
-.num-item {
-  flex:1; min-width:150px;
-  padding:1.8rem 2rem;
-  display:flex; flex-direction:column; align-items:center;
-  border-right:1px solid rgba(7,14,29,.15);
-}
-.num-item:last-child { border-right:none; }
-.num-val {
-  font-family:var(--sf); font-size:2.1rem; font-weight:400;
-  color:var(--mid); line-height:1;
-}
-.num-lbl {
-  font-family:var(--ss); font-size:.58rem; font-weight:600;
-  letter-spacing:.22em; text-transform:uppercase;
-  color:rgba(7,14,29,.55); margin-top:.4rem;
-  text-align:center;
-}
+/* NUMBERS */
+.numbers{background:var(--gold);display:flex;flex-wrap:wrap}
+.num-item{flex:1;min-width:140px;padding:1.8rem 2rem;display:flex;flex-direction:column;align-items:center;border-right:1px solid rgba(7,14,29,.15)}
+.num-item:last-child{border-right:none}
+.num-val{font-family:var(--sf);font-size:2.2rem;font-weight:400;color:var(--mid);line-height:1}
+.num-lbl{font-family:var(--ss);font-size:.56rem;font-weight:600;letter-spacing:.25em;text-transform:uppercase;color:rgba(7,14,29,.5);margin-top:.4rem;text-align:center}
 
-/* ─── SHARED LAYOUT ──────────────────────────────────────── */
-.section { padding:7rem 3rem; }
-.inner { max-width:1200px; margin:0 auto; }
-.s-label {
-  font-family:var(--ss); font-size:.62rem; font-weight:600;
-  letter-spacing:.45em; text-transform:uppercase;
-  color:var(--gold); display:block; margin-bottom:1rem;
-}
-.s-title {
-  font-family:var(--sf); font-weight:300; line-height:1.08;
-  font-size:clamp(2rem,5vw,3.6rem);
-}
-.s-title.light { color:#fff; }
-.s-title em { font-style:italic; color:var(--gold); }
-.s-body {
-  font-family:var(--ss); font-size:.88rem; line-height:1.85;
-  color:var(--txt-m); max-width:54ch;
-}
-.s-body.light { color:rgba(255,255,255,.45); }
-.sep {
-  width:36px; height:1px; background:var(--gold);
-  margin:1.4rem 0;
-}
-.sep.c { margin:1.4rem auto; }
+/* SHARED */
+.section{padding:8rem 4rem}
+.inner{max-width:1200px;margin:0 auto}
+.s-label{font-family:var(--ss);font-size:.6rem;font-weight:600;letter-spacing:.5em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:1rem}
+.s-title{font-family:var(--sf);font-size:clamp(2.2rem,5vw,3.8rem);font-weight:300;line-height:1.06}
+.s-title.light{color:#fff}
+.s-title em{font-style:italic;color:var(--gold)}
+.s-body{font-family:var(--ss);font-size:.88rem;line-height:1.9;color:var(--txt-m);max-width:54ch}
+.s-body.light{color:rgba(255,255,255,.45)}
+.sep{width:36px;height:1px;background:var(--gold);margin:1.4rem 0}
+.sep.c{margin:1.4rem auto}
 
-/* ─── STORY ──────────────────────────────────────────────── */
-.story-section { background:var(--ivory); }
-.story-grid {
-  display:grid; grid-template-columns:1fr 1fr;
-  gap:5.5rem; align-items:center;
-}
-.story-visual {
-  position:relative; aspect-ratio:3/4; overflow:visible;
-}
-.story-art {
-  width:100%; height:100%;
-  background:linear-gradient(150deg,#0d1e3a 0%,#1a3a5c 30%,#0f2646 70%,#050d1a 100%);
-  overflow:hidden; position:relative;
-}
-.story-art::before {
-  content:'';
-  position:absolute; inset:0;
-  background:
-    radial-gradient(ellipse 55% 40% at 45% 35%, rgba(201,164,98,.14) 0%, transparent 65%),
-    radial-gradient(ellipse 40% 55% at 20% 80%, rgba(168,80,48,.1) 0%, transparent 55%);
-}
-.story-art-year {
-  position:absolute; top:1.5rem; left:1.5rem;
-  font-family:var(--sf); font-size:6rem; font-weight:300;
-  color:rgba(201,164,98,.1); line-height:1; user-select:none;
-}
-.story-art-line {
-  position:absolute; bottom:0; left:0; right:0; height:40%;
-  background:linear-gradient(to top, rgba(5,10,20,.8), transparent);
-}
-.story-art svg {
-  position:absolute; bottom:0; left:0; right:0; opacity:.12;
-}
-.story-floater {
-  position:absolute; bottom:-1.8rem; right:-1.8rem;
-  background:var(--gold);
-  padding:2rem 2.2rem; max-width:230px; z-index:2;
-}
-.story-floater p {
-  font-family:var(--sf); font-size:1rem; font-style:italic;
-  color:var(--mid); line-height:1.55;
-}
-.story-pull {
-  font-family:var(--sf); font-size:1.35rem; font-style:italic;
-  color:var(--gold-d); border-left:2px solid var(--gold);
-  padding-left:1.4rem; margin:1.8rem 0; line-height:1.55;
-}
+/* STORY */
+.story-section{background:var(--ivory)}
+.story-grid{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;max-width:1200px;margin:0 auto}
+.story-photo{aspect-ratio:3/4;position:relative;overflow:visible}
+.story-photo-img{width:100%;height:100%;background-image:url('https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80');background-size:cover;background-position:center;background-color:#0d1e3a;position:relative;overflow:hidden}
+.story-photo-img::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.1),rgba(0,0,0,.4));z-index:1}
+.story-year{position:absolute;top:1.5rem;left:1.5rem;font-family:var(--sf);font-size:5.5rem;font-weight:300;color:rgba(201,164,98,.15);line-height:1;z-index:2}
+.story-card{position:absolute;bottom:-2rem;right:-2rem;background:var(--gold);padding:2rem 2.2rem;max-width:240px;z-index:3}
+.story-card p{font-family:var(--sf);font-size:1rem;font-style:italic;color:var(--mid);line-height:1.55}
+.story-pull{font-family:var(--sf);font-size:1.3rem;font-style:italic;color:var(--gold-d);border-left:2px solid var(--gold);padding-left:1.5rem;margin:2rem 0;line-height:1.55}
 
-/* ─── ROOMS ──────────────────────────────────────────────── */
-.rooms-section { background:var(--mid); }
-.rooms-head { max-width:1200px; margin:0 auto; text-align:center; padding:0 3rem 4rem; }
-.rooms-grid {
-  display:grid; grid-template-columns:repeat(3,1fr);
-  max-width:1200px; margin:0 auto; gap:2px;
-}
-.room-card {
-  position:relative; aspect-ratio:9/14;
-  overflow:hidden; cursor:pointer;
-}
-.room-img {
-  position:absolute; inset:0;
-  transition:transform .75s var(--ease);
-}
-.room-card:hover .room-img { transform:scale(1.06); }
-.ri-1 { background:linear-gradient(165deg,#102240 0%,#0d1d35 40%,#071222 100%); }
-.ri-2 { background:linear-gradient(155deg,#0f3050 0%,#1a4268 30%,#0b2440 100%); }
-.ri-3 { background:linear-gradient(155deg,#1a2645 0%,#263858 40%,#0e1a30 100%); }
-.room-img::before {
-  content:''; position:absolute; inset:0;
-  background:radial-gradient(ellipse 70% 55% at 50% 28%, rgba(201,164,98,.12) 0%, transparent 60%);
-}
-.room-overlay {
-  position:absolute; inset:0;
-  background:linear-gradient(to top,rgba(3,7,15,.95) 0%,rgba(3,7,15,.4) 55%,transparent 100%);
-}
-.room-num {
-  position:absolute; top:1.5rem; right:2rem;
-  font-family:var(--sf); font-size:4.5rem; font-weight:300;
-  color:rgba(201,164,98,.1); line-height:1;
-}
-.room-info {
-  position:absolute; bottom:0; left:0; right:0;
-  padding:2.5rem;
-}
-.room-type {
-  font-family:var(--ss); font-size:.58rem; font-weight:600;
-  letter-spacing:.38em; text-transform:uppercase;
-  color:var(--gold); margin-bottom:.5rem;
-}
-.room-name {
-  font-family:var(--sf); font-size:1.8rem; font-weight:400;
-  color:#fff; line-height:1.1; margin-bottom:.7rem;
-}
-.room-line { width:24px; height:1px; background:var(--gold); margin:.8rem 0; }
-.room-desc {
-  font-family:var(--ss); font-size:.79rem; color:rgba(255,255,255,.48);
-  line-height:1.7; max-height:0; overflow:hidden;
-  transition:max-height .55s var(--ease), opacity .5s;
-  opacity:0;
-}
-.room-card:hover .room-desc { max-height:120px; opacity:1; }
-.room-tags { display:flex; gap:.5rem; flex-wrap:wrap; margin-top:1rem; }
-.room-tag {
-  font-size:.58rem; letter-spacing:.1em;
-  color:rgba(255,255,255,.4);
-  border:1px solid rgba(255,255,255,.12);
-  padding:.2rem .6rem;
-}
+/* ROOMS */
+.rooms-section{background:var(--mid);padding-bottom:0}
+.rooms-head{max-width:1200px;margin:0 auto;padding:0 4rem 4rem;text-align:center}
+.rooms-track{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
+.room-card{position:relative;aspect-ratio:9/14;overflow:hidden;transform-style:preserve-3d;cursor:none}
+.room-photo{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .8s var(--ease)}
+.room-card:hover .room-photo{transform:scale(1.06)}
+.rp1{background-image:url('https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=800&q=80');background-color:#102240}
+.rp2{background-image:url('https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=800&q=80');background-color:#0f3050}
+.rp3{background-image:url('https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=800&q=80');background-color:#1a2645}
+.room-veil{position:absolute;inset:0;background:linear-gradient(to top,rgba(2,5,12,.96) 0%,rgba(2,5,12,.35) 55%,transparent 100%)}
+.room-num{position:absolute;top:1.5rem;right:2rem;font-family:var(--sf);font-size:5rem;font-weight:300;color:rgba(201,164,98,.12);line-height:1}
+.room-info{position:absolute;bottom:0;left:0;right:0;padding:2.5rem}
+.room-type{font-family:var(--ss);font-size:.56rem;font-weight:600;letter-spacing:.4em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem}
+.room-name{font-family:var(--sf);font-size:1.9rem;font-weight:400;color:#fff;line-height:1.1;margin-bottom:.7rem}
+.room-line{width:24px;height:1px;background:var(--gold);margin:.8rem 0}
+.room-desc{font-family:var(--ss);font-size:.78rem;color:rgba(255,255,255,.48);line-height:1.75;max-height:0;overflow:hidden;transition:max-height .55s var(--ease),opacity .5s;opacity:0}
+.room-card:hover .room-desc{max-height:120px;opacity:1}
+.room-tags{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.room-tag{font-size:.57rem;letter-spacing:.1em;color:rgba(255,255,255,.38);border:1px solid rgba(255,255,255,.12);padding:.2rem .6rem}
 
-/* ─── EXPERIENCE ─────────────────────────────────────────── */
-.exp-section { background:var(--deep); }
-.exp-head { text-align:center; margin-bottom:4rem; }
-.exp-grid {
-  display:grid; grid-template-columns:repeat(3,1fr);
-  border:1px solid rgba(255,255,255,.06);
-}
-.exp-item {
-  padding:3.5rem 2.5rem;
-  border-right:1px solid rgba(255,255,255,.06);
-  position:relative; overflow:hidden;
-  transition:background .4s;
-}
-.exp-item:last-child { border-right:none; }
-.exp-item:hover { background:rgba(255,255,255,.025); }
-.exp-item::before {
-  content:''; position:absolute; top:0; left:0; right:0;
-  height:2px;
-  background:linear-gradient(to right, transparent, var(--gold), transparent);
-  opacity:0; transition:opacity .4s;
-}
-.exp-item:hover::before { opacity:1; }
-.exp-bg-num {
-  position:absolute; top:.8rem; right:1.5rem;
-  font-family:var(--sf); font-size:5.5rem; font-weight:300;
-  color:rgba(201,164,98,.055); line-height:1; user-select:none;
-}
-.exp-icon { font-size:1.6rem; margin-bottom:1.6rem; display:block; }
-.exp-title {
-  font-family:var(--sf); font-size:1.55rem; font-weight:400;
-  color:#fff; line-height:1.15; margin-bottom:1.2rem;
-}
-.exp-title em { font-style:italic; color:var(--gold-l); }
-.exp-body {
-  font-family:var(--ss); font-size:.82rem;
-  color:rgba(255,255,255,.4); line-height:1.85;
-}
+/* EXPERIENCE */
+.exp-section{background:var(--deep);overflow:hidden}
+.exp-pin-wrap{position:relative}
+.exp-grid{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid rgba(255,255,255,.05);max-width:1200px;margin:4rem auto 0}
+.exp-item{padding:3.5rem 2.8rem;border-right:1px solid rgba(255,255,255,.05);position:relative;overflow:hidden;transition:background .5s}
+.exp-item:last-child{border-right:none}
+.exp-item:hover{background:rgba(255,255,255,.025)}
+.exp-item::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,transparent,var(--gold),transparent);opacity:0;transition:opacity .4s}
+.exp-item:hover::before{opacity:1}
+.exp-bg-n{position:absolute;top:.5rem;right:1rem;font-family:var(--sf);font-size:6rem;font-weight:300;color:rgba(201,164,98,.05);line-height:1;user-select:none}
+.exp-icon{font-size:1.8rem;margin-bottom:1.8rem;display:block}
+.exp-title{font-family:var(--sf);font-size:1.6rem;font-weight:400;color:#fff;line-height:1.12;margin-bottom:1.2rem}
+.exp-title em{font-style:italic;color:var(--gold-l)}
+.exp-body{font-family:var(--ss);font-size:.82rem;color:rgba(255,255,255,.4);line-height:1.9}
+.exp-photo{width:100%;margin-top:2rem;aspect-ratio:16/9;background-size:cover;background-position:center;overflow:hidden;position:relative}
+.ep1{background-image:url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=800&q=80');background-color:#1a2010}
+.ep2{background-image:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80');background-color:#0a1828}
+.ep3{background-image:url('https://images.unsplash.com/photo-1499678329028-101435549a4e?auto=format&fit=crop&w=800&q=80');background-color:#0d1a2a}
+.exp-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.3),rgba(0,0,0,.1))}
 
-/* ─── LOCATION ───────────────────────────────────────────── */
-.loc-section { background:var(--ivory); }
-.loc-grid {
-  display:grid; grid-template-columns:1fr 1fr;
-  gap:5rem; align-items:center;
-}
-.loc-map {
-  aspect-ratio:1;
-  background:linear-gradient(145deg,#0b1828 0%,#102035 55%,#07121f 100%);
-  position:relative; overflow:hidden;
-}
-.loc-list { list-style:none; margin-top:2rem; }
-.loc-list li {
-  display:flex; justify-content:space-between; align-items:center;
-  padding:1rem 0;
-  border-bottom:1px solid rgba(0,0,0,.08);
-  font-family:var(--ss); font-size:.86rem; color:var(--txt-m);
-}
-.loc-list li strong { font-weight:500; color:var(--txt-d); }
-.loc-list li span { color:var(--gold-d); font-size:.78rem; }
+/* LOCATION */
+.loc-section{background:var(--ivory)}
+.loc-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;max-width:1200px;margin:0 auto}
+.loc-map{aspect-ratio:1;background:#0b1828;position:relative;overflow:hidden}
+.loc-list{list-style:none;margin-top:2rem}
+.loc-list li{display:flex;justify-content:space-between;align-items:center;padding:1rem 0;border-bottom:1px solid rgba(0,0,0,.07);font-family:var(--ss);font-size:.85rem;color:var(--txt-m)}
+.loc-list li strong{font-weight:500;color:var(--txt-d)}
+.loc-list li span{color:var(--gold-d);font-size:.78rem}
 
-/* ─── GALLERY ────────────────────────────────────────────── */
-.gal-section { background:var(--deep); padding-top:5rem; padding-bottom:5rem; }
-.gal-head { text-align:center; padding:0 3rem; max-width:1200px; margin:0 auto 3rem; }
-.gal-grid {
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  grid-template-rows:repeat(2,180px);
-  gap:3px; max-width:1200px; margin:0 auto; padding:0 3rem;
-}
-.g-cell {
-  position:relative; overflow:hidden; cursor:pointer;
-}
-.g-cell.tall { grid-row:span 2; }
-.g-cell.wide { grid-column:span 2; }
-.g-bg {
-  position:absolute; inset:0;
-  transition:transform .6s var(--ease);
-}
-.g-cell:hover .g-bg { transform:scale(1.08); }
-.gc1{background:linear-gradient(145deg,#0f2040,#1a3555);}
-.gc2{background:linear-gradient(155deg,#1a2a48,#0a1828);}
-.gc3{background:linear-gradient(140deg,#281e38,#18122e);}
-.gc4{background:linear-gradient(145deg,#0e2a3a,#183848);}
-.gc5{background:linear-gradient(145deg,#281a0e,#40240e);}
-.gc6{background:linear-gradient(145deg,#0a2010,#14301a);}
-.gc7{background:linear-gradient(135deg,#1c1428,#28183a);}
-.g-bg::after {
-  content:''; position:absolute; inset:0;
-  background:radial-gradient(ellipse 65% 60% at 50% 40%, rgba(201,164,98,.09) 0%, transparent 70%);
-}
-.g-over {
-  position:absolute; inset:0; z-index:2;
-  background:rgba(0,0,0,0);
-  display:flex; align-items:center; justify-content:center;
-  transition:background .4s;
-}
-.g-cell:hover .g-over { background:rgba(0,0,0,.32); }
-.g-lbl {
-  font-family:var(--sf); font-size:1.05rem; font-style:italic;
-  color:rgba(255,255,255,0);
-  transition:color .4s;
-}
-.g-cell:hover .g-lbl { color:rgba(255,255,255,.85); }
+/* GALLERY */
+.gal-section{background:var(--deep);padding:5rem 0}
+.gal-inner{max-width:1200px;margin:0 auto;padding:0 4rem}
+.gal-head{text-align:center;margin-bottom:3rem}
+.gal-grid{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:auto;gap:4px}
+.gal-cell{position:relative;overflow:hidden;cursor:none}
+.gal-cell:nth-child(1){grid-row:span 2}
+.gal-cell:nth-child(4){grid-column:span 2}
+.gal-photo{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .7s var(--ease)}
+.gal-cell:hover .gal-photo{transform:scale(1.07)}
+.gp1{background-image:url('https://images.unsplash.com/photo-1555400238-6a29f8b638ee?auto=format&fit=crop&w=800&q=80');background-color:#0f2040;aspect-ratio:3/4}
+.gp2{background-image:url('https://images.unsplash.com/photo-1514190051997-0f6f39ca5cde?auto=format&fit=crop&w=800&q=80');background-color:#0a1828;aspect-ratio:4/3}
+.gp3{background-image:url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=800&q=80');background-color:#1a2a10;aspect-ratio:4/3}
+.gp4{background-image:url('https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1200&q=80');background-color:#0d2233;aspect-ratio:16/7}
+.gp5{background-image:url('https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80');background-color:#1a2040;aspect-ratio:4/3}
+.gp6{background-image:url('https://images.unsplash.com/photo-1499678329028-101435549a4e?auto=format&fit=crop&w=800&q=80');background-color:#0a1828;aspect-ratio:4/3}
+.gal-overlay{position:absolute;inset:0;background:rgba(7,14,29,0);display:flex;align-items:center;justify-content:center;transition:background .4s}
+.gal-cell:hover .gal-overlay{background:rgba(7,14,29,.4)}
+.gal-label{font-family:var(--sf);font-size:1.1rem;font-style:italic;color:rgba(255,255,255,0);transition:color .4s}
+.gal-cell:hover .gal-label{color:rgba(255,255,255,.9)}
 
-/* ─── TESTIMONIALS ───────────────────────────────────────── */
-.test-section { background:var(--ivory); }
-.test-head { text-align:center; margin-bottom:3rem; }
-.test-grid {
-  display:grid; grid-template-columns:repeat(3,1fr);
-  gap:2rem; max-width:1200px; margin:0 auto;
-}
-.t-card {
-  background:#fff; padding:2.5rem; position:relative;
-  box-shadow:0 2px 40px rgba(0,0,0,.05);
-}
-.t-card::before {
-  content:'"'; position:absolute; top:.8rem; right:1.5rem;
-  font-family:var(--sf); font-size:5.5rem; font-style:italic;
-  color:rgba(201,164,98,.1); line-height:1;
-}
-.t-stars { color:var(--gold); font-size:.9rem; letter-spacing:.1em; margin-bottom:1.2rem; }
-.t-text {
-  font-family:var(--sf); font-size:1.05rem; font-style:italic;
-  color:var(--txt-d); line-height:1.72; margin-bottom:1.5rem;
-}
-.t-auth {
-  font-family:var(--ss); font-size:.72rem; font-weight:600;
-  letter-spacing:.18em; text-transform:uppercase; color:var(--txt-m);
-}
+/* TESTIMONIALS */
+.test-section{background:var(--ivory);padding:7rem 4rem}
+.test-inner{max-width:1200px;margin:0 auto}
+.test-head{text-align:center;margin-bottom:4rem}
+.test-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem}
+.t-card{background:#fff;padding:2.8rem;position:relative;box-shadow:0 4px 40px rgba(0,0,0,.06)}
+.t-card::before{content:'"';position:absolute;top:.5rem;right:1.5rem;font-family:var(--sf);font-size:6rem;font-style:italic;color:rgba(201,164,98,.1);line-height:1}
+.t-stars{color:var(--gold);font-size:.88rem;letter-spacing:.1em;margin-bottom:1.2rem}
+.t-text{font-family:var(--sf);font-size:1.05rem;font-style:italic;color:var(--txt-d);line-height:1.75;margin-bottom:1.5rem}
+.t-auth{font-family:var(--ss);font-size:.7rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--txt-m)}
 
-/* ─── BOOKING ────────────────────────────────────────────── */
-.book-section {
-  position:relative; padding:10rem 3rem;
-  background:var(--mid); text-align:center; overflow:hidden;
-}
-.book-bg {
-  position:absolute; inset:0;
-  background:
-    radial-gradient(ellipse 60% 55% at 50% 55%, rgba(201,164,98,.065) 0%, transparent 65%),
-    radial-gradient(ellipse 45% 35% at 15% 85%, rgba(15,32,64,.4) 0%, transparent 65%);
-}
-#c-book { position:absolute; inset:0; z-index:0; pointer-events:none; }
-.book-inner { position:relative; z-index:1; max-width:680px; margin:0 auto; }
-.book-pre {
-  font-family:var(--ss); font-size:.6rem;
-  letter-spacing:.55em; text-transform:uppercase;
-  color:var(--gold); display:block; margin-bottom:1.5rem;
-}
-.book-title {
-  font-family:var(--sf); font-size:clamp(2.4rem,5vw,3.8rem);
-  font-weight:300; color:#fff; line-height:1.1; margin-bottom:1.5rem;
-}
-.book-title em { font-style:italic; color:var(--gold-l); }
-.book-sub {
-  font-family:var(--ss); font-size:.86rem;
-  color:rgba(255,255,255,.4); line-height:1.8; margin-bottom:3rem;
-}
-.book-form { display:flex; max-width:480px; margin:0 auto 2.5rem; }
-.book-input {
-  flex:1;
-  background:rgba(255,255,255,.05);
-  border:1px solid rgba(255,255,255,.12);
-  border-right:none;
-  color:#fff; padding:1rem 1.4rem;
-  font-family:var(--ss); font-size:.82rem;
-  outline:none; transition:border-color .3s;
-}
-.book-input::placeholder { color:rgba(255,255,255,.28); }
-.book-input:focus { border-color:var(--gold); }
-.book-submit {
-  background:var(--gold); border:none;
-  color:var(--mid);
-  font-family:var(--ss); font-size:.68rem; font-weight:700;
-  letter-spacing:.22em; text-transform:uppercase;
-  padding:1rem 1.8rem; cursor:pointer;
-  transition:background .3s; white-space:nowrap;
-}
-.book-submit:hover { background:var(--gold-l); }
-.book-contacts {
-  display:flex; justify-content:center; gap:3rem; flex-wrap:wrap;
-}
-.bc-item {
-  display:flex; flex-direction:column; gap:.3rem;
-  font-family:var(--ss); font-size:.78rem; color:rgba(255,255,255,.38);
-}
-.bc-item strong {
-  font-size:.58rem; letter-spacing:.25em; text-transform:uppercase;
-  color:var(--gold);
-}
+/* BOOKING */
+.book-section{position:relative;padding:10rem 4rem;background:var(--mid);text-align:center;overflow:hidden}
+.book-bg{position:absolute;inset:0;background:radial-gradient(ellipse 65% 60% at 50% 55%,rgba(201,164,98,.07) 0%,transparent 65%)}
+#book-canvas{position:absolute;inset:0;z-index:0;pointer-events:none}
+.book-inner{position:relative;z-index:1;max-width:680px;margin:0 auto}
+.book-pre{font-family:var(--ss);font-size:.6rem;letter-spacing:.55em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:1.5rem}
+.book-title{font-family:var(--sf);font-size:clamp(2.5rem,5vw,4rem);font-weight:300;color:#fff;line-height:1.08;margin-bottom:1.5rem}
+.book-title em{font-style:italic;color:var(--gold-l)}
+.book-sub{font-family:var(--ss);font-size:.86rem;color:rgba(255,255,255,.38);line-height:1.85;margin-bottom:3rem}
+.book-form{display:flex;max-width:480px;margin:0 auto 2.5rem}
+.book-input{flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-right:none;color:#fff;padding:1rem 1.5rem;font-family:var(--ss);font-size:.82rem;outline:none;transition:border-color .3s}
+.book-input::placeholder{color:rgba(255,255,255,.28)}
+.book-input:focus{border-color:var(--gold)}
+.book-submit{background:var(--gold);border:none;color:var(--mid);font-family:var(--ss);font-size:.68rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;padding:1rem 1.8rem;transition:background .3s;white-space:nowrap;cursor:none}
+.book-submit:hover{background:var(--gold-l)}
+.book-contacts{display:flex;justify-content:center;gap:3rem;flex-wrap:wrap}
+.bc{display:flex;flex-direction:column;gap:.3rem;font-family:var(--ss);font-size:.78rem;color:rgba(255,255,255,.38)}
+.bc strong{font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold)}
 
-/* ─── FOOTER ─────────────────────────────────────────────── */
-.footer { background:#030609; padding:4.5rem 3rem 2.5rem; }
-.footer-inner {
-  max-width:1200px; margin:0 auto;
-  display:grid; grid-template-columns:2fr 1fr 1fr 1fr;
-  gap:3rem; padding-bottom:3rem;
-  border-bottom:1px solid rgba(255,255,255,.05);
-}
-.footer-brand .nav-logo { font-size:1.3rem; margin-bottom:1rem; }
-.footer-brand p { font-size:.78rem; color:rgba(255,255,255,.35); line-height:1.75; }
-.footer-col h4 {
-  font-family:var(--ss); font-size:.58rem; font-weight:600;
-  letter-spacing:.35em; text-transform:uppercase;
-  color:var(--gold); margin-bottom:1.3rem;
-}
-.footer-col ul { list-style:none; }
-.footer-col ul li { margin-bottom:.6rem; }
-.footer-col ul li a,
-.footer-col ul li span {
-  font-size:.8rem; color:rgba(255,255,255,.32);
-  transition:color .2s;
-}
-.footer-col ul li a:hover { color:var(--gold-l); }
-.footer-bottom {
-  max-width:1200px; margin:2rem auto 0;
-  display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:.5rem;
-  font-family:var(--ss); font-size:.68rem; color:rgba(255,255,255,.18);
-}
-.footer-bottom a { color:var(--gold); transition:color .2s; }
-.footer-bottom a:hover { color:var(--gold-l); }
+/* FOOTER */
+.footer{background:#030609;padding:5rem 4rem 2.5rem}
+.footer-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;padding-bottom:3rem;border-bottom:1px solid rgba(255,255,255,.05)}
+.footer-brand .logo{font-size:1.3rem;margin-bottom:1rem}
+.footer-brand p{font-size:.78rem;color:rgba(255,255,255,.32);line-height:1.8}
+.footer-col h4{font-family:var(--ss);font-size:.58rem;font-weight:600;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);margin-bottom:1.3rem}
+.footer-col ul{list-style:none}
+.footer-col li{margin-bottom:.6rem}
+.footer-col a,.footer-col span{font-size:.8rem;color:rgba(255,255,255,.3);transition:color .2s}
+.footer-col a:hover{color:var(--gold-l)}
+.footer-bottom{max-width:1200px;margin:2rem auto 0;display:flex;justify-content:space-between;font-family:var(--ss);font-size:.68rem;color:rgba(255,255,255,.18)}
+.footer-bottom a{color:var(--gold);transition:color .2s}
+.footer-bottom a:hover{color:var(--gold-l)}
 
-/* ─── REVEAL ANIMATIONS ──────────────────────────────────── */
-.rv, .rv-l, .rv-r {
-  opacity:0;
-  transition:opacity .95s var(--ease), transform .95s var(--ease);
-}
-.rv     { transform:translateY(28px); }
-.rv-l   { transform:translateX(-28px); }
-.rv-r   { transform:translateX(28px); }
-.rv.on, .rv-l.on, .rv-r.on { opacity:1; transform:none; }
-.d1 { transition-delay:.1s; }
-.d2 { transition-delay:.2s; }
-.d3 { transition-delay:.3s; }
-.d4 { transition-delay:.4s; }
-.d5 { transition-delay:.5s; }
+/* GSAP INITIAL STATES */
+.fade-up{opacity:0;transform:translateY(40px)}
+.fade-left{opacity:0;transform:translateX(-40px)}
+.fade-right{opacity:0;transform:translateX(40px)}
 
-/* ─── RESPONSIVE ─────────────────────────────────────────── */
 @media(max-width:900px){
-  .nav-links,.btn-nav{display:none}
+  .nav-links,.btn-res{display:none}
   .story-grid,.loc-grid{grid-template-columns:1fr;gap:3rem}
-  .story-visual{aspect-ratio:4/3}
-  .rooms-grid,.exp-grid,.test-grid{grid-template-columns:1fr}
+  .rooms-track,.exp-grid,.test-grid{grid-template-columns:1fr}
   .room-card{aspect-ratio:4/3}
-  .exp-item{border-right:none;border-bottom:1px solid rgba(255,255,255,.06)}
-  .exp-item:last-child{border-bottom:none}
-  .gal-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto}
-  .g-cell.tall,.g-cell.wide{grid-row:span 1;grid-column:span 1}
+  .gal-grid{grid-template-columns:1fr 1fr}
+  .gal-cell:nth-child(1){grid-row:auto}
+  .gal-cell:nth-child(4){grid-column:auto}
   .footer-inner{grid-template-columns:1fr 1fr}
   .book-form{flex-direction:column}
-  .book-input{border-right:1px solid rgba(255,255,255,.12);border-bottom:none}
-  .section{padding:4.5rem 1.5rem}
-  .gal-grid{padding:0 1.5rem}
+  .book-input{border-right:1px solid rgba(255,255,255,.12)}
+  .section{padding:5rem 1.5rem}
+  body{cursor:auto}
+  #cur,#cur-f{display:none}
 }
 </style>
 </head>
 <body>
 
-<!-- LOADER -->
+<div id="cur"></div>
+<div id="cur-f"></div>
+
 <div id="loader">
-  <div class="loader-name" id="loader-name"></div>
-  <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
-  <span class="loader-calvi">Calvi · Corse</span>
+  <div class="ld-name" id="ld-name"></div>
+  <div class="ld-bar"><div class="ld-bar-fill"></div></div>
+  <span class="ld-sub">Calvi · Haute-Corse</span>
 </div>
 
-<!-- NAV -->
+<button id="sound-btn">Sons de la mer</button>
+
 <nav class="nav" id="nav">
-  <div class="nav-logo">
-    Grand Hôtel de Calvi
-    <small>Palace · Haute-Corse · Depuis 1920</small>
-  </div>
+  <div class="logo">Grand Hôtel de Calvi<small>Palace · Haute-Corse · Depuis 1920</small></div>
   <ul class="nav-links">
     <li><a href="#chambres">Chambres</a></li>
     <li><a href="#exp">Expériences</a></li>
     <li><a href="#calvi">Calvi</a></li>
     <li><a href="#histoire">Histoire</a></li>
   </ul>
-  <button class="btn-nav" onclick="scrollTo('#reserver')">Réserver</button>
+  <button class="btn-res magnetic" onclick="document.getElementById('reserver').scrollIntoView({behavior:'smooth'})">Réserver</button>
 </nav>
 
 <!-- HERO -->
 <section class="hero" id="top">
-  <div class="hero-bg" id="hbg"></div>
-  <div class="hero-shimmer"></div>
-  <canvas id="c-hero"></canvas>
-
-  <!-- Citadelle silhouette SVG -->
-  <svg class="citadelle" width="320" height="200" viewBox="0 0 320 200" fill="none">
-    <path d="M0 200L0 125L20 125L20 105L32 105L32 92L42 92L42 82L52 82L52 68L62 68L62 52L72 52L72 38L82 38L82 26L92 26L92 16L102 16L102 26L112 26L112 38L122 38L122 52L132 52L132 65L142 65L142 52L152 52L152 65L172 65L172 78L182 78L182 65L192 65L192 55L202 55L202 78L212 78L212 88L222 88L222 98L232 98L232 110L242 110L242 118L260 118L260 128L280 128L280 140L320 140L320 200Z" fill="white"/>
-  </svg>
-
-  <div class="hero-seaLine"></div>
-  <div class="hero-sea"></div>
-
-  <div class="hero-content" id="hcontent">
-    <p class="hero-eyebrow">Calvi · Haute-Corse · Méditerranée</p>
-    <h1 class="hero-title">Un <em>Palace</em><br>au Bout<br>du Monde</h1>
-    <p class="hero-sub">58 chambres face à la Méditerranée · À deux pas de la plage, du port & de la citadelle</p>
-    <div class="hero-btns">
-      <button class="btn-gold" onclick="scrollTo('#reserver')">Réserver votre séjour</button>
-      <button class="btn-ghost" onclick="scrollTo('#histoire')">Découvrir l'histoire</button>
+  <div class="hero-bg"></div>
+  <div class="hero-photo-overlay"></div>
+  <canvas id="three-canvas"></canvas>
+  <div class="hero-veil"></div>
+  <div class="hero-content" id="hero-content">
+    <p class="hero-eyebrow" id="hero-eyebrow">Calvi · Haute-Corse · Méditerranée</p>
+    <h1 class="hero-title" id="hero-title">
+      <span class="line">Un <em>Palace</em></span>
+      <span class="line">au Bout</span>
+      <span class="line">du Monde</span>
+    </h1>
+    <p class="hero-sub" id="hero-sub">58 chambres face à la Méditerranée · À deux pas de la plage, du port & de la citadelle</p>
+    <div class="hero-btns" id="hero-btns">
+      <button class="btn-gold magnetic" onclick="document.getElementById('reserver').scrollIntoView({behavior:'smooth'})">Réserver votre séjour</button>
+      <button class="btn-outline" onclick="document.getElementById('histoire').scrollIntoView({behavior:'smooth'})">Découvrir l'histoire</button>
     </div>
   </div>
-
-  <div class="hero-scroller">
-    <div class="scroll-wire"></div>
+  <div class="hero-scroll" id="hero-scroll">
+    <div class="wire"></div>
     <span>Défiler</span>
   </div>
 </section>
 
-<!-- NUMBERS BAR -->
+<!-- NUMBERS -->
 <div class="numbers">
-  <div class="num-item">
-    <span class="num-val" id="cnt">0</span>
-    <span class="num-lbl">Chambres d'exception</span>
-  </div>
-  <div class="num-item">
-    <span class="num-val">1920</span>
-    <span class="num-lbl">Année de fondation</span>
-  </div>
-  <div class="num-item">
-    <span class="num-val">3 min</span>
-    <span class="num-lbl">De la plage de sable fin</span>
-  </div>
-  <div class="num-item">
-    <span class="num-val">4.2 ★</span>
-    <span class="num-lbl">Avis voyageurs</span>
-  </div>
+  <div class="num-item"><span class="num-val" id="cnt">0</span><span class="num-lbl">Chambres d'exception</span></div>
+  <div class="num-item"><span class="num-val">1920</span><span class="num-lbl">Année de fondation</span></div>
+  <div class="num-item"><span class="num-val">3 min</span><span class="num-lbl">De la plage de sable fin</span></div>
+  <div class="num-item"><span class="num-val">4.2 ★</span><span class="num-lbl">Avis voyageurs</span></div>
 </div>
 
 <!-- STORY -->
 <section class="section story-section" id="histoire">
-  <div class="inner story-grid">
-    <div class="story-visual rv-l">
-      <div class="story-art">
-        <div class="story-art-year">1920</div>
-        <svg viewBox="0 0 400 180" fill="none" preserveAspectRatio="none">
-          <path d="M0 180C60 130 120 100 180 115C240 130 265 90 310 68C350 50 380 80 400 58L400 180Z" fill="rgba(201,164,98,.1)"/>
-        </svg>
-        <div class="story-art-line"></div>
+  <div class="story-grid">
+    <div class="story-photo fade-left">
+      <div class="story-photo-img">
+        <div class="story-year">1920</div>
       </div>
-      <div class="story-floater">
+      <div class="story-card">
         <p>« Une adresse d'exception où l'histoire et la Méditerranée se rencontrent à chaque lever de soleil. »</p>
       </div>
     </div>
-
-    <div class="rv-r">
+    <div class="fade-right">
       <span class="s-label">Notre Histoire</span>
       <h2 class="s-title">La Légende d'un<br><em>Palace</em></h2>
       <div class="sep"></div>
-      <p class="s-body">
-        En 1920, au cœur d'une Calvi encore secrète, s'élevait un bâtiment pensé pour accueillir ce que le monde avait de plus raffiné. Un <strong>Palace</strong>, dans toute l'acception du terme — espace de vie où chaque détail était une déclaration d'élégance.
-      </p>
-      <blockquote class="story-pull">
-        « Ce Palace a accueilli les plus grandes stars. Vous méritez la même expérience. »
-      </blockquote>
-      <p class="s-body">
-        Plus d'un siècle plus tard, cette âme demeure intacte. Le Grand Hôtel de Calvi n'est pas simplement un endroit où dormir — c'est un endroit où <em>arriver</em>. Où la Corse cesse d'être une destination pour devenir une sensation.
-      </p>
-      <div style="margin-top:2rem">
-        <button class="btn-gold" onclick="scrollTo('#chambres')">Voir les chambres</button>
-      </div>
+      <p class="s-body">En 1920, au cœur d'une Calvi encore secrète, s'élevait un bâtiment pensé pour accueillir ce que le monde avait de plus raffiné. Un <strong>Palace</strong>, dans toute l'acception du terme — espace de vie où chaque détail était une déclaration d'élégance.</p>
+      <blockquote class="story-pull">« Ce Palace a accueilli les plus grandes stars. Vous méritez la même expérience. »</blockquote>
+      <p class="s-body">Plus d'un siècle plus tard, cette âme demeure intacte. Le Grand Hôtel de Calvi n'est pas simplement un endroit où dormir — c'est un endroit où <em>arriver</em>.</p>
+      <div style="margin-top:2.5rem"><button class="btn-gold magnetic fade-up" onclick="document.getElementById('chambres').scrollIntoView({behavior:'smooth'})">Voir les chambres</button></div>
     </div>
   </div>
 </section>
 
 <!-- ROOMS -->
-<section class="rooms-section" id="chambres" style="padding:5rem 0 0">
+<section class="rooms-section" id="chambres">
   <div class="rooms-head">
-    <span class="s-label rv d1">Hébergement</span>
-    <h2 class="s-title light rv d2">Vos Chambres, <em>votre Méditerranée</em></h2>
-    <div class="sep c rv d3"></div>
-    <p class="s-body light rv d4" style="margin:0 auto;text-align:center">
-      58 chambres climatisées où la frontière entre l'intérieur et la Corse s'efface. Chaque matin commence par une vue qui change tout.
-    </p>
+    <span class="s-label fade-up">Hébergement</span>
+    <h2 class="s-title light fade-up">Vos Chambres, <em>votre Méditerranée</em></h2>
+    <div class="sep c fade-up"></div>
+    <p class="s-body light fade-up" style="margin:0 auto;text-align:center">58 chambres climatisées où chaque matin commence par une vue qui change tout.</p>
   </div>
-  <div class="rooms-grid">
-    <div class="room-card rv d1">
-      <div class="room-img ri-1"></div>
-      <div class="room-overlay"></div>
+  <div class="rooms-track">
+    <div class="room-card fade-up" data-tilt>
+      <div class="room-photo rp1"></div>
+      <div class="room-veil"></div>
       <div class="room-num">01</div>
       <div class="room-info">
         <div class="room-type">Chambre Standard</div>
         <div class="room-name">Grand<br>Confort</div>
         <div class="room-line"></div>
-        <div class="room-desc">Chambre climatisée de 25m², lit King Size 200×100, grande salle de bain avec baignoire, WiFi. L'entrée dans l'univers du Grand Hôtel.</div>
-        <div class="room-tags">
-          <span class="room-tag">25m²+</span>
-          <span class="room-tag">King Size</span>
-          <span class="room-tag">Baignoire</span>
-          <span class="room-tag">WiFi</span>
-          <span class="room-tag">Climatisation</span>
-        </div>
+        <div class="room-desc">Chambre climatisée de 25m², lit King Size 200×100, grande salle de bain avec baignoire, WiFi haut débit. L'entrée dans l'univers du Grand Hôtel.</div>
+        <div class="room-tags"><span class="room-tag">25m²+</span><span class="room-tag">King Size</span><span class="room-tag">Baignoire</span><span class="room-tag">WiFi</span></div>
       </div>
     </div>
-    <div class="room-card rv d2">
-      <div class="room-img ri-2"></div>
-      <div class="room-overlay"></div>
+    <div class="room-card fade-up" data-tilt>
+      <div class="room-photo rp2"></div>
+      <div class="room-veil"></div>
       <div class="room-num">02</div>
       <div class="room-info">
         <div class="room-type">Chambre Vue Mer</div>
         <div class="room-name">Panorama<br>Méditerranée</div>
         <div class="room-line"></div>
         <div class="room-desc">S'éveiller face à la Méditerranée. La vue sur la baie de Calvi depuis votre balcon est un privilège que l'on ne s'explique pas — on le vit.</div>
-        <div class="room-tags">
-          <span class="room-tag">Vue Mer</span>
-          <span class="room-tag">Balcon</span>
-          <span class="room-tag">King Size</span>
-          <span class="room-tag">Baignoire</span>
-        </div>
+        <div class="room-tags"><span class="room-tag">Vue Mer</span><span class="room-tag">Balcon</span><span class="room-tag">King Size</span><span class="room-tag">Baignoire</span></div>
       </div>
     </div>
-    <div class="room-card rv d3">
-      <div class="room-img ri-3"></div>
-      <div class="room-overlay"></div>
+    <div class="room-card fade-up" data-tilt>
+      <div class="room-photo rp3"></div>
+      <div class="room-veil"></div>
       <div class="room-num">03</div>
       <div class="room-info">
         <div class="room-type">Suite Signature</div>
         <div class="room-name">Suite<br>Baie de Calvi</div>
         <div class="room-line"></div>
         <div class="room-desc">Le summum. Un espace où la lumière corse entre de partout. La baie s'étend à l'infini depuis votre balcon privé — Calvi à vos pieds, la mer à l'horizon.</div>
-        <div class="room-tags">
-          <span class="room-tag">Suite</span>
-          <span class="room-tag">Balcon Privé</span>
-          <span class="room-tag">Vue Panoramique</span>
-          <span class="room-tag">Baignoire</span>
-        </div>
+        <div class="room-tags"><span class="room-tag">Suite</span><span class="room-tag">Balcon Privé</span><span class="room-tag">Vue Panoramique</span></div>
       </div>
     </div>
   </div>
@@ -850,32 +384,33 @@ img { display:block; width:100%; height:100%; object-fit:cover; }
 <!-- EXPERIENCE -->
 <section class="section exp-section" id="exp">
   <div class="inner">
-    <div class="exp-head">
-      <span class="s-label rv">Votre Séjour</span>
-      <h2 class="s-title light rv d1">L'Art du <em>Séjour Corse</em></h2>
-      <div class="sep c rv d2"></div>
-      <p class="s-body light rv d3" style="margin:0 auto;text-align:center">
-        À Calvi, le temps ne se compte pas en heures. Il se compte en sensations.
-      </p>
+    <div style="text-align:center">
+      <span class="s-label fade-up">Votre Séjour</span>
+      <h2 class="s-title light fade-up">L'Art du <em>Séjour Corse</em></h2>
+      <div class="sep c fade-up"></div>
+      <p class="s-body light fade-up" style="margin:0 auto;text-align:center">À Calvi, le temps ne se compte pas en heures. Il se compte en sensations.</p>
     </div>
     <div class="exp-grid">
-      <div class="exp-item rv d1">
-        <div class="exp-bg-num">01</div>
+      <div class="exp-item fade-up">
+        <div class="exp-bg-n">01</div>
         <span class="exp-icon">🌅</span>
         <h3 class="exp-title">Le <em>Matin</em><br>qui Commence Tout</h3>
-        <p class="exp-body">Le soleil se lève sur la baie. La lumière corse pénètre par vos volets ouverts. Un petit-déjeuner généreux vous attend dans une ambiance chaleureuse et conviviale. Calvi commence ici.</p>
+        <p class="exp-body">Le soleil se lève sur la baie. La lumière corse pénètre par vos volets. Un petit-déjeuner généreux avec vue sur la mer vous attend.</p>
+        <div class="exp-photo ep1"></div>
       </div>
-      <div class="exp-item rv d2">
-        <div class="exp-bg-num">02</div>
+      <div class="exp-item fade-up">
+        <div class="exp-bg-n">02</div>
         <span class="exp-icon">🏖️</span>
         <h3 class="exp-title">La <em>Journée</em><br>sans Limite</h3>
-        <p class="exp-body">La plus belle plage de sable fin à 3 minutes. Le port animé, la citadelle millénaire, les calanques à couper le souffle. Revenez quand vous voulez — votre chambre vous attend.</p>
+        <p class="exp-body">La plus belle plage de sable fin à 3 minutes. Le port animé, la citadelle millénaire, les calanques à couper le souffle.</p>
+        <div class="exp-photo ep2"></div>
       </div>
-      <div class="exp-item rv d3">
-        <div class="exp-bg-num">03</div>
+      <div class="exp-item fade-up">
+        <div class="exp-bg-n">03</div>
         <span class="exp-icon">🌙</span>
         <h3 class="exp-title">Le <em>Soir</em><br>qui Reste en Soi</h3>
-        <p class="exp-body">Les lumières de la baie s'allument une à une. Depuis votre chambre ou en flânant dans Calvi, vous comprenez pourquoi certains ne repartent jamais vraiment de Corse.</p>
+        <p class="exp-body">Les lumières de la baie s'allument une à une. Depuis votre chambre, vous comprenez pourquoi certains ne repartent jamais vraiment de Corse.</p>
+        <div class="exp-photo ep3"></div>
       </div>
     </div>
   </div>
@@ -883,14 +418,12 @@ img { display:block; width:100%; height:100%; object-fit:cover; }
 
 <!-- LOCATION -->
 <section class="section loc-section" id="calvi">
-  <div class="inner loc-grid">
-    <div class="rv-l">
+  <div class="loc-grid">
+    <div class="fade-left">
       <span class="s-label">Emplacement</span>
       <h2 class="s-title">Au <em>Cœur</em> de Calvi</h2>
       <div class="sep"></div>
-      <p class="s-body">
-        Le Grand Hôtel occupe une position unique : ancré au centre de Calvi, à quelques pas de tout ce qui fait l'âme de la ville. Ici, on n'a pas besoin de voiture — on marche, on flâne, on vit Calvi.
-      </p>
+      <p class="s-body">Le Grand Hôtel occupe une position unique : ancré au centre de Calvi, à quelques pas de tout ce qui fait l'âme de la ville. Ici, on n'a pas besoin de voiture — on marche, on flâne, on vit Calvi.</p>
       <ul class="loc-list">
         <li><strong>Plage de sable fin</strong><span>3 min à pied</span></li>
         <li><strong>Port de Calvi</strong><span>5 min à pied</span></li>
@@ -899,44 +432,19 @@ img { display:block; width:100%; height:100%; object-fit:cover; }
         <li><strong>Commerces &amp; Restaurants</strong><span>Immédiat</span></li>
       </ul>
     </div>
-    <div class="loc-map rv-r">
+    <div class="loc-map fade-right">
       <svg style="position:absolute;inset:0;width:100%;height:100%" viewBox="0 0 400 400" fill="none">
-        <defs>
-          <radialGradient id="gmap" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#1a3a5c" stop-opacity=".5"/>
-            <stop offset="100%" stop-color="#0a1828" stop-opacity=".1"/>
-          </radialGradient>
-        </defs>
-        <rect width="400" height="400" fill="url(#gmap)"/>
-        <!-- abstract land -->
-        <path d="M175 395L155 345L138 295L132 255L142 218L162 197L192 188L222 183L248 188L268 208L278 238L272 268L256 300L238 348L220 395Z"
-              fill="rgba(15,45,20,.25)" stroke="rgba(201,164,98,.12)" stroke-width="1"/>
-        <!-- grid lines -->
-        <line x1="0" y1="200" x2="400" y2="200" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
-        <line x1="200" y1="0" x2="200" y2="400" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
-        <!-- Hotel dot with pulse -->
+        <defs><radialGradient id="mg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#1a3a5c" stop-opacity=".5"/><stop offset="100%" stop-color="#0a1828" stop-opacity=".05"/></radialGradient></defs>
+        <rect width="400" height="400" fill="url(#mg)"/>
+        <path d="M175 395L155 340L138 290L132 250L142 215L165 194L195 185L225 180L250 186L270 208L280 240L272 268L255 300L238 348L220 395Z" fill="rgba(20,55,20,.25)" stroke="rgba(201,164,98,.12)" stroke-width="1"/>
+        <line x1="0" y1="200" x2="400" y2="200" stroke="rgba(255,255,255,.04)"/><line x1="200" y1="0" x2="200" y2="400" stroke="rgba(255,255,255,.04)"/>
         <circle cx="200" cy="200" r="5" fill="#c9a462"/>
-        <circle cx="200" cy="200" r="12" fill="none" stroke="#c9a462" stroke-opacity=".35" stroke-width="1">
-          <animate attributeName="r" values="12;24;12" dur="2.2s" repeatCount="indefinite"/>
-          <animate attributeName="stroke-opacity" values=".35;0;.35" dur="2.2s" repeatCount="indefinite"/>
-        </circle>
-        <text x="200" y="188" fill="rgba(201,164,98,.8)" font-size="7.5" font-family="Inter,sans-serif" text-anchor="middle" font-weight="600" letter-spacing="1">VOUS ÊTES ICI</text>
-        <!-- Plage (top) -->
-        <circle cx="200" cy="120" r="3" fill="#e8c885" fill-opacity=".7"/>
-        <line x1="200" y1="123" x2="200" y2="193" stroke="rgba(201,164,98,.2)" stroke-dasharray="4,4" stroke-width="1"/>
-        <text x="213" y="122" fill="rgba(255,255,255,.45)" font-size="9" font-family="Inter,sans-serif">Plage · 3 min</text>
-        <!-- Port (left) -->
-        <circle cx="95" cy="200" r="3" fill="#e8c885" fill-opacity=".7"/>
-        <line x1="98" y1="200" x2="188" y2="200" stroke="rgba(201,164,98,.2)" stroke-dasharray="4,4" stroke-width="1"/>
-        <text x="15" y="196" fill="rgba(255,255,255,.45)" font-size="9" font-family="Inter,sans-serif">Port · 5 min</text>
-        <!-- Citadelle (bottom) -->
-        <circle cx="200" cy="300" r="3" fill="#e8c885" fill-opacity=".7"/>
-        <line x1="200" y1="297" x2="200" y2="207" stroke="rgba(201,164,98,.2)" stroke-dasharray="4,4" stroke-width="1"/>
-        <text x="140" y="318" fill="rgba(255,255,255,.45)" font-size="9" font-family="Inter,sans-serif">Citadelle · 8 min</text>
-        <!-- Gare (right) -->
-        <circle cx="298" cy="200" r="3" fill="#e8c885" fill-opacity=".7"/>
-        <line x1="295" y1="200" x2="212" y2="200" stroke="rgba(201,164,98,.2)" stroke-dasharray="4,4" stroke-width="1"/>
-        <text x="305" y="204" fill="rgba(255,255,255,.45)" font-size="9" font-family="Inter,sans-serif">Gare · 2 min</text>
+        <circle cx="200" cy="200" r="14" fill="none" stroke="#c9a462" stroke-opacity=".3" stroke-width="1"><animate attributeName="r" values="14;26;14" dur="2.2s" repeatCount="indefinite"/><animate attributeName="stroke-opacity" values=".3;0;.3" dur="2.2s" repeatCount="indefinite"/></circle>
+        <text x="200" y="188" fill="rgba(201,164,98,.8)" font-size="7" font-family="Inter,sans-serif" text-anchor="middle" font-weight="600" letter-spacing="1">VOUS ÊTES ICI</text>
+        <circle cx="200" cy="118" r="3" fill="#e8c885" fill-opacity=".7"/><line x1="200" y1="121" x2="200" y2="193" stroke="rgba(201,164,98,.2)" stroke-dasharray="4,4"/><text x="212" y="118" fill="rgba(255,255,255,.45)" font-size="9" font-family="Inter">Plage · 3 min</text>
+        <circle cx="92" cy="200" r="3" fill="#e8c885" fill-opacity=".7"/><line x1="95" y1="200" x2="187" y2="200" stroke="rgba(201,164,98,.2)" stroke-dasharray="4,4"/><text x="14" y="195" fill="rgba(255,255,255,.45)" font-size="9" font-family="Inter">Port · 5 min</text>
+        <circle cx="200" cy="302" r="3" fill="#e8c885" fill-opacity=".7"/><line x1="200" y1="299" x2="200" y2="207" stroke="rgba(201,164,98,.2)" stroke-dasharray="4,4"/><text x="140" y="318" fill="rgba(255,255,255,.45)" font-size="9" font-family="Inter">Citadelle · 8 min</text>
+        <circle cx="300" cy="200" r="3" fill="#e8c885" fill-opacity=".7"/><line x1="297" y1="200" x2="213" y2="200" stroke="rgba(201,164,98,.2)" stroke-dasharray="4,4"/><text x="305" y="204" fill="rgba(255,255,255,.45)" font-size="9" font-family="Inter">Gare · 2 min</text>
       </svg>
     </div>
   </div>
@@ -944,99 +452,55 @@ img { display:block; width:100%; height:100%; object-fit:cover; }
 
 <!-- GALLERY -->
 <section class="gal-section">
-  <div class="gal-head rv">
-    <span class="s-label">L'Hôtel en images</span>
-    <h2 class="s-title light rv d1">L'Atmosphère du <em>Grand Hôtel</em></h2>
-    <div class="sep c rv d2"></div>
-  </div>
-  <div class="gal-grid">
-    <div class="g-cell tall rv d1">
-      <div class="g-bg gc1"></div>
-      <div class="g-over"><span class="g-lbl">La Façade</span></div>
+  <div class="gal-inner">
+    <div class="gal-head fade-up">
+      <span class="s-label">L'Hôtel en Images</span>
+      <h2 class="s-title light fade-up">L'Atmosphère du <em>Grand Hôtel</em></h2>
+      <div class="sep c fade-up"></div>
     </div>
-    <div class="g-cell wide rv d2">
-      <div class="g-bg gc2"></div>
-      <div class="g-over"><span class="g-lbl">Vue Panoramique</span></div>
-    </div>
-    <div class="g-cell rv d3">
-      <div class="g-bg gc3"></div>
-      <div class="g-over"><span class="g-lbl">Suite Balcon</span></div>
-    </div>
-    <div class="g-cell rv d4">
-      <div class="g-bg gc4"></div>
-      <div class="g-over"><span class="g-lbl">Petit-Déjeuner</span></div>
-    </div>
-    <div class="g-cell rv d2">
-      <div class="g-bg gc5"></div>
-      <div class="g-over"><span class="g-lbl">La Citadelle</span></div>
-    </div>
-    <div class="g-cell wide rv d3">
-      <div class="g-bg gc6"></div>
-      <div class="g-over"><span class="g-lbl">Plage de Calvi</span></div>
-    </div>
-    <div class="g-cell rv d4">
-      <div class="g-bg gc7"></div>
-      <div class="g-over"><span class="g-lbl">Le Port</span></div>
+    <div class="gal-grid">
+      <div class="gal-cell fade-up"><div class="gal-photo gp1" style="height:100%;position:relative"></div><div class="gal-overlay"><span class="gal-label">La Baie de Calvi</span></div></div>
+      <div class="gal-cell fade-up"><div class="gal-photo gp2"></div><div class="gal-overlay"><span class="gal-label">La Méditerranée</span></div></div>
+      <div class="gal-cell fade-up"><div class="gal-photo gp3"></div><div class="gal-overlay"><span class="gal-label">La Corse Sauvage</span></div></div>
+      <div class="gal-cell fade-up"><div class="gal-photo gp4"></div><div class="gal-overlay"><span class="gal-label">Vue Panoramique</span></div></div>
+      <div class="gal-cell fade-up"><div class="gal-photo gp5"></div><div class="gal-overlay"><span class="gal-label">L'Hôtel</span></div></div>
+      <div class="gal-cell fade-up"><div class="gal-photo gp6"></div><div class="gal-overlay"><span class="gal-label">Le Port</span></div></div>
     </div>
   </div>
 </section>
 
 <!-- TESTIMONIALS -->
-<section class="section test-section">
-  <div class="inner">
+<section class="test-section">
+  <div class="test-inner">
     <div class="test-head">
-      <span class="s-label rv">Ils l'ont vécu</span>
-      <h2 class="s-title rv d1">Ce que nos <em>Voyageurs</em> ressentent</h2>
-      <div class="sep c rv d2"></div>
+      <span class="s-label fade-up">Ils l'ont vécu</span>
+      <h2 class="s-title fade-up">Ce que nos <em>Voyageurs</em> ressentent</h2>
+      <div class="sep c fade-up"></div>
     </div>
     <div class="test-grid">
-      <div class="t-card rv d1">
-        <div class="t-stars">★★★★★</div>
-        <p class="t-text">« On arrive en cherchant un hôtel. On repart avec Calvi tatouée dans le cœur. Ce Grand Hôtel, c'est l'âme de la ville — magnifique, authentique, inoubliable. »</p>
-        <span class="t-auth">Marie-Claire D. · Paris</span>
-      </div>
-      <div class="t-card rv d2">
-        <div class="t-stars">★★★★★</div>
-        <p class="t-text">« La vue sur la baie depuis notre chambre… Je cherche encore les mots. Le petit-déjeuner, l'accueil chaleureux, l'emplacement parfait. On a tout fait à pied. On reviendra. »</p>
-        <span class="t-auth">Thomas &amp; Élodie M. · Lyon</span>
-      </div>
-      <div class="t-card rv d3">
-        <div class="t-stars">★★★★☆</div>
-        <p class="t-text">« Calvi, c'est le bout du monde. Ce Grand Hôtel, c'est le début du rêve. Emplacement exceptionnel, à deux minutes de tout. On a découvert la vraie Corse. »</p>
-        <span class="t-auth">Antoine B. · Bordeaux</span>
-      </div>
+      <div class="t-card fade-up"><div class="t-stars">★★★★★</div><p class="t-text">« On arrive en cherchant un hôtel. On repart avec Calvi tatouée dans le cœur. Ce Grand Hôtel, c'est l'âme de la ville — magnifique, authentique, inoubliable. »</p><span class="t-auth">Marie-Claire D. · Paris</span></div>
+      <div class="t-card fade-up"><div class="t-stars">★★★★★</div><p class="t-text">« La vue sur la baie depuis notre chambre… Je cherche encore les mots. Le petit-déjeuner, l'accueil, l'emplacement parfait. On a tout fait à pied. On reviendra. »</p><span class="t-auth">Thomas & Élodie M. · Lyon</span></div>
+      <div class="t-card fade-up"><div class="t-stars">★★★★☆</div><p class="t-text">« Calvi, c'est le bout du monde. Ce Grand Hôtel, c'est le début du rêve. Emplacement exceptionnel, à deux minutes de tout. On a découvert la vraie Corse. »</p><span class="t-auth">Antoine B. · Bordeaux</span></div>
     </div>
   </div>
 </section>
 
-<!-- BOOKING CTA -->
+<!-- BOOKING -->
 <section class="book-section" id="reserver">
   <div class="book-bg"></div>
-  <canvas id="c-book"></canvas>
-  <div class="book-inner rv">
+  <canvas id="book-canvas"></canvas>
+  <div class="book-inner fade-up">
     <span class="book-pre">Réservation directe · Meilleur tarif garanti</span>
     <h2 class="book-title">Écrivez votre histoire<br>à <em>Calvi</em></h2>
-    <p class="book-sub">
-      L'été corse est court. Les plus belles chambres avec vue sur la baie se réservent tôt.<br>
-      Contactez-nous directement pour le meilleur accueil et les meilleures disponibilités.
-    </p>
+    <p class="book-sub">L'été corse est court. Les plus belles chambres avec vue sur la baie se réservent tôt.<br>Contactez-nous directement pour le meilleur accueil et les meilleures disponibilités.</p>
     <div class="book-form">
       <input type="email" class="book-input" placeholder="Votre adresse email">
-      <button class="book-submit">Recevoir nos offres</button>
+      <button class="book-submit magnetic">Recevoir nos offres</button>
     </div>
     <div class="book-contacts">
-      <div class="bc-item">
-        <strong>Téléphone</strong>
-        <span>+33 (0)4 95 65 09 74</span>
-      </div>
-      <div class="bc-item">
-        <strong>Email</strong>
-        <span>contact@grand-hotel-calvi.com</span>
-      </div>
-      <div class="bc-item">
-        <strong>Adresse</strong>
-        <span>3 Bd Wilson, 20260 Calvi</span>
-      </div>
+      <div class="bc"><strong>Téléphone</strong><span>+33 (0)4 95 65 09 74</span></div>
+      <div class="bc"><strong>Email</strong><span>contact@grand-hotel-calvi.com</span></div>
+      <div class="bc"><strong>Adresse</strong><span>3 Bd Wilson, 20260 Calvi</span></div>
     </div>
   </div>
 </section>
@@ -1045,39 +509,12 @@ img { display:block; width:100%; height:100%; object-fit:cover; }
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-brand">
-      <div class="nav-logo">
-        Grand Hôtel de Calvi
-        <small>Palace · Haute-Corse · Depuis 1920</small>
-      </div>
+      <div class="logo">Grand Hôtel de Calvi<small>Palace · Haute-Corse · Depuis 1920</small></div>
       <p>Un Palace légendaire au cœur de Calvi, face à la Méditerranée. 58 chambres d'exception, à deux pas de la plage, du port et de la citadelle génoise.</p>
     </div>
-    <div class="footer-col">
-      <h4>L'Hôtel</h4>
-      <ul>
-        <li><a href="#histoire">Notre Histoire</a></li>
-        <li><a href="#chambres">Nos Chambres</a></li>
-        <li><a href="#exp">Expériences</a></li>
-        <li><a href="#calvi">Calvi</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Services</h4>
-      <ul>
-        <li><a href="#reserver">Petit-Déjeuner</a></li>
-        <li><a href="#reserver">Bien-Être &amp; Spa</a></li>
-        <li><a href="#reserver">Conciergerie</a></li>
-        <li><a href="#reserver">Séminaires</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Contact</h4>
-      <ul>
-        <li><a href="tel:+33495650974">+33 (0)4 95 65 09 74</a></li>
-        <li><a href="mailto:contact@grand-hotel-calvi.com">contact@</a></li>
-        <li><span>3 Bd Wilson</span></li>
-        <li><span>20260 Calvi, Haute-Corse</span></li>
-      </ul>
-    </div>
+    <div class="footer-col"><h4>L'Hôtel</h4><ul><li><a href="#histoire">Notre Histoire</a></li><li><a href="#chambres">Nos Chambres</a></li><li><a href="#exp">Expériences</a></li><li><a href="#calvi">Calvi</a></li></ul></div>
+    <div class="footer-col"><h4>Services</h4><ul><li><a href="#reserver">Petit-Déjeuner</a></li><li><a href="#reserver">Bien-Être & Spa</a></li><li><a href="#reserver">Conciergerie</a></li><li><a href="#reserver">Séminaires</a></li></ul></div>
+    <div class="footer-col"><h4>Contact</h4><ul><li><a href="tel:+33495650974">+33 (0)4 95 65 09 74</a></li><li><a href="mailto:contact@grand-hotel-calvi.com">contact@grand-hotel-calvi.com</a></li><li><span>3 Bd Wilson</span></li><li><span>20260 Calvi, Haute-Corse</span></li></ul></div>
   </div>
   <div class="footer-bottom">
     <span>© 2025 Grand Hôtel de Calvi · Tous droits réservés</span>
@@ -1086,119 +523,253 @@ img { display:block; width:100%; height:100%; object-fit:cover; }
 </footer>
 
 <script>
-/* ─── UTILITIES ───────────────────────────────────────── */
-function scrollTo(sel) {
-  const el = document.querySelector(sel);
-  if (el) el.scrollIntoView({ behavior: 'smooth' });
+gsap.registerPlugin(ScrollTrigger);
+
+/* ── LOADER ─────────────────────────────────── */
+(function(){
+  const name = 'Grand Hôtel de Calvi';
+  const wrap = document.getElementById('ld-name');
+  [...name].forEach((ch, i) => {
+    const s = document.createElement('span');
+    s.textContent = ch === ' ' ? ' ' : ch;
+    s.style.animationDelay = (i * 0.045 + 0.1) + 's';
+    wrap.appendChild(s);
+  });
+  setTimeout(() => document.getElementById('loader').classList.add('out'), 2200);
+})();
+
+/* ── CURSOR ─────────────────────────────────── */
+const cur = document.getElementById('cur');
+const curf = document.getElementById('cur-f');
+if (cur) {
+  document.addEventListener('mousemove', e => {
+    gsap.to(cur,  { x: e.clientX, y: e.clientY, duration: 0 });
+    gsap.to(curf, { x: e.clientX, y: e.clientY, duration: 0.28, ease: 'power2.out' });
+  });
+  document.querySelectorAll('a,button,.room-card,.gal-cell').forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('hovered'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('hovered'));
+  });
 }
 
-/* ─── TIME OF DAY ─────────────────────────────────────── */
-(function() {
-  const h = new Date().getHours();
-  const cls = h < 6 ? 'time-night' : h < 12 ? 'time-morning' : h < 18 ? 'time-day' : h < 21 ? 'time-evening' : 'time-night';
-  document.body.classList.add(cls);
-})();
+/* ── THREE.JS OCEAN ─────────────────────────── */
+(function(){
+  if (typeof THREE === 'undefined') return;
+  const canvas = document.getElementById('three-canvas');
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  let W = canvas.offsetWidth, H = canvas.offsetHeight;
+  renderer.setSize(W, H);
 
-/* ─── LOADER ──────────────────────────────────────────── */
-(function() {
-  const name = 'Grand Hôtel';
-  const wrap = document.getElementById('loader-name');
-  name.split('').forEach((ch, i) => {
-    const span = document.createElement('span');
-    span.textContent = ch === ' ' ? ' ' : ch;
-    span.style.animationDelay = (i * 0.06 + 0.1) + 's';
-    wrap.appendChild(span);
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(65, W / H, 0.1, 100);
+  camera.position.set(0, 2.8, 6);
+  camera.lookAt(0, -0.5, 0);
+
+  const sunLight = new THREE.DirectionalLight(0xffd585, 1.8);
+  sunLight.position.set(4, 6, 3);
+  scene.add(sunLight);
+  scene.add(new THREE.AmbientLight(0x0a2040, 1.2));
+
+  const vert = `
+    uniform float uTime;
+    varying float vEle;
+    varying vec3 vPos;
+    void main(){
+      vec4 mp = modelMatrix * vec4(position,1.0);
+      float w1 = sin(mp.x*2.2 + uTime*.9)*.12;
+      float w2 = cos(mp.z*1.6 + uTime*.65)*.08;
+      float w3 = sin((mp.x-mp.z)*3.8 + uTime*1.4)*.04;
+      float w4 = cos(mp.x*6.0 + uTime*2.1)*.018;
+      float ele = w1+w2+w3+w4;
+      mp.y += ele; vEle = ele; vPos = mp.xyz;
+      gl_Position = projectionMatrix*viewMatrix*mp;
+    }`;
+  const frag = `
+    uniform float uTime;
+    varying float vEle;
+    varying vec3 vPos;
+    void main(){
+      vec3 deep    = vec3(.02,.07,.2);
+      vec3 mid     = vec3(.06,.2,.42);
+      vec3 shallow = vec3(.12,.35,.62);
+      float d = smoothstep(-.22,.18,vEle);
+      vec3 col = mix(deep, mix(mid,shallow,d*.7), d);
+      // Sun specular
+      vec3 view = normalize(vec3(0,2.8,6) - vPos);
+      vec3 sun  = normalize(vec3(4,6,3)   - vPos);
+      vec3 n    = normalize(vec3(sin(vEle*8.)*.15, 1., cos(vEle*6.)*.1));
+      float spec = pow(max(dot(reflect(-sun,n),view),0.),45.);
+      col += vec3(.92,.72,.32)*spec*1.4;
+      // Foam at crests
+      float foam = smoothstep(.09,.18,vEle);
+      col = mix(col, vec3(.55,.75,.9), foam*.35);
+      gl_FragColor = vec4(col, .92);
+    }`;
+
+  const mat = new THREE.ShaderMaterial({
+    vertexShader: vert, fragmentShader: frag,
+    uniforms: { uTime: { value: 0 } },
+    transparent: true, side: THREE.FrontSide
   });
-  setTimeout(() => {
-    document.getElementById('loader').classList.add('hidden');
-  }, 2000);
+  const geo = new THREE.PlaneGeometry(22, 16, 180, 180);
+  geo.rotateX(-Math.PI / 2);
+  const ocean = new THREE.Mesh(geo, mat);
+  ocean.position.y = -1.2;
+  scene.add(ocean);
+
+  const clock = new THREE.Clock();
+  function tick() {
+    requestAnimationFrame(tick);
+    mat.uniforms.uTime.value = clock.getElapsedTime();
+    renderer.render(scene, camera);
+  }
+  tick();
+
+  window.addEventListener('resize', () => {
+    W = canvas.offsetWidth; H = canvas.offsetHeight;
+    renderer.setSize(W, H);
+    camera.aspect = W / H;
+    camera.updateProjectionMatrix();
+  });
+
+  // Subtle mouse parallax on camera
+  document.addEventListener('mousemove', e => {
+    const mx = (e.clientX / window.innerWidth  - .5) * .4;
+    const my = (e.clientY / window.innerHeight - .5) * .2;
+    gsap.to(camera.position, { x: mx, duration: 2, ease: 'power2.out' });
+    gsap.to(ocean.rotation, { z: mx * .04, duration: 2, ease: 'power2.out' });
+  });
 })();
 
-/* ─── NAV ─────────────────────────────────────────────── */
-const nav = document.getElementById('nav');
-addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 70), { passive: true });
-
-/* ─── PARTICLES (generic) ─────────────────────────────── */
-function makeParticles(id, n, colFn) {
-  const c = document.getElementById(id);
+/* ── PARTICLE CANVAS (booking) ───────────────── */
+(function(){
+  const c = document.getElementById('book-canvas');
   if (!c) return;
   const ctx = c.getContext('2d');
   let W, H, pts = [];
-
-  function resize() {
-    W = c.width  = c.offsetWidth;
-    H = c.height = c.offsetHeight;
-  }
-  resize();
-  addEventListener('resize', resize, { passive: true });
-
-  for (let i = 0; i < n; i++) {
-    pts.push({
-      ox: Math.random() * 1400, oy: Math.random() * 900,
-      a: Math.random() * Math.PI * 2,
-      s: Math.random() * .35 + .08,
-      r: Math.random() * 1.4 + .25,
-      da: (Math.random() - .5) * .006,
-      op: Math.random() * .55 + .08,
-      td: Math.random() * .018 + .004,
-      tdir: Math.random() > .5 ? 1 : -1
-    });
-  }
-
-  (function tick() {
-    ctx.clearRect(0, 0, W, H);
-    pts.forEach(p => {
-      p.a  += p.da;
-      const x = p.ox + Math.cos(p.a) * 28 * p.s;
-      const y = p.oy + Math.sin(p.a) * 18 * p.s;
-      p.op += p.td * p.tdir;
-      if (p.op > .65 || p.op < .05) p.tdir *= -1;
-      ctx.save();
-      ctx.globalAlpha = p.op;
-      ctx.fillStyle = colFn(p);
-      ctx.beginPath();
-      ctx.arc(x % W, y % H, p.r, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.restore();
-    });
+  function resize(){ W = c.width = c.offsetWidth; H = c.height = c.offsetHeight; }
+  resize(); window.addEventListener('resize', resize);
+  for(let i=0;i<60;i++) pts.push({ ox:Math.random()*1400, oy:Math.random()*900, a:Math.random()*Math.PI*2, s:Math.random()*.3+.1, r:Math.random()*1.3+.2, da:(Math.random()-.5)*.006, op:Math.random()*.5+.1, td:Math.random()*.015+.003, tdir:Math.random()>.5?1:-1 });
+  (function tick(){
+    ctx.clearRect(0,0,W,H);
+    pts.forEach(p=>{ p.a+=p.da; const x=p.ox+Math.cos(p.a)*25*p.s; const y=p.oy+Math.sin(p.a)*18*p.s; p.op+=p.td*p.tdir; if(p.op>.65||p.op<.05)p.tdir*=-1; ctx.save(); ctx.globalAlpha=p.op; ctx.fillStyle='#c9a462'; ctx.beginPath(); ctx.arc(x%W,y%H,p.r,0,Math.PI*2); ctx.fill(); ctx.restore(); });
     requestAnimationFrame(tick);
   })();
-}
-makeParticles('c-hero', 110, () => '#fff');
-makeParticles('c-book',  55, () => '#c9a462');
+})();
 
-/* ─── PARALLAX HERO ───────────────────────────────────── */
-const hbg = document.getElementById('hbg');
-const hct = document.getElementById('hcontent');
-addEventListener('scroll', () => {
-  const s = scrollY;
-  if (s < innerHeight) {
-    hbg.style.transform = `translateY(${s * .28}px)`;
-    hct.style.transform = `translateY(${s * .13}px)`;
-    hct.style.opacity   = Math.max(0, 1 - s / (innerHeight * .65));
-  }
-}, { passive: true });
+/* ── GSAP HERO ───────────────────────────────── */
+const tl = gsap.timeline({ delay: 2.3 });
+tl.to('#hero-eyebrow', { opacity: 1, y: 0, duration: 1, ease: 'power3.out' })
+  .to('#hero-title .line span', { y: '0%', duration: 1.2, stagger: 0.15, ease: 'power4.out' }, '-=0.6')
+  .to('#hero-sub',  { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }, '-=0.5')
+  .to('#hero-btns', { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }, '-=0.6')
+  .to('#hero-scroll',{ opacity: 1, duration: 1 }, '-=0.3');
 
-/* ─── SCROLL REVEAL ───────────────────────────────────── */
-const ro = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add('on'); ro.unobserve(e.target); }
+/* ── GSAP SCROLL REVEALS ─────────────────────── */
+gsap.utils.toArray('.fade-up').forEach(el => {
+  gsap.to(el, {
+    opacity: 1, y: 0, duration: 1, ease: 'power3.out',
+    scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' }
   });
-}, { threshold: .14, rootMargin: '0px 0px -40px 0px' });
+});
+gsap.utils.toArray('.fade-left').forEach(el => {
+  gsap.to(el, {
+    opacity: 1, x: 0, duration: 1.1, ease: 'power3.out',
+    scrollTrigger: { trigger: el, start: 'top 85%' }
+  });
+});
+gsap.utils.toArray('.fade-right').forEach(el => {
+  gsap.to(el, {
+    opacity: 1, x: 0, duration: 1.1, ease: 'power3.out',
+    scrollTrigger: { trigger: el, start: 'top 85%' }
+  });
+});
 
-document.querySelectorAll('.rv,.rv-l,.rv-r').forEach(el => ro.observe(el));
+/* Story section parallax on photo */
+gsap.to('.story-photo-img', {
+  y: -60, ease: 'none',
+  scrollTrigger: { trigger: '.story-section', start: 'top bottom', end: 'bottom top', scrub: 1 }
+});
 
-/* ─── COUNTER ─────────────────────────────────────────── */
-const cntEl = document.getElementById('cnt');
-const cntObs = new IntersectionObserver(entries => {
-  if (entries[0].isIntersecting) {
+/* Gallery parallax */
+gsap.utils.toArray('.gal-photo').forEach((el, i) => {
+  gsap.to(el, {
+    y: (i % 2 === 0 ? -30 : 30), ease: 'none',
+    scrollTrigger: { trigger: el.parentElement, start: 'top bottom', end: 'bottom top', scrub: 1 }
+  });
+});
+
+/* Hero scroll parallax */
+gsap.to('#hero-content', {
+  y: 120, ease: 'none',
+  scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1 }
+});
+
+/* ── ROOM 3D TILT ────────────────────────────── */
+document.querySelectorAll('[data-tilt]').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - .5;
+    const y = (e.clientY - r.top) / r.height - .5;
+    gsap.to(card, { rotateY: x * 14, rotateX: -y * 9, transformPerspective: 900, duration: .4, ease: 'power2.out' });
+  });
+  card.addEventListener('mouseleave', () => {
+    gsap.to(card, { rotateY: 0, rotateX: 0, duration: .7, ease: 'elastic.out(1,.6)' });
+  });
+});
+
+/* ── MAGNETIC BUTTONS ────────────────────────── */
+document.querySelectorAll('.magnetic').forEach(el => {
+  el.addEventListener('mousemove', e => {
+    const r = el.getBoundingClientRect();
+    const dx = (e.clientX - r.left - r.width / 2) * .28;
+    const dy = (e.clientY - r.top  - r.height/ 2) * .28;
+    gsap.to(el, { x: dx, y: dy, duration: .4, ease: 'power2.out' });
+  });
+  el.addEventListener('mouseleave', () => {
+    gsap.to(el, { x: 0, y: 0, duration: .7, ease: 'elastic.out(1.2,.5)' });
+  });
+});
+
+/* ── NAV SCROLL ──────────────────────────────── */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('solid', scrollY > 80), { passive: true });
+
+/* ── COUNTER ─────────────────────────────────── */
+ScrollTrigger.create({
+  trigger: '.numbers', start: 'top 90%', once: true,
+  onEnter() {
     let v = 0;
-    const go = () => { v++; cntEl.textContent = v; if (v < 58) setTimeout(go, 28); };
+    const el = document.getElementById('cnt');
+    const go = () => { v++; el.textContent = v; if(v < 58) setTimeout(go, 28); };
     go();
-    cntObs.disconnect();
   }
-}, { threshold: .5 });
-cntObs.observe(cntEl);
+});
+
+/* ── SOUND TOGGLE (Web Audio API — waves) ────── */
+const soundBtn = document.getElementById('sound-btn');
+let audioCtx = null, noiseSource = null, gainNode = null, soundOn = false;
+soundBtn.addEventListener('click', () => {
+  if (!soundOn) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const buf = audioCtx.createBuffer(1, audioCtx.sampleRate * 3, audioCtx.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+    noiseSource = audioCtx.createBufferSource();
+    noiseSource.buffer = buf; noiseSource.loop = true;
+    const lpf = audioCtx.createBiquadFilter(); lpf.type = 'bandpass'; lpf.frequency.value = 320; lpf.Q.value = 0.6;
+    gainNode = audioCtx.createGain(); gainNode.gain.value = 0;
+    noiseSource.connect(lpf); lpf.connect(gainNode); gainNode.connect(audioCtx.destination);
+    noiseSource.start();
+    gainNode.gain.setTargetAtTime(0.2, audioCtx.currentTime, 0.8);
+    soundOn = true; soundBtn.classList.add('on'); soundBtn.textContent = '🌊 Sons actifs';
+  } else {
+    gainNode.gain.setTargetAtTime(0, audioCtx.currentTime, 0.3);
+    setTimeout(() => { noiseSource.stop(); audioCtx.close(); }, 500);
+    soundOn = false; soundBtn.classList.remove('on'); soundBtn.textContent = 'Sons de la mer';
+  }
+});
 </script>
 </body>
 </html>

@@ -1,0 +1,1484 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Camping La Pinède ★★★★ — Calvi, Corse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/three@0.152.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
+<style>
+:root {
+  --pine-dark: #070f07;
+  --pine: #172e18;
+  --pine-mid: #1e3d20;
+  --gold: #c8913e;
+  --gold-light: #e6b96a;
+  --sea: #29b5d5;
+  --sea-dark: #1a7a90;
+  --cream: #f7f2e8;
+  --cream-dark: #ede4ce;
+  --sunset: #e8724a;
+  --white: #fff;
+  --text-main: #1a1a1a;
+  --text-muted: rgba(255,255,255,.55);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--pine-dark);
+  color:var(--white);
+  cursor:none;
+  overflow-x:hidden;
+}
+
+/* ── CURSOR ── */
+#cur{
+  position:fixed;top:0;left:0;z-index:9999;
+  width:8px;height:8px;border-radius:50%;
+  background:var(--gold);pointer-events:none;
+  transform:translate(-50%,-50%);
+  transition:width .2s,height .2s,opacity .3s;
+}
+#cur-f{
+  position:fixed;top:0;left:0;z-index:9998;
+  width:40px;height:40px;border-radius:50%;
+  border:1.5px solid rgba(200,145,62,.5);
+  pointer-events:none;
+  transform:translate(-50%,-50%);
+}
+.hovering #cur{width:18px;height:18px;}
+
+/* ── LOADER ── */
+#loader{
+  position:fixed;inset:0;z-index:9000;
+  background:var(--pine-dark);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:22px;
+}
+.l-tree{
+  font-size:52px;
+  animation:sway 1.4s ease-in-out infinite alternate;
+}
+@keyframes sway{from{transform:rotate(-8deg);}to{transform:rotate(8deg);}}
+.l-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:24px;letter-spacing:10px;
+  color:var(--gold);text-transform:uppercase;
+}
+.l-bar{
+  width:220px;height:1.5px;
+  background:rgba(200,145,62,.18);
+  overflow:hidden;
+}
+.l-fill{
+  height:100%;width:0%;
+  background:linear-gradient(90deg,var(--gold),var(--gold-light));
+  transition:width .08s linear;
+}
+
+/* ── CANVAS ── */
+#hero-canvas{
+  position:fixed;top:0;left:0;
+  width:100vw;height:100vh;
+  z-index:0;pointer-events:none;
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:26px 5%;
+  transition:padding .5s,background .5s,backdrop-filter .5s,border-color .5s;
+  border-bottom:1px solid transparent;
+}
+nav.scrolled{
+  padding:15px 5%;
+  backdrop-filter:blur(24px);
+  background:rgba(7,15,7,.82);
+  border-color:rgba(200,145,62,.12);
+}
+.nav-logo{
+  font-family:'Cormorant Garamond',serif;
+  font-size:22px;font-weight:600;
+  color:var(--white);text-decoration:none;
+  letter-spacing:2px;
+}
+.nav-logo em{color:var(--gold);font-style:normal;}
+.nav-links{display:flex;gap:36px;list-style:none;}
+.nav-links a{
+  color:rgba(255,255,255,.75);text-decoration:none;
+  font-size:12.5px;font-weight:400;
+  letter-spacing:1.8px;text-transform:uppercase;
+  transition:color .3s;
+}
+.nav-links a:hover{color:var(--gold);}
+.nav-book{
+  color:var(--pine-dark)!important;
+  background:var(--gold);
+  padding:10px 26px;border-radius:2px;
+  font-weight:600!important;
+  transition:background .3s,transform .2s!important;
+}
+.nav-book:hover{background:var(--gold-light)!important;transform:translateY(-2px);}
+
+/* ── HERO ── */
+#hero{
+  position:relative;z-index:10;
+  height:100vh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;padding:0 20px;
+  pointer-events:none;
+}
+.h-eye{
+  font-size:12px;letter-spacing:7px;
+  color:var(--gold);text-transform:uppercase;
+  margin-bottom:28px;
+  opacity:0;transform:translateY(24px);
+}
+.h-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(58px,9.5vw,118px);
+  font-weight:300;line-height:.96;
+  margin-bottom:14px;
+}
+.h-title .ln{display:block;overflow:hidden;}
+.h-title .ln span{display:block;transform:translateY(110%);}
+.h-stars{color:var(--gold);font-size:20px;letter-spacing:5px;margin-bottom:18px;opacity:0;}
+.h-sub{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(18px,2.4vw,27px);
+  font-weight:300;font-style:italic;
+  color:rgba(255,255,255,.65);
+  margin-bottom:12px;opacity:0;
+}
+.h-tag{
+  font-size:12.5px;letter-spacing:2.5px;
+  color:rgba(255,255,255,.42);text-transform:uppercase;
+  margin-bottom:52px;opacity:0;
+}
+.h-btns{
+  display:flex;gap:18px;
+  pointer-events:all;opacity:0;
+}
+.btn-p{
+  background:var(--gold);color:var(--pine-dark);
+  padding:16px 46px;font-size:12.5px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;
+  border:none;text-decoration:none;border-radius:2px;
+  display:inline-block;
+  transition:background .3s,transform .3s;
+  cursor:none;
+}
+.btn-p:hover{background:var(--gold-light);transform:translateY(-3px);}
+.btn-g{
+  background:transparent;color:var(--white);
+  padding:16px 46px;font-size:12.5px;font-weight:400;
+  letter-spacing:2px;text-transform:uppercase;
+  border:1px solid rgba(255,255,255,.3);text-decoration:none;border-radius:2px;
+  display:inline-block;
+  transition:border-color .3s,color .3s,transform .3s;
+  cursor:none;
+}
+.btn-g:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-3px);}
+.h-scroll{
+  position:absolute;bottom:38px;left:50%;
+  transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:12px;
+  opacity:0;pointer-events:none;
+}
+.h-scroll-txt{font-size:9px;letter-spacing:5px;text-transform:uppercase;color:rgba(255,255,255,.35);}
+.h-scroll-line{
+  width:1px;height:54px;
+  background:linear-gradient(to bottom,rgba(200,145,62,.9),transparent);
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{
+  0%{transform:scaleY(0);transform-origin:top;}
+  49%{transform:scaleY(1);transform-origin:top;}
+  50%{transform:scaleY(1);transform-origin:bottom;}
+  100%{transform:scaleY(0);transform-origin:bottom;}
+}
+
+/* ── STATS BAR ── */
+#stats{
+  position:relative;z-index:10;
+  display:flex;
+  background:rgba(200,145,62,.06);
+  border-top:1px solid rgba(200,145,62,.14);
+  border-bottom:1px solid rgba(200,145,62,.14);
+}
+.s-item{
+  flex:1;padding:38px 16px;text-align:center;
+  border-right:1px solid rgba(200,145,62,.1);
+  opacity:0;transform:translateY(32px);
+}
+.s-item:last-child{border-right:none;}
+.s-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:54px;font-weight:300;color:var(--gold);
+  line-height:1;display:block;
+}
+.s-label{
+  font-size:10.5px;letter-spacing:3px;text-transform:uppercase;
+  color:rgba(255,255,255,.42);margin-top:8px;display:block;
+}
+
+/* ── STORY ── */
+#story{
+  position:relative;z-index:10;
+  min-height:100vh;display:flex;
+  background:var(--pine-dark);
+}
+.st-text{
+  width:50%;display:flex;flex-direction:column;
+  justify-content:center;
+  padding:110px 6% 110px 8%;
+}
+.st-img{
+  width:50%;position:relative;overflow:hidden;min-height:500px;
+}
+.st-img::before{
+  content:'';position:absolute;inset:0;z-index:2;
+  background:linear-gradient(90deg,var(--pine-dark) 0%,transparent 28%);
+}
+.st-img img{
+  width:100%;height:100%;object-fit:cover;
+  filter:brightness(.72) saturate(1.3);
+}
+.st-body{color:var(--text-muted);font-size:15.5px;line-height:1.92;margin-top:26px;}
+.st-sep{
+  display:inline-block;width:54px;height:1.5px;
+  background:var(--gold);margin-top:38px;
+  transform:scaleX(0);transform-origin:left;
+}
+.st-quote{
+  margin-top:38px;padding:24px 26px;
+  background:rgba(200,145,62,.07);
+  border-left:2px solid var(--gold);border-radius:2px;
+  font-family:'Cormorant Garamond',serif;
+  font-size:20px;font-style:italic;
+  color:rgba(255,255,255,.7);line-height:1.6;
+}
+
+/* ── SECTION LABELS ── */
+.lbl{
+  font-size:11px;letter-spacing:5.5px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:18px;display:block;
+}
+.lbl-dark{color:var(--pine-mid);}
+.s-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(38px,5.5vw,72px);
+  font-weight:300;line-height:1.08;
+}
+.s-body{
+  font-size:15px;line-height:1.84;
+  color:var(--text-muted);max-width:560px;
+  margin-top:20px;
+}
+
+/* ── LODGING ── */
+#lodging{
+  position:relative;z-index:10;
+  padding:130px 5%;
+  background:var(--cream);color:var(--text-main);
+}
+#lodging .s-title{color:var(--pine);}
+#lodging .lbl{color:var(--pine-mid);}
+.lg-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:26px;margin-top:64px;
+}
+.lg-card{
+  background:white;border-radius:3px;overflow:hidden;
+  box-shadow:0 4px 28px rgba(0,0,0,.07);
+  opacity:0;transform:translateY(60px);
+  transform-style:preserve-3d;
+  transition:box-shadow .35s;cursor:none;
+}
+.lg-card:hover{box-shadow:0 24px 64px rgba(0,0,0,.14);}
+.lg-img{height:250px;position:relative;overflow:hidden;}
+.lg-img img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform .65s;
+}
+.lg-img::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,.3) 0%,transparent 50%);
+}
+.lg-card:hover .lg-img img{transform:scale(1.07);}
+.lg-badge{
+  position:absolute;top:16px;right:16px;z-index:2;
+  background:var(--gold);color:var(--pine-dark);
+  font-size:9.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  padding:5px 12px;border-radius:2px;
+}
+.lg-body{padding:30px 26px;}
+.lg-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:27px;font-weight:600;color:var(--pine);
+  margin-bottom:10px;
+}
+.lg-desc{font-size:13.5px;color:#5a5a5a;line-height:1.72;margin-bottom:20px;}
+.lg-feats{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:24px;}
+.lg-feat{
+  font-size:11px;letter-spacing:.3px;
+  background:var(--cream);color:var(--pine);
+  padding:4px 11px;border-radius:20px;
+}
+.lg-foot{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:20px;border-top:1px solid var(--cream-dark);
+}
+.lg-price{
+  font-family:'Cormorant Garamond',serif;
+  font-size:30px;color:var(--gold);font-weight:600;
+}
+.lg-price small{font-size:13px;color:#aaa;font-family:'Inter',sans-serif;font-weight:300;}
+.lg-btn{
+  background:var(--pine);color:white;
+  padding:10px 24px;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;
+  border:none;border-radius:2px;text-decoration:none;
+  display:inline-block;transition:background .3s,transform .2s;cursor:none;
+}
+.lg-btn:hover{background:var(--pine-dark);transform:translateY(-2px);}
+
+/* ── POOL ── */
+#pool{
+  position:relative;z-index:10;
+  min-height:100vh;display:flex;align-items:center;
+  overflow:hidden;
+}
+.pool-bg{
+  position:absolute;inset:0;
+  background-image:url('https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=1920&q=80');
+  background-size:cover;background-position:center;
+  filter:brightness(.38) saturate(1.4);
+  transform:scale(1.12);
+}
+.pool-ov{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(7,15,7,.9) 0%,rgba(0,60,80,.55) 100%);
+}
+.pool-shimmer{
+  position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(
+    0deg,transparent,transparent 3px,
+    rgba(41,181,213,.025) 3px,rgba(41,181,213,.025) 4px
+  );
+  animation:shimmer 5s linear infinite;
+}
+@keyframes shimmer{from{background-position:0 0;}to{background-position:0 48px;}}
+.pool-cnt{
+  position:relative;z-index:2;
+  padding:110px 8%;max-width:900px;
+}
+.pool-nums{display:flex;gap:52px;margin-top:48px;flex-wrap:wrap;}
+.p-num-b{
+  font-family:'Cormorant Garamond',serif;
+  font-size:58px;font-weight:300;color:var(--sea);line-height:1;
+}
+.p-num-l{
+  font-size:10.5px;letter-spacing:3px;text-transform:uppercase;
+  color:rgba(255,255,255,.45);margin-top:6px;
+}
+.pool-tags{display:flex;flex-wrap:wrap;gap:14px;margin-top:42px;}
+.pool-tag{
+  display:flex;align-items:center;gap:10px;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.1);
+  padding:12px 20px;border-radius:3px;
+  font-size:13px;color:rgba(255,255,255,.78);
+  transition:border-color .3s,background .3s;
+}
+.pool-tag:hover{border-color:rgba(41,181,213,.4);background:rgba(41,181,213,.08);}
+.pool-tag span{font-size:22px;}
+
+/* ── RESTAURANT ── */
+#restaurant{
+  position:relative;z-index:10;
+  min-height:80vh;display:flex;
+  background:var(--pine-dark);
+}
+.re-img{
+  width:50%;position:relative;overflow:hidden;min-height:600px;
+}
+.re-img img{
+  width:100%;height:100%;object-fit:cover;
+  filter:brightness(.75) saturate(1.2);
+  transition:transform 8s ease;
+}
+.re-img:hover img{transform:scale(1.05);}
+.re-img::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(-90deg,var(--pine-dark) 0%,transparent 28%);
+}
+.re-cnt{
+  width:50%;display:flex;flex-direction:column;
+  justify-content:center;padding:80px 7% 80px 5%;
+}
+.re-list{margin-top:36px;display:flex;flex-direction:column;gap:14px;}
+.re-item{
+  display:flex;align-items:flex-start;gap:16px;
+  padding:18px 20px;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(200,145,62,.1);
+  border-radius:3px;
+  opacity:0;transform:translateX(44px);
+  transition:border-color .3s,background .3s;cursor:none;
+}
+.re-item:hover{border-color:rgba(200,145,62,.3);background:rgba(200,145,62,.04);}
+.re-ico{font-size:26px;flex-shrink:0;margin-top:2px;}
+.re-name{font-size:15px;font-weight:500;margin-bottom:3px;}
+.re-desc{font-size:12.5px;color:rgba(255,255,255,.45);line-height:1.6;}
+
+/* ── ACTIVITIES ── */
+#activities{
+  position:relative;z-index:10;
+  padding:130px 5% 0;
+  background:#09150a;overflow:hidden;
+}
+.acts-wrap{
+  overflow:hidden;
+  margin-top:64px;padding-bottom:130px;
+}
+.acts-track{
+  display:flex;gap:22px;
+  width:max-content;
+}
+.ac-card{
+  width:310px;flex-shrink:0;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(200,145,62,.1);
+  border-radius:3px;overflow:hidden;
+  transition:border-color .3s,background .3s,transform .3s;
+  cursor:none;
+}
+.ac-card:hover{
+  border-color:rgba(200,145,62,.4);
+  background:rgba(200,145,62,.05);
+  transform:translateY(-6px);
+}
+.ac-img{
+  height:188px;position:relative;overflow:hidden;
+}
+.ac-img img{
+  width:100%;height:100%;object-fit:cover;
+  filter:brightness(.68) saturate(1.1);
+  transition:transform .55s,filter .55s;
+}
+.ac-card:hover .ac-img img{transform:scale(1.1);filter:brightness(.82) saturate(1.3);}
+.ac-overlay{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  font-size:44px;opacity:0;
+  transition:opacity .3s;
+}
+.ac-card:hover .ac-overlay{opacity:1;}
+.ac-body{padding:22px 20px;}
+.ac-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:22px;font-weight:600;margin-bottom:8px;
+}
+.ac-desc{font-size:13px;color:rgba(255,255,255,.48);line-height:1.68;}
+
+/* ── BEACH ── */
+#beach{
+  position:relative;z-index:10;
+  height:72vh;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+.be-bg{
+  position:absolute;inset:-20%;
+  background-image:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1920&q=80');
+  background-size:cover;background-position:center 40%;
+  filter:brightness(.58) saturate(1.5);
+}
+.be-ov{
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom,rgba(9,21,10,.72) 0%,transparent 40%,rgba(9,21,10,.6) 100%);
+}
+.be-cnt{
+  position:relative;z-index:2;
+  text-align:center;padding:40px;
+}
+.be-cnt .s-title{font-size:clamp(44px,7vw,88px);margin-bottom:20px;}
+.be-cnt p{
+  font-size:18px;color:rgba(255,255,255,.65);
+  font-style:italic;font-family:'Cormorant Garamond',serif;
+}
+.wave-t{
+  position:absolute;top:0;left:0;right:0;z-index:3;
+  line-height:0;overflow:hidden;
+}
+.wave-t svg{display:block;}
+.wave-b{
+  position:absolute;bottom:0;left:0;right:0;z-index:3;
+  line-height:0;overflow:hidden;transform:rotate(180deg);
+}
+.wave-b svg{display:block;}
+
+/* ── BOOKING ── */
+#booking{
+  position:relative;z-index:10;
+  padding:130px 5%;
+  background:var(--pine-dark);
+}
+.bk-wrap{
+  display:flex;gap:80px;
+  align-items:flex-start;margin-top:60px;
+}
+.bk-info{flex:1;}
+.bk-form{flex:1;}
+.ci{
+  display:flex;align-items:flex-start;gap:18px;
+  margin-bottom:26px;opacity:0;transform:translateX(-32px);
+}
+.ci-ico{
+  width:46px;height:46px;flex-shrink:0;
+  background:rgba(200,145,62,.1);
+  border:1px solid rgba(200,145,62,.2);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:19px;
+}
+.ci-lbl{font-size:10.5px;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px;}
+.ci-val{font-size:14.5px;color:rgba(255,255,255,.78);line-height:1.5;}
+.fg{display:flex;flex-direction:column;gap:7px;flex:1;}
+.fg label{font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.44);}
+.fg input,.fg select,.fg textarea{
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.1);
+  color:white;padding:13px 16px;
+  font-size:14px;font-family:'Inter',sans-serif;
+  border-radius:2px;outline:none;
+  transition:border-color .3s;cursor:none;
+}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--gold);}
+.fg textarea{min-height:110px;resize:vertical;}
+.fg select option{background:var(--pine);}
+.frow{display:flex;gap:14px;}
+.fgrid{display:flex;flex-direction:column;gap:14px;}
+.f-submit{
+  background:var(--gold);color:var(--pine-dark);
+  padding:16px 40px;font-size:12.5px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;
+  border:none;border-radius:2px;cursor:none;width:100%;
+  margin-top:6px;
+  transition:background .3s,transform .2s;
+}
+.f-submit:hover{background:var(--gold-light);transform:translateY(-2px);}
+
+/* ── FOOTER ── */
+footer{
+  position:relative;z-index:10;
+  background:#030803;
+  padding:68px 5% 32px;
+  border-top:1px solid rgba(200,145,62,.08);
+}
+.ft-top{
+  display:flex;justify-content:space-between;
+  flex-wrap:wrap;gap:44px;margin-bottom:52px;
+}
+.ft-brand{max-width:300px;}
+.ft-logo{
+  font-family:'Cormorant Garamond',serif;
+  font-size:28px;font-weight:600;
+  letter-spacing:2px;margin-bottom:14px;
+}
+.ft-logo em{color:var(--gold);font-style:normal;}
+.ft-brand p{font-size:13px;color:rgba(255,255,255,.35);line-height:1.75;}
+.ft-col h4{
+  font-size:10.5px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:18px;
+}
+.ft-col ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.ft-col a{
+  font-size:13px;color:rgba(255,255,255,.36);
+  text-decoration:none;transition:color .3s;
+}
+.ft-col a:hover{color:var(--gold);}
+.ft-bot{
+  padding-top:28px;border-top:1px solid rgba(255,255,255,.05);
+  display:flex;justify-content:space-between;
+  flex-wrap:wrap;gap:14px;align-items:center;
+}
+.ft-credit{font-size:11.5px;color:rgba(255,255,255,.22);}
+.ft-credit a{color:rgba(200,145,62,.5);text-decoration:none;transition:color .3s;}
+.ft-credit a:hover{color:var(--gold);}
+
+/* ── SOUND BTN ── */
+#sound-btn{
+  position:fixed;bottom:28px;right:28px;z-index:300;
+  width:50px;height:50px;
+  background:rgba(200,145,62,.12);
+  border:1px solid rgba(200,145,62,.28);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:21px;cursor:none;
+  transition:background .3s,border-color .3s,transform .3s;
+  opacity:0;
+}
+#sound-btn:hover{
+  background:rgba(200,145,62,.28);
+  border-color:var(--gold);
+  transform:scale(1.1);
+}
+
+/* ── FADE UP ── */
+.fu{opacity:0;transform:translateY(48px);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:980px){
+  .nav-links{display:none;}
+  #story,#restaurant{flex-direction:column;}
+  .st-text,.st-img,.re-img,.re-cnt{width:100%;min-height:300px;}
+  .lg-grid{grid-template-columns:1fr;}
+  .bk-wrap{flex-direction:column;}
+  .h-btns{flex-direction:column;align-items:center;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ LOADER ══ -->
+<div id="loader">
+  <div class="l-tree">🌲</div>
+  <div class="l-name">La Pinède</div>
+  <div class="l-bar"><div class="l-fill" id="lf"></div></div>
+</div>
+
+<!-- ══ CURSOR ══ -->
+<div id="cur"></div>
+<div id="cur-f"></div>
+
+<!-- ══ SOUND ══ -->
+<button id="sound-btn" title="Ambiance sonore">🔇</button>
+
+<!-- ══ THREE.JS CANVAS ══ -->
+<canvas id="hero-canvas"></canvas>
+
+<!-- ══ NAV ══ -->
+<nav id="nav">
+  <a href="#" class="nav-logo">La <em>Pinède</em></a>
+  <ul class="nav-links">
+    <li><a href="#lodging">Hébergements</a></li>
+    <li><a href="#pool">Bien-être</a></li>
+    <li><a href="#restaurant">Restaurant</a></li>
+    <li><a href="#activities">Activités</a></li>
+    <li><a href="#booking" class="nav-book">Réserver</a></li>
+  </ul>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section id="hero">
+  <div class="h-eye" id="h-eye">Calvi · Corse du Nord · Camping 4 étoiles</div>
+  <h1 class="h-title">
+    <span class="ln"><span>Camping</span></span>
+    <span class="ln"><span>La Pinède</span></span>
+  </h1>
+  <div class="h-stars" id="h-stars">★ ★ ★ ★</div>
+  <div class="h-sub" id="h-sub">La forêt de pins de Calvi vous accueille</div>
+  <div class="h-tag" id="h-tag">2 minutes à pied · Plage de sable blanc · Vue sur la citadelle</div>
+  <div class="h-btns" id="h-btns">
+    <a href="#booking" class="btn-p mag">Réserver un séjour</a>
+    <a href="#story" class="btn-g mag">Découvrir</a>
+  </div>
+  <div class="h-scroll" id="h-scroll">
+    <span class="h-scroll-txt">Défiler</span>
+    <div class="h-scroll-line"></div>
+  </div>
+</section>
+
+<!-- ══ STATS ══ -->
+<section id="stats">
+  <div class="s-item"><span class="s-num" data-t="4">0</span><span class="s-label">étoiles</span></div>
+  <div class="s-item"><span class="s-num" data-t="262">0</span><span class="s-label">emplacements</span></div>
+  <div class="s-item"><span class="s-num" data-t="8">0</span><span class="s-label">hectares de pins</span></div>
+  <div class="s-item"><span class="s-num" data-t="2">0</span><span class="s-label">min de la plage</span></div>
+  <div class="s-item"><span class="s-num" data-t="115">0</span><span class="s-label">hébergements</span></div>
+</section>
+
+<!-- ══ STORY ══ -->
+<section id="story">
+  <div class="st-text">
+    <span class="lbl fu">Notre histoire</span>
+    <h2 class="s-title fu">Une oasis entre<br><em>mer &amp; pinède</em></h2>
+    <p class="st-body fu">
+      Niché au cœur d'une pinède centenaire à seulement deux minutes à pied de l'une des plus belles plages de Méditerranée et à moins d'un quart d'heure du cœur historique de Calvi, notre camping 4 étoiles est un sanctuaire naturel où la Corse révèle toute son âme.
+    </p>
+    <p class="st-body fu" style="margin-top:14px;">
+      Ici, les senteurs de pins dominent l'air marin. Les cigales rythment vos siestes. Et le soir venu, les étoiles de Corse illuminent un ciel d'une pureté rare, pendant que les lucioles dansent entre les arbres.
+    </p>
+    <div class="st-sep fu"></div>
+    <div class="st-quote fu">
+      « La Pinède, c'est la Corse telle qu'elle devrait toujours être vécue — sauvage, généreuse, inoubliable. »
+    </div>
+  </div>
+  <div class="st-img">
+    <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?w=1000&q=85" alt="Pinède centenaire de Calvi">
+  </div>
+</section>
+
+<!-- ══ LODGING ══ -->
+<section id="lodging">
+  <span class="lbl lbl-dark">Hébergements</span>
+  <h2 class="s-title" style="color:var(--pine);">Votre havre de confort<br>en Corse</h2>
+  <div class="lg-grid">
+
+    <div class="lg-card" id="lc0">
+      <div class="lg-img">
+        <img src="https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=700&q=80" alt="Chalet Premium">
+        <div class="lg-badge">Coup de cœur</div>
+      </div>
+      <div class="lg-body">
+        <div class="lg-title">Chalet Premium</div>
+        <div class="lg-desc">Spacieux et entièrement climatisé, ce chalet offre une terrasse privée ombragée au cœur des pins. Cuisine équipée, salle de bain complète, tout le confort d'un appartement en pleine nature.</div>
+        <div class="lg-feats">
+          <span class="lg-feat">❄️ Climatisation</span>
+          <span class="lg-feat">🍳 Cuisine équipée</span>
+          <span class="lg-feat">📺 TV satellite</span>
+          <span class="lg-feat">🛁 Salle de bain</span>
+          <span class="lg-feat">🌳 Terrasse privée</span>
+          <span class="lg-feat">👨‍👩‍👧‍👦 2–6 pers.</span>
+        </div>
+        <div class="lg-foot">
+          <div class="lg-price">145€ <small>/ nuit</small></div>
+          <a href="#booking" class="lg-btn">Réserver</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="lg-card" id="lc1">
+      <div class="lg-img">
+        <img src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=700&q=80" alt="Mobilhome Confort">
+        <div class="lg-badge" style="background:#29b5d5;color:#fff;">Populaire</div>
+      </div>
+      <div class="lg-body">
+        <div class="lg-title">Mobilhome Confort</div>
+        <div class="lg-desc">Le choix idéal pour les familles. Deux chambres lumineuses, salon cosy, cuisine aménagée et terrasse couverte entre les pins. WiFi inclus, tout le nécessaire pour un séjour sans prise de tête.</div>
+        <div class="lg-feats">
+          <span class="lg-feat">🏠 2 chambres</span>
+          <span class="lg-feat">🍽️ Cuisine aménagée</span>
+          <span class="lg-feat">📡 WiFi inclus</span>
+          <span class="lg-feat">🌲 Entre les pins</span>
+          <span class="lg-feat">👨‍👩‍👦 2–4 pers.</span>
+        </div>
+        <div class="lg-foot">
+          <div class="lg-price">89€ <small>/ nuit</small></div>
+          <a href="#booking" class="lg-btn">Réserver</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="lg-card" id="lc2">
+      <div class="lg-img">
+        <img src="https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=700&q=80" alt="Emplacement Ombragé">
+        <div class="lg-badge" style="background:var(--pine-mid);">Nature</div>
+      </div>
+      <div class="lg-body">
+        <div class="lg-title">Emplacement Ombragé</div>
+        <div class="lg-desc">Parcelles de 100 m² délimitées, nichées à l'ombre des pins centenaires. Branchement électrique, accès aux sanitaires premium. Pour les amoureux du camping authentique sous les étoiles de Corse.</div>
+        <div class="lg-feats">
+          <span class="lg-feat">⚡ Électricité 10A</span>
+          <span class="lg-feat">🌲 100 m² ombragés</span>
+          <span class="lg-feat">🚿 Sanitaires premium</span>
+          <span class="lg-feat">🐕 Animaux bienvenus</span>
+        </div>
+        <div class="lg-foot">
+          <div class="lg-price">32€ <small>/ nuit</small></div>
+          <a href="#booking" class="lg-btn">Réserver</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ POOL ══ -->
+<section id="pool">
+  <div class="pool-bg" id="pbg"></div>
+  <div class="pool-ov"></div>
+  <div class="pool-shimmer"></div>
+  <div class="pool-cnt">
+    <span class="lbl fu">Espace Bien-Être</span>
+    <h2 class="s-title fu">Piscine, Spa<br>&amp; Sérénité absolue</h2>
+    <p class="s-body fu">
+      Un sanctuaire de bien-être ouvert toute la saison pour vous ressourcer en profondeur. Plongez dans notre piscine chauffée à 27°C avec jets de massage, laissez-vous porter par le jacuzzi, puis glissez dans le hammam ou le sauna. Votre corps vous remerciera.
+    </p>
+    <div class="pool-nums">
+      <div>
+        <div class="p-num-b">27°C</div>
+        <div class="p-num-l">Piscine chauffée</div>
+      </div>
+      <div>
+        <div class="p-num-b">365</div>
+        <div class="p-num-l">Jours / Spa ouvert</div>
+      </div>
+      <div>
+        <div class="p-num-b">∞</div>
+        <div class="p-num-l">Moments de sérénité</div>
+      </div>
+    </div>
+    <div class="pool-tags fu">
+      <div class="pool-tag"><span>🏊</span> Piscine chauffée 27°C</div>
+      <div class="pool-tag"><span>💆</span> Spa &amp; massages</div>
+      <div class="pool-tag"><span>🧖</span> Sauna &amp; hammam</div>
+      <div class="pool-tag"><span>🌊</span> Jacuzzi &amp; jets massage</div>
+      <div class="pool-tag"><span>🏋️</span> Salle de sport</div>
+      <div class="pool-tag"><span>🍹</span> Bar de la piscine</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ RESTAURANT ══ -->
+<section id="restaurant">
+  <div class="re-img">
+    <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=900&q=85" alt="La Table — Restaurant La Pinède">
+  </div>
+  <div class="re-cnt">
+    <span class="lbl fu">Gastronomie</span>
+    <h2 class="s-title fu">La Table<br><em>au cœur des pins</em></h2>
+    <p class="s-body fu">
+      Notre restaurant « La Table » vous accueille chaque soir dans un cadre unique, encerclé par les pins millénaires de Calvi. Produits locaux, recettes méditerranéennes généreuses et vins corses d'exception : chaque repas est un voyage.
+    </p>
+    <div class="re-list">
+      <div class="re-item" id="ri0">
+        <div class="re-ico">🍽️</div>
+        <div>
+          <div class="re-name">La Table</div>
+          <div class="re-desc">Restaurant gastronomique · Ouvert tous les soirs · Cuisine méditerranéenne &amp; produits corses</div>
+        </div>
+      </div>
+      <div class="re-item" id="ri1">
+        <div class="re-ico">🍕</div>
+        <div>
+          <div class="re-name">Snack-Bar &amp; Pizzeria</div>
+          <div class="re-desc">Pizzas au feu de bois, salades fraîches, paninis · Déjeuner &amp; snacking toute la journée</div>
+        </div>
+      </div>
+      <div class="re-item" id="ri2">
+        <div class="re-ico">🍹</div>
+        <div>
+          <div class="re-name">Bar de la Piscine</div>
+          <div class="re-desc">Cocktails, crêpes, glaces artisanales, smoothies · Du matin au coucher du soleil</div>
+        </div>
+      </div>
+      <div class="re-item" id="ri3">
+        <div class="re-ico">🛒</div>
+        <div>
+          <div class="re-name">Épicerie du Camping</div>
+          <div class="re-desc">Produits frais, spécialités corses, charcuterie, fromages · Pain chaud chaque matin</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ ACTIVITIES ══ -->
+<section id="activities">
+  <span class="lbl fu">Pour toute la famille</span>
+  <h2 class="s-title fu">Des activités<br>sans limite</h2>
+  <div class="acts-wrap">
+    <div class="acts-track" id="atrack">
+
+      <div class="ac-card">
+        <div class="ac-img">
+          <img src="https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?w=450&q=75" alt="Parc aquatique">
+          <div class="ac-overlay">💦</div>
+        </div>
+        <div class="ac-body">
+          <div class="ac-title">Parc Aquatique</div>
+          <div class="ac-desc">Toboggans, jeux d'eau et bassins pour des heures de fous rires en famille sous le soleil corse.</div>
+        </div>
+      </div>
+
+      <div class="ac-card">
+        <div class="ac-img">
+          <img src="https://images.unsplash.com/photo-1551524559-8af4e6624178?w=450&q=75" alt="Accrobranche">
+          <div class="ac-overlay">🌲</div>
+        </div>
+        <div class="ac-body">
+          <div class="ac-title">Accrobranche</div>
+          <div class="ac-desc">Parcours dans les cimes des pins de Calvi. Sensations fortes et grand air garantis pour les aventuriers.</div>
+        </div>
+      </div>
+
+      <div class="ac-card">
+        <div class="ac-img">
+          <img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=450&q=75" alt="Tennis">
+          <div class="ac-overlay">🎾</div>
+        </div>
+        <div class="ac-body">
+          <div class="ac-title">Tennis &amp; Sports</div>
+          <div class="ac-desc">2 courts de tennis éclairés, terrain multisports et tournois organisés tout l'été par nos animateurs.</div>
+        </div>
+      </div>
+
+      <div class="ac-card">
+        <div class="ac-img">
+          <img src="https://images.unsplash.com/photo-1566438480900-0609be27a4be?w=450&q=75" alt="Club enfants">
+          <div class="ac-overlay">🎨</div>
+        </div>
+        <div class="ac-body">
+          <div class="ac-title">Club Enfants</div>
+          <div class="ac-desc">Animateurs diplômés BAFA, ateliers créatifs, sorties nature et spectacles (juillet &amp; août). Dès 4 ans.</div>
+        </div>
+      </div>
+
+      <div class="ac-card">
+        <div class="ac-img">
+          <img src="https://images.unsplash.com/photo-1593341646782-e0b495cff86d?w=450&q=75" alt="Mini-golf">
+          <div class="ac-overlay">⛳</div>
+        </div>
+        <div class="ac-body">
+          <div class="ac-title">Mini-Golf</div>
+          <div class="ac-desc">18 trous dans un décor naturel entre les pins. Le parcours idéal pour un moment ludique et détendu.</div>
+        </div>
+      </div>
+
+      <div class="ac-card">
+        <div class="ac-img">
+          <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=450&q=75" alt="Laser Game">
+          <div class="ac-overlay">🔫</div>
+        </div>
+        <div class="ac-body">
+          <div class="ac-title">Laser Game</div>
+          <div class="ac-desc">Batailles épiques dans la nuit de la pinède. Le jeu qui transforme chaque soirée en moment inoubliable.</div>
+        </div>
+      </div>
+
+      <div class="ac-card">
+        <div class="ac-img">
+          <img src="https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?w=450&q=75" alt="Balades en poney">
+          <div class="ac-overlay">🐴</div>
+        </div>
+        <div class="ac-body">
+          <div class="ac-title">Balades en Poney</div>
+          <div class="ac-desc">Initiations et balades encadrées à travers la pinède pour les enfants. Une expérience magique dès 2 ans.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ BEACH ══ -->
+<section id="beach">
+  <div class="wave-t">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 64" preserveAspectRatio="none" height="64">
+      <path d="M0,32 C240,64 480,0 720,32 C960,64 1200,0 1440,32 L1440,0 L0,0 Z" fill="#09150a"/>
+    </svg>
+  </div>
+  <div class="be-bg" id="bebg"></div>
+  <div class="be-ov"></div>
+  <div class="be-cnt">
+    <span class="lbl">La Plage</span>
+    <h2 class="s-title">La plage de Calvi,<br>à deux pas</h2>
+    <p>4 km de sable blanc · Eaux cristallines turquoise · Vue sur la citadelle génoise</p>
+  </div>
+  <div class="wave-b">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 64" preserveAspectRatio="none" height="64">
+      <path d="M0,32 C240,64 480,0 720,32 C960,64 1200,0 1440,32 L1440,0 L0,0 Z" fill="var(--pine-dark)"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ══ BOOKING ══ -->
+<section id="booking">
+  <span class="lbl fu">Réservation</span>
+  <h2 class="s-title fu">Planifiez votre séjour<br>en Corse</h2>
+  <div class="bk-wrap">
+    <div class="bk-info">
+      <div class="ci" id="ci0">
+        <div class="ci-ico">📍</div>
+        <div>
+          <div class="ci-lbl">Adresse</div>
+          <div class="ci-val">Route de la Pinède<br>20260 Calvi, Haute-Corse</div>
+        </div>
+      </div>
+      <div class="ci" id="ci1">
+        <div class="ci-ico">📞</div>
+        <div>
+          <div class="ci-lbl">Téléphone</div>
+          <div class="ci-val">+33 (0)4 95 65 17 80</div>
+        </div>
+      </div>
+      <div class="ci" id="ci2">
+        <div class="ci-ico">✉️</div>
+        <div>
+          <div class="ci-lbl">Email</div>
+          <div class="ci-val">contact@camping-calvi.com</div>
+        </div>
+      </div>
+      <div class="ci" id="ci3">
+        <div class="ci-ico">📅</div>
+        <div>
+          <div class="ci-lbl">Saison</div>
+          <div class="ci-val">Avril → Octobre<br>Spa ouvert toute l'année</div>
+        </div>
+      </div>
+      <div class="ci" id="ci4">
+        <div class="ci-ico">🗺️</div>
+        <div>
+          <div class="ci-lbl">Accès</div>
+          <div class="ci-val">2 min à pied de la plage<br>15 min du centre de Calvi</div>
+        </div>
+      </div>
+    </div>
+    <div class="bk-form">
+      <div class="fgrid">
+        <div class="frow">
+          <div class="fg"><label>Prénom</label><input type="text" placeholder="Votre prénom"></div>
+          <div class="fg"><label>Nom</label><input type="text" placeholder="Votre nom"></div>
+        </div>
+        <div class="fg"><label>Email</label><input type="email" placeholder="votre@email.com"></div>
+        <div class="fg"><label>Téléphone</label><input type="tel" placeholder="+33 6 00 00 00 00"></div>
+        <div class="frow">
+          <div class="fg"><label>Arrivée</label><input type="date"></div>
+          <div class="fg"><label>Départ</label><input type="date"></div>
+        </div>
+        <div class="fg">
+          <label>Type d'hébergement</label>
+          <select>
+            <option value="">Sélectionnez...</option>
+            <option>Chalet Premium (à partir de 145€/nuit)</option>
+            <option>Mobilhome Confort (à partir de 89€/nuit)</option>
+            <option>Emplacement Ombragé (à partir de 32€/nuit)</option>
+          </select>
+        </div>
+        <div class="fg"><label>Nombre de personnes</label><input type="number" min="1" max="8" placeholder="2"></div>
+        <div class="fg"><label>Message (optionnel)</label><textarea placeholder="Précisions, demandes spéciales, animaux..."></textarea></div>
+        <button class="f-submit mag" id="fsubmit">Envoyer ma demande de réservation</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="ft-top">
+    <div class="ft-brand">
+      <div class="ft-logo">La <em>Pinède</em> ★★★★</div>
+      <p>Camping 4 étoiles à Calvi en Corse du Nord. Une parenthèse nature entre pinède centenaire et mer Méditerranée depuis 1987.</p>
+    </div>
+    <div class="ft-col">
+      <h4>Hébergements</h4>
+      <ul>
+        <li><a href="#lodging">Chalet Premium</a></li>
+        <li><a href="#lodging">Mobilhome Confort</a></li>
+        <li><a href="#lodging">Emplacement Ombragé</a></li>
+        <li><a href="#booking">Tarifs &amp; disponibilités</a></li>
+      </ul>
+    </div>
+    <div class="ft-col">
+      <h4>Le camping</h4>
+      <ul>
+        <li><a href="#pool">Piscine &amp; Bien-être</a></li>
+        <li><a href="#restaurant">Restaurant La Table</a></li>
+        <li><a href="#activities">Activités</a></li>
+        <li><a href="#beach">La plage</a></li>
+      </ul>
+    </div>
+    <div class="ft-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="tel:+33495651780">+33 (0)4 95 65 17 80</a></li>
+        <li><a href="mailto:contact@camping-calvi.com">contact@camping-calvi.com</a></li>
+        <li><a href="#">Route de la Pinède, Calvi 20260</a></li>
+        <li><a href="#">Mentions légales</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="ft-bot">
+    <div class="ft-credit">© 2025 Camping La Pinède · Tous droits réservés</div>
+    <div class="ft-credit">Site conçu par <a href="#">Marquilly Studio</a> — Calvi, Corse</div>
+  </div>
+</footer>
+
+<script>
+/* ══════════════════════════════════════════
+   THREE.JS — FORÊT DE PINS LA NUIT
+══════════════════════════════════════════ */
+(function () {
+  const cvs = document.getElementById('hero-canvas');
+  const W = window.innerWidth, H = window.innerHeight;
+
+  const renderer = new THREE.WebGLRenderer({ canvas: cvs, antialias: true });
+  renderer.setSize(W, H);
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.setClearColor(0x070f07, 1);
+
+  const scene = new THREE.Scene();
+  scene.fog = new THREE.FogExp2(0x070f07, 0.022);
+
+  const camera = new THREE.PerspectiveCamera(62, W / H, 0.1, 600);
+  camera.position.set(0, 5, 34);
+  camera.lookAt(0, 4, 0);
+
+  /* LIGHTS */
+  scene.add(new THREE.AmbientLight(0x0a1a0c, 0.45));
+  const moon = new THREE.DirectionalLight(0xb0cce0, 0.7);
+  moon.position.set(-30, 60, 20);
+  scene.add(moon);
+  const warm = new THREE.PointLight(0xc8913e, 1.4, 70);
+  warm.position.set(0, 3, 12);
+  scene.add(warm);
+
+  /* GROUND */
+  const gGeo = new THREE.PlaneGeometry(400, 400);
+  const gMat = new THREE.MeshLambertMaterial({ color: 0x040a04 });
+  const ground = new THREE.Mesh(gGeo, gMat);
+  ground.rotation.x = -Math.PI / 2;
+  ground.position.y = -0.2;
+  scene.add(ground);
+
+  /* STARS */
+  const SC = 7000;
+  const sPos = new Float32Array(SC * 3);
+  for (let i = 0; i < SC; i++) {
+    const th = Math.random() * Math.PI * 2;
+    const ph = Math.random() * Math.PI * 0.48;
+    const r = 160 + Math.random() * 120;
+    sPos[i * 3]     = r * Math.sin(ph) * Math.cos(th);
+    sPos[i * 3 + 1] = Math.abs(r * Math.cos(ph)) + 6;
+    sPos[i * 3 + 2] = r * Math.sin(ph) * Math.sin(th);
+  }
+  const sGeo = new THREE.BufferGeometry();
+  sGeo.setAttribute('position', new THREE.BufferAttribute(sPos, 3));
+  const sMat = new THREE.PointsMaterial({ color: 0xcce0ff, size: 0.32, transparent: true, opacity: 0.9 });
+  const stars = new THREE.Points(sGeo, sMat);
+  scene.add(stars);
+
+  /* MOON SPHERE */
+  const moonMesh = new THREE.Mesh(
+    new THREE.SphereGeometry(5, 18, 18),
+    new THREE.MeshBasicMaterial({ color: 0xeee8d0 })
+  );
+  moonMesh.position.set(-70, 100, -160);
+  scene.add(moonMesh);
+  /* Moon glow sprite */
+  const mgc = document.createElement('canvas');
+  mgc.width = mgc.height = 128;
+  const mgx = mgc.getContext('2d');
+  const mg = mgx.createRadialGradient(64, 64, 0, 64, 64, 64);
+  mg.addColorStop(0, 'rgba(238,232,208,.45)');
+  mg.addColorStop(1, 'rgba(238,232,208,0)');
+  mgx.fillStyle = mg; mgx.fillRect(0, 0, 128, 128);
+  const moonGlow = new THREE.Sprite(
+    new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(mgc), transparent: true, blending: THREE.AdditiveBlending })
+  );
+  moonGlow.position.copy(moonMesh.position);
+  moonGlow.scale.set(50, 50, 1);
+  scene.add(moonGlow);
+
+  /* FIREFLIES */
+  const FC = 140;
+  const fPos = new Float32Array(FC * 3);
+  const fSz  = new Float32Array(FC);
+  const fSd  = new Float32Array(FC);
+  for (let i = 0; i < FC; i++) {
+    fPos[i * 3]     = (Math.random() - .5) * 70;
+    fPos[i * 3 + 1] = 1 + Math.random() * 12;
+    fPos[i * 3 + 2] = (Math.random() - .5) * 36;
+    fSz[i] = Math.random() * 5 + 2;
+    fSd[i] = Math.random() * Math.PI * 2;
+  }
+  const fGeo = new THREE.BufferGeometry();
+  fGeo.setAttribute('position', new THREE.BufferAttribute(fPos, 3));
+  fGeo.setAttribute('aSize', new THREE.BufferAttribute(fSz, 1));
+  fGeo.setAttribute('aSeed', new THREE.BufferAttribute(fSd, 1));
+  const fMat = new THREE.ShaderMaterial({
+    uniforms: { uT: { value: 0 }, uPR: { value: Math.min(devicePixelRatio, 2) } },
+    vertexShader: `
+      uniform float uT; uniform float uPR;
+      attribute float aSize; attribute float aSeed;
+      void main(){
+        vec3 p=position;
+        float t=uT*.65+aSeed;
+        p.y+=sin(t*1.2)*.65+cos(t*.75)*.3;
+        p.x+=cos(t*.85+aSeed)*.55;
+        p.z+=sin(t*.55)*.35;
+        gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.);
+        float pulse=.45+.55*sin(uT*2.8+aSeed*6.28);
+        gl_PointSize=aSize*uPR*pulse*(260./-gl_Position.z);
+      }`,
+    fragmentShader: `
+      void main(){
+        float d=distance(gl_PointCoord,vec2(.5));
+        if(d>.5) discard;
+        float a=(1.-smoothstep(0.,.5,d))*.88;
+        gl_FragColor=vec4(.94,.84,.22,a);
+      }`,
+    transparent: true,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false
+  });
+  scene.add(new THREE.Points(fGeo, fMat));
+
+  /* PINE TREES */
+  function pine(x, z, sc, dark) {
+    const g = new THREE.Group();
+    const c = dark || 0.022;
+    const m = new THREE.MeshLambertMaterial({ color: new THREE.Color(c, c * 2.2, c) });
+    const tm = new THREE.MeshLambertMaterial({ color: 0x180c05 });
+    for (let i = 0; i < 4; i++) {
+      const mesh = new THREE.Mesh(
+        new THREE.ConeGeometry((4 - i) * 1.35 * sc, 3 * sc, 7),
+        m
+      );
+      mesh.position.y = i * 2.1 * sc + 2 * sc;
+      g.add(mesh);
+    }
+    const tr = new THREE.Mesh(new THREE.CylinderGeometry(.22 * sc, .34 * sc, 3.2 * sc, 6), tm);
+    tr.position.y = 1.6 * sc;
+    g.add(tr);
+    g.position.set(x, 0, z);
+    g.rotation.y = Math.random() * Math.PI * 2;
+    return g;
+  }
+
+  [
+    [-26,-6,.52],[-19,-9,.68],[-32,-16,.4],
+    [26,-6,.52],[19,-9,.68],[32,-16,.4],
+    [-13,-13,.58],[13,-13,.58],
+    [-38,-22,.34],[38,-22,.34],
+    [-8,-22,.38],[8,-22,.38],[0,-24,.32],
+    [-22,-4,.92,0.014],[22,-4,.92,0.014],
+    [-44,-3,1.1,0.01],[44,-3,1.1,0.01],
+    [-55,-9,.8,0.009],[55,-9,.8,0.009],
+    [-60,-18,.6,0.008],[60,-18,.6,0.008],
+    [-10,-5,.45],[ 10,-5,.45],
+    [-3,-10,.5],[3,-10,.5],
+  ].forEach(([x,z,s,d]) => scene.add(pine(x,z,s,d)));
+
+  /* MOUSE PARALLAX */
+  let mx = 0, my = 0, tx = 0, ty = 0;
+  document.addEventListener('mousemove', e => {
+    mx = (e.clientX / innerWidth - .5) * 2;
+    my = (e.clientY / innerHeight - .5) * 2;
+  });
+
+  /* RENDER LOOP */
+  let t = 0;
+  (function loop() {
+    requestAnimationFrame(loop);
+    t += 0.016;
+    tx += (mx - tx) * 0.028;
+    ty += (my - ty) * 0.028;
+    camera.position.x = tx * 5;
+    camera.position.y = 5 - ty * 2;
+    camera.lookAt(0, 4, 0);
+    fMat.uniforms.uT.value = t;
+    stars.rotation.y = t * 0.004;
+    warm.intensity = 0.85 + .55 * Math.sin(t * 2.1);
+    renderer.render(scene, camera);
+  })();
+
+  window.addEventListener('resize', () => {
+    const W = innerWidth, H = innerHeight;
+    renderer.setSize(W, H);
+    camera.aspect = W / H;
+    camera.updateProjectionMatrix();
+  });
+})();
+
+/* ══ CURSOR ══ */
+const cur = document.getElementById('cur');
+const curf = document.getElementById('cur-f');
+let cx = 0, cy = 0, cfx = 0, cfy = 0;
+document.addEventListener('mousemove', e => { cx = e.clientX; cy = e.clientY; });
+(function cl() {
+  requestAnimationFrame(cl);
+  cfx += (cx - cfx) * .13; cfy += (cy - cfy) * .13;
+  cur.style.left  = cx + 'px';  cur.style.top  = cy + 'px';
+  curf.style.left = cfx + 'px'; curf.style.top = cfy + 'px';
+})();
+document.querySelectorAll('a,button,input,textarea,select,.lg-card,.ac-card').forEach(el => {
+  el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+  el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+});
+
+/* ══ MAGNETIC ══ */
+document.querySelectorAll('.mag').forEach(el => {
+  el.addEventListener('mousemove', e => {
+    const r = el.getBoundingClientRect();
+    const x = e.clientX - r.left - r.width / 2;
+    const y = e.clientY - r.top - r.height / 2;
+    gsap.to(el, { x: x * .28, y: y * .28, duration: .4, ease: 'power2.out' });
+  });
+  el.addEventListener('mouseleave', () => {
+    gsap.to(el, { x: 0, y: 0, duration: .8, ease: 'elastic.out(1,.5)' });
+  });
+});
+
+/* ══ LOADER ══ */
+const lf = document.getElementById('lf');
+let prog = 0;
+const li = setInterval(() => {
+  prog += Math.random() * 20 + 6;
+  if (prog >= 100) {
+    prog = 100; clearInterval(li);
+    lf.style.width = '100%';
+    setTimeout(() => {
+      gsap.to('#loader', {
+        opacity: 0, duration: .9, ease: 'power2.inOut',
+        onComplete() { document.getElementById('loader').style.display='none'; launch(); }
+      });
+    }, 280);
+  }
+  lf.style.width = Math.min(prog, 100) + '%';
+}, 90);
+
+/* ══ HERO ENTRANCE ══ */
+function launch() {
+  const tl = gsap.timeline({ delay: .15 });
+  tl.to('#h-eye',  { opacity:1, y:0, duration:1, ease:'power3.out' })
+    .to('#hero .h-title .ln span', { y:'0%', duration:1.3, stagger:.18, ease:'power4.out' }, '-=.5')
+    .to('#h-stars', { opacity:1, duration:.6, ease:'power2.out' }, '-=.35')
+    .to('#h-sub',   { opacity:1, duration:.8, ease:'power2.out' }, '-=.3')
+    .to('#h-tag',   { opacity:1, duration:.8, ease:'power2.out' }, '-=.5')
+    .to('#h-btns',  { opacity:1, duration:.8, ease:'power2.out' }, '-=.4')
+    .to('#h-scroll',{ opacity:1, duration:.8, ease:'power2.out' }, '-=.3')
+    .to('#sound-btn',{ opacity:1, duration:.6 }, '-=.4');
+}
+
+/* ══ GSAP SCROLL ══ */
+gsap.registerPlugin(ScrollTrigger);
+
+/* Nav */
+ScrollTrigger.create({
+  start: 'top -80',
+  onEnter: () => document.getElementById('nav').classList.add('scrolled'),
+  onLeaveBack: () => document.getElementById('nav').classList.remove('scrolled'),
+});
+
+/* Stats */
+document.querySelectorAll('.s-item').forEach((el, i) => {
+  gsap.to(el, { opacity:1, y:0, duration:.85, delay: i*.1, ease:'power3.out',
+    scrollTrigger: { trigger:'#stats', start:'top 80%' } });
+  const n = el.querySelector('.s-num');
+  const t = parseInt(n.dataset.t);
+  ScrollTrigger.create({ trigger:'#stats', start:'top 80%', once:true,
+    onEnter() {
+      gsap.to({ v:0 }, { v:t, duration:2.2, ease:'power2.out',
+        onUpdate() { n.textContent = Math.round(this.targets()[0].v); }
+      });
+    }
+  });
+});
+
+/* Fade-up */
+gsap.utils.toArray('.fu').forEach(el => {
+  gsap.to(el, { opacity:1, y:0, duration:1.05, ease:'power3.out',
+    scrollTrigger: { trigger:el, start:'top 87%' } });
+});
+
+/* Story parallax */
+gsap.to('.st-img img', { y:'-12%',
+  scrollTrigger:{ trigger:'#story', start:'top bottom', end:'bottom top', scrub:1.8 } });
+ScrollTrigger.create({ trigger:'.st-sep', start:'top 85%', once:true,
+  onEnter(){ gsap.to('.st-sep',{ scaleX:1, duration:1.4, ease:'power3.out' }); }
+});
+
+/* Lodging cards */
+['lc0','lc1','lc2'].forEach((id,i) => {
+  gsap.to(`#${id}`, { opacity:1, y:0, duration:.95, delay:i*.15, ease:'power3.out',
+    scrollTrigger:{ trigger:'#lodging', start:'top 72%' } });
+});
+
+/* 3D tilt */
+document.querySelectorAll('.lg-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - .5;
+    const y = (e.clientY - r.top) / r.height - .5;
+    gsap.to(card, { rotateY:x*18, rotateX:-y*11, transformPerspective:900, duration:.4, ease:'power2.out' });
+  });
+  card.addEventListener('mouseleave', () => {
+    gsap.to(card, { rotateY:0, rotateX:0, duration:.85, ease:'elastic.out(1,.5)' });
+  });
+});
+
+/* Pool parallax */
+gsap.to('#pbg', { y:'22%',
+  scrollTrigger:{ trigger:'#pool', start:'top bottom', end:'bottom top', scrub:1.8 } });
+
+/* Restaurant items */
+['ri0','ri1','ri2','ri3'].forEach((id,i) => {
+  gsap.to(`#${id}`, { opacity:1, x:0, duration:.75, delay:i*.12, ease:'power3.out',
+    scrollTrigger:{ trigger:'#restaurant', start:'top 72%' } });
+});
+
+/* Activities — horizontal scroll pinned */
+const atrack = document.getElementById('atrack');
+gsap.to(atrack, {
+  x: () => -(atrack.scrollWidth - innerWidth + 100),
+  ease: 'none',
+  scrollTrigger: {
+    trigger: '#activities',
+    start: 'top top',
+    end: () => '+=' + (atrack.scrollWidth - innerWidth + 200),
+    pin: true,
+    scrub: 1,
+    anticipatePin: 1,
+    invalidateOnRefresh: true,
+  }
+});
+
+/* Beach parallax */
+gsap.to('#bebg', { y:'18%',
+  scrollTrigger:{ trigger:'#beach', start:'top bottom', end:'bottom top', scrub:2 } });
+
+/* Booking contact */
+['ci0','ci1','ci2','ci3','ci4'].forEach((id,i) => {
+  gsap.to(`#${id}`, { opacity:1, x:0, duration:.75, delay:i*.11, ease:'power3.out',
+    scrollTrigger:{ trigger:'#booking', start:'top 78%' } });
+});
+
+/* ══ AMBIENT SOUND ══ */
+let actx = null, gain = null, on = false;
+document.getElementById('sound-btn').addEventListener('click', function() {
+  if (!actx) {
+    actx = new (AudioContext || webkitAudioContext)();
+    gain = actx.createGain(); gain.gain.value = 0; gain.connect(actx.destination);
+    function noise() {
+      const buf = actx.createBuffer(1, actx.sampleRate*4, actx.sampleRate);
+      const d = buf.getChannelData(0);
+      let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0;
+      for(let i=0;i<d.length;i++){
+        const w=Math.random()*2-1;
+        b0=.99886*b0+w*.0555179;b1=.99332*b1+w*.0750759;b2=.96900*b2+w*.1538520;
+        b3=.86650*b3+w*.3104856;b4=.55000*b4+w*.5329522;b5=-.7616*b5-w*.0168980;
+        d[i]=(b0+b1+b2+b3+b4+b5+b6+w*.5362)*.11; b6=w*.115926;
+      }
+      return buf;
+    }
+    [[280,.8,.65],[820,.5,.2],[140,.4,.45]].forEach(([f,q,v])=>{
+      const s=actx.createBufferSource(); s.buffer=noise(); s.loop=true;
+      const bp=actx.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=f; bp.Q.value=q;
+      const g=actx.createGain(); g.gain.value=v;
+      s.connect(bp); bp.connect(g); g.connect(gain); s.start();
+    });
+  }
+  on=!on;
+  if(on){ actx.resume(); gain.gain.setTargetAtTime(.38,actx.currentTime,1.8); this.textContent='🔊'; }
+  else  { gain.gain.setTargetAtTime(0,actx.currentTime,.6); this.textContent='🔇'; }
+});
+
+/* ══ FORM ══ */
+document.getElementById('fsubmit').addEventListener('click', function() {
+  this.textContent = '✓ Demande envoyée — Nous vous répondons sous 24h';
+  this.style.background = 'var(--sea-dark)';
+  setTimeout(() => {
+    this.textContent = 'Envoyer ma demande de réservation';
+    this.style.background = '';
+  }, 4000);
+});
+</script>
+</body>
+</html>

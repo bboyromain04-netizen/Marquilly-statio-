@@ -10,1475 +10,1034 @@
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
 <style>
-:root {
-  --pine-dark: #070f07;
-  --pine: #172e18;
-  --pine-mid: #1e3d20;
-  --gold: #c8913e;
-  --gold-light: #e6b96a;
-  --sea: #29b5d5;
-  --sea-dark: #1a7a90;
-  --cream: #f7f2e8;
-  --cream-dark: #ede4ce;
-  --sunset: #e8724a;
-  --white: #fff;
-  --text-main: #1a1a1a;
-  --text-muted: rgba(255,255,255,.55);
+:root{
+  --pd:#070f07;--pg:#172e18;--pm:#1e3d20;
+  --g:#c8913e;--gl:#e6b96a;
+  --sea:#29b5d5;--sea2:#1a7a90;
+  --cr:#f7f2e8;--cd:#ede4ce;
+  --su:#e8724a;--w:#fff;
+  --tm:#1a1a1a;--mu:rgba(255,255,255,.55);
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{
-  font-family:'Inter',sans-serif;
-  background:var(--pine-dark);
-  color:var(--white);
-  cursor:none;
-  overflow-x:hidden;
-}
+body{font-family:'Inter',sans-serif;background:var(--pd);color:var(--w);cursor:none;overflow-x:hidden;}
 
-/* ── CURSOR ── */
-#cur{
-  position:fixed;top:0;left:0;z-index:9999;
-  width:8px;height:8px;border-radius:50%;
-  background:var(--gold);pointer-events:none;
-  transform:translate(-50%,-50%);
-  transition:width .2s,height .2s,opacity .3s;
-}
-#cur-f{
-  position:fixed;top:0;left:0;z-index:9998;
-  width:40px;height:40px;border-radius:50%;
-  border:1.5px solid rgba(200,145,62,.5);
-  pointer-events:none;
-  transform:translate(-50%,-50%);
-}
-.hovering #cur{width:18px;height:18px;}
+/* ─ LOADER ─ */
+#loader{position:fixed;inset:0;z-index:9000;background:var(--pd);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;}
+.l-trees{display:flex;gap:8px;align-items:flex-end;}
+.l-trees span{font-size:36px;animation:ltree 1.6s ease-in-out infinite alternate;}
+.l-trees span:nth-child(2){animation-delay:.2s;font-size:52px;}
+.l-trees span:nth-child(3){animation-delay:.4s;}
+@keyframes ltree{from{transform:rotate(-6deg);}to{transform:rotate(6deg);}}
+.l-name{font-family:'Cormorant Garamond',serif;font-size:26px;letter-spacing:10px;color:var(--g);text-transform:uppercase;}
+.l-sub{font-size:11px;letter-spacing:5px;color:rgba(200,145,62,.5);text-transform:uppercase;}
+.l-bar{width:240px;height:1.5px;background:rgba(200,145,62,.15);overflow:hidden;}
+.l-fill{height:100%;width:0;background:linear-gradient(90deg,var(--g),var(--gl));transition:width .07s linear;}
+.l-pct{font-size:11px;letter-spacing:2px;color:rgba(200,145,62,.45);}
 
-/* ── LOADER ── */
-#loader{
-  position:fixed;inset:0;z-index:9000;
-  background:var(--pine-dark);
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:22px;
-}
-.l-tree{
-  font-size:52px;
-  animation:sway 1.4s ease-in-out infinite alternate;
-}
-@keyframes sway{from{transform:rotate(-8deg);}to{transform:rotate(8deg);}}
-.l-name{
-  font-family:'Cormorant Garamond',serif;
-  font-size:24px;letter-spacing:10px;
-  color:var(--gold);text-transform:uppercase;
-}
-.l-bar{
-  width:220px;height:1.5px;
-  background:rgba(200,145,62,.18);
-  overflow:hidden;
-}
-.l-fill{
-  height:100%;width:0%;
-  background:linear-gradient(90deg,var(--gold),var(--gold-light));
-  transition:width .08s linear;
-}
+/* ─ CURSOR ─ */
+#cd{position:fixed;top:0;left:0;z-index:9999;width:8px;height:8px;border-radius:50%;background:var(--g);pointer-events:none;transform:translate(-50%,-50%);transition:width .2s,height .2s;}
+#cr{position:fixed;top:0;left:0;z-index:9998;width:44px;height:44px;border-radius:50%;border:1.5px solid rgba(200,145,62,.45);pointer-events:none;transform:translate(-50%,-50%);transition:width .3s,height .3s,background .3s;}
+#cl{position:fixed;top:0;left:0;z-index:10000;transform:translate(-50%,-130%);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--pd);background:var(--g);padding:4px 10px;border-radius:2px;pointer-events:none;opacity:0;white-space:nowrap;transition:opacity .2s;}
+body.hov #cd{width:14px;height:14px;}
+body.hov-cta #cd{width:0;height:0;}
+body.hov-cta #cr{width:80px;height:80px;background:rgba(200,145,62,.15);}
+body.hov-cta #cl{opacity:1;}
 
-/* ── CANVAS ── */
-#hero-canvas{
-  position:fixed;top:0;left:0;
-  width:100vw;height:100vh;
-  z-index:0;pointer-events:none;
-}
+/* ─ SOUND ─ */
+#sw{position:fixed;bottom:28px;right:28px;z-index:500;display:flex;align-items:center;gap:10px;opacity:0;}
+#sb{width:50px;height:50px;background:rgba(200,145,62,.1);border:1px solid rgba(200,145,62,.28);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:none;transition:background .3s,transform .3s;}
+#sb:hover{background:rgba(200,145,62,.26);transform:scale(1.1);}
+#viz{display:flex;align-items:flex-end;gap:2.5px;height:28px;opacity:0;transition:opacity .4s;}
+#viz.on{opacity:1;}
+.vb{width:3px;border-radius:2px;background:var(--g);height:4px;transition:height .06s;}
 
-/* ── NAV ── */
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:200;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:26px 5%;
-  transition:padding .5s,background .5s,backdrop-filter .5s,border-color .5s;
-  border-bottom:1px solid transparent;
-}
-nav.scrolled{
-  padding:15px 5%;
-  backdrop-filter:blur(24px);
-  background:rgba(7,15,7,.82);
-  border-color:rgba(200,145,62,.12);
-}
-.nav-logo{
-  font-family:'Cormorant Garamond',serif;
-  font-size:22px;font-weight:600;
-  color:var(--white);text-decoration:none;
-  letter-spacing:2px;
-}
-.nav-logo em{color:var(--gold);font-style:normal;}
-.nav-links{display:flex;gap:36px;list-style:none;}
-.nav-links a{
-  color:rgba(255,255,255,.75);text-decoration:none;
-  font-size:12.5px;font-weight:400;
-  letter-spacing:1.8px;text-transform:uppercase;
-  transition:color .3s;
-}
-.nav-links a:hover{color:var(--gold);}
-.nav-book{
-  color:var(--pine-dark)!important;
-  background:var(--gold);
-  padding:10px 26px;border-radius:2px;
-  font-weight:600!important;
-  transition:background .3s,transform .2s!important;
-}
-.nav-book:hover{background:var(--gold-light)!important;transform:translateY(-2px);}
+/* ─ PROGRESS ─ */
+#pgbar{position:fixed;right:0;top:0;bottom:0;width:3px;z-index:400;background:rgba(200,145,62,.08);}
+#pgfill{width:100%;height:0%;background:linear-gradient(to bottom,var(--g),var(--gl));transition:height .1s;}
 
-/* ── HERO ── */
-#hero{
-  position:relative;z-index:10;
-  height:100vh;
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  text-align:center;padding:0 20px;
-  pointer-events:none;
-}
-.h-eye{
-  font-size:12px;letter-spacing:7px;
-  color:var(--gold);text-transform:uppercase;
-  margin-bottom:28px;
-  opacity:0;transform:translateY(24px);
-}
-.h-title{
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(58px,9.5vw,118px);
-  font-weight:300;line-height:.96;
-  margin-bottom:14px;
-}
-.h-title .ln{display:block;overflow:hidden;}
-.h-title .ln span{display:block;transform:translateY(110%);}
-.h-stars{color:var(--gold);font-size:20px;letter-spacing:5px;margin-bottom:18px;opacity:0;}
-.h-sub{
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(18px,2.4vw,27px);
-  font-weight:300;font-style:italic;
-  color:rgba(255,255,255,.65);
-  margin-bottom:12px;opacity:0;
-}
-.h-tag{
-  font-size:12.5px;letter-spacing:2.5px;
-  color:rgba(255,255,255,.42);text-transform:uppercase;
-  margin-bottom:52px;opacity:0;
-}
-.h-btns{
-  display:flex;gap:18px;
-  pointer-events:all;opacity:0;
-}
-.btn-p{
-  background:var(--gold);color:var(--pine-dark);
-  padding:16px 46px;font-size:12.5px;font-weight:700;
-  letter-spacing:2px;text-transform:uppercase;
-  border:none;text-decoration:none;border-radius:2px;
-  display:inline-block;
-  transition:background .3s,transform .3s;
-  cursor:none;
-}
-.btn-p:hover{background:var(--gold-light);transform:translateY(-3px);}
-.btn-g{
-  background:transparent;color:var(--white);
-  padding:16px 46px;font-size:12.5px;font-weight:400;
-  letter-spacing:2px;text-transform:uppercase;
-  border:1px solid rgba(255,255,255,.3);text-decoration:none;border-radius:2px;
-  display:inline-block;
-  transition:border-color .3s,color .3s,transform .3s;
-  cursor:none;
-}
-.btn-g:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-3px);}
-.h-scroll{
-  position:absolute;bottom:38px;left:50%;
-  transform:translateX(-50%);
-  display:flex;flex-direction:column;align-items:center;gap:12px;
-  opacity:0;pointer-events:none;
-}
-.h-scroll-txt{font-size:9px;letter-spacing:5px;text-transform:uppercase;color:rgba(255,255,255,.35);}
-.h-scroll-line{
-  width:1px;height:54px;
-  background:linear-gradient(to bottom,rgba(200,145,62,.9),transparent);
-  animation:pulse 2s ease-in-out infinite;
-}
-@keyframes pulse{
-  0%{transform:scaleY(0);transform-origin:top;}
-  49%{transform:scaleY(1);transform-origin:top;}
-  50%{transform:scaleY(1);transform-origin:bottom;}
-  100%{transform:scaleY(0);transform-origin:bottom;}
-}
+/* ─ CANVAS ─ */
+#mc{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0;pointer-events:none;}
 
-/* ── STATS BAR ── */
-#stats{
-  position:relative;z-index:10;
-  display:flex;
-  background:rgba(200,145,62,.06);
-  border-top:1px solid rgba(200,145,62,.14);
-  border-bottom:1px solid rgba(200,145,62,.14);
-}
-.s-item{
-  flex:1;padding:38px 16px;text-align:center;
-  border-right:1px solid rgba(200,145,62,.1);
-  opacity:0;transform:translateY(32px);
-}
-.s-item:last-child{border-right:none;}
-.s-num{
-  font-family:'Cormorant Garamond',serif;
-  font-size:54px;font-weight:300;color:var(--gold);
-  line-height:1;display:block;
-}
-.s-label{
-  font-size:10.5px;letter-spacing:3px;text-transform:uppercase;
-  color:rgba(255,255,255,.42);margin-top:8px;display:block;
-}
+/* ─ NAV ─ */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:26px 5%;transition:all .5s;}
+nav.sc{padding:14px 5%;backdrop-filter:blur(24px);background:rgba(7,15,7,.82);border-bottom:1px solid rgba(200,145,62,.12);}
+.nl{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--w);text-decoration:none;letter-spacing:2px;}
+.nl em{color:var(--g);font-style:normal;}
+.nlinks{display:flex;gap:34px;list-style:none;}
+.nlinks a{color:rgba(255,255,255,.72);text-decoration:none;font-size:12.5px;letter-spacing:1.8px;text-transform:uppercase;transition:color .3s;}
+.nlinks a:hover{color:var(--g);}
+.nb{color:var(--pd)!important;background:var(--g);padding:10px 26px;border-radius:2px;font-weight:600!important;transition:background .3s,transform .2s!important;}
+.nb:hover{background:var(--gl)!important;transform:translateY(-2px);}
+.ham{display:none;flex-direction:column;gap:5px;cursor:none;background:none;border:none;padding:6px;}
+.ham span{width:26px;height:1.5px;background:var(--w);display:block;transition:all .4s;}
+.ham.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+.ham.open span:nth-child(2){opacity:0;transform:scaleX(0);}
+.ham.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
 
-/* ── STORY ── */
-#story{
-  position:relative;z-index:10;
-  min-height:100vh;display:flex;
-  background:var(--pine-dark);
-}
-.st-text{
-  width:50%;display:flex;flex-direction:column;
-  justify-content:center;
-  padding:110px 6% 110px 8%;
-}
-.st-img{
-  width:50%;position:relative;overflow:hidden;min-height:500px;
-}
-.st-img::before{
-  content:'';position:absolute;inset:0;z-index:2;
-  background:linear-gradient(90deg,var(--pine-dark) 0%,transparent 28%);
-}
-.st-img img{
-  width:100%;height:100%;object-fit:cover;
-  filter:brightness(.72) saturate(1.3);
-}
-.st-body{color:var(--text-muted);font-size:15.5px;line-height:1.92;margin-top:26px;}
-.st-sep{
-  display:inline-block;width:54px;height:1.5px;
-  background:var(--gold);margin-top:38px;
-  transform:scaleX(0);transform-origin:left;
-}
-.st-quote{
-  margin-top:38px;padding:24px 26px;
-  background:rgba(200,145,62,.07);
-  border-left:2px solid var(--gold);border-radius:2px;
-  font-family:'Cormorant Garamond',serif;
-  font-size:20px;font-style:italic;
-  color:rgba(255,255,255,.7);line-height:1.6;
-}
+/* ─ MOBILE MENU ─ */
+#mm{position:fixed;inset:0;z-index:190;background:rgba(7,15,7,.97);backdrop-filter:blur(20px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;transform:translateX(100%);transition:transform .5s cubic-bezier(.77,0,.175,1);}
+#mm.open{transform:translateX(0);}
+.mm-trees{font-size:48px;letter-spacing:8px;margin-bottom:20px;}
+#mm a{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;color:rgba(255,255,255,.7);text-decoration:none;display:block;padding:8px 0;letter-spacing:2px;transition:color .3s;}
+#mm a:hover{color:var(--g);}
 
-/* ── SECTION LABELS ── */
-.lbl{
-  font-size:11px;letter-spacing:5.5px;text-transform:uppercase;
-  color:var(--gold);margin-bottom:18px;display:block;
-}
-.lbl-dark{color:var(--pine-mid);}
-.s-title{
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(38px,5.5vw,72px);
-  font-weight:300;line-height:1.08;
-}
-.s-body{
-  font-size:15px;line-height:1.84;
-  color:var(--text-muted);max-width:560px;
-  margin-top:20px;
-}
+/* ─ HERO ─ */
+#hero{position:relative;z-index:10;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 20px;pointer-events:none;}
+.h-eye{font-size:12px;letter-spacing:7px;color:var(--g);text-transform:uppercase;margin-bottom:28px;opacity:0;transform:translateY(24px);}
+.h-title{font-family:'Cormorant Garamond',serif;font-size:clamp(52px,9vw,112px);font-weight:300;line-height:.96;margin-bottom:14px;}
+.h-title .ch{display:inline-block;transform:translateY(110%);opacity:0;}
+.h-stars{color:var(--g);font-size:20px;letter-spacing:5px;margin-bottom:18px;opacity:0;}
+.h-sub{font-family:'Cormorant Garamond',serif;font-size:clamp(18px,2.4vw,27px);font-weight:300;font-style:italic;color:rgba(255,255,255,.65);margin-bottom:12px;opacity:0;}
+.h-tag{font-size:12px;letter-spacing:2.5px;color:rgba(255,255,255,.38);text-transform:uppercase;margin-bottom:52px;opacity:0;}
+.hbtns{display:flex;gap:18px;pointer-events:all;opacity:0;}
+.bp{background:var(--g);color:var(--pd);padding:16px 48px;font-size:12.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border:none;text-decoration:none;border-radius:2px;display:inline-block;transition:background .3s,transform .3s;cursor:none;}
+.bp:hover{background:var(--gl);transform:translateY(-3px);}
+.bg{background:transparent;color:var(--w);padding:16px 48px;font-size:12.5px;letter-spacing:2px;text-transform:uppercase;border:1px solid rgba(255,255,255,.3);text-decoration:none;border-radius:2px;display:inline-block;transition:border-color .3s,color .3s,transform .3s;cursor:none;}
+.bg:hover{border-color:var(--g);color:var(--g);transform:translateY(-3px);}
+.hscr{position:absolute;bottom:38px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:12px;opacity:0;pointer-events:none;}
+.hscr-t{font-size:9px;letter-spacing:5px;text-transform:uppercase;color:rgba(255,255,255,.32);}
+.hscr-l{width:1px;height:52px;background:linear-gradient(to bottom,rgba(200,145,62,.9),transparent);animation:sp 2s ease-in-out infinite;}
+@keyframes sp{0%{transform:scaleY(0);transform-origin:top;}49%{transform:scaleY(1);transform-origin:top;}50%{transform-origin:bottom;}100%{transform:scaleY(0);transform-origin:bottom;}}
 
-/* ── LODGING ── */
-#lodging{
-  position:relative;z-index:10;
-  padding:130px 5%;
-  background:var(--cream);color:var(--text-main);
-}
-#lodging .s-title{color:var(--pine);}
-#lodging .lbl{color:var(--pine-mid);}
-.lg-grid{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:26px;margin-top:64px;
-}
-.lg-card{
-  background:white;border-radius:3px;overflow:hidden;
-  box-shadow:0 4px 28px rgba(0,0,0,.07);
-  opacity:0;transform:translateY(60px);
-  transform-style:preserve-3d;
-  transition:box-shadow .35s;cursor:none;
-}
-.lg-card:hover{box-shadow:0 24px 64px rgba(0,0,0,.14);}
-.lg-img{height:250px;position:relative;overflow:hidden;}
-.lg-img img{
-  width:100%;height:100%;object-fit:cover;
-  transition:transform .65s;
-}
-.lg-img::after{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(to top,rgba(0,0,0,.3) 0%,transparent 50%);
-}
+/* ─ STATS ─ */
+#stats{position:relative;z-index:10;display:flex;background:rgba(200,145,62,.05);border-top:1px solid rgba(200,145,62,.13);border-bottom:1px solid rgba(200,145,62,.13);}
+.si{flex:1;padding:38px 14px;text-align:center;border-right:1px solid rgba(200,145,62,.1);opacity:0;transform:translateY(30px);}
+.si:last-child{border-right:none;}
+.sn{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:300;color:var(--g);line-height:1;display:block;}
+.sl{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:7px;display:block;}
+
+/* ─ STORY ─ */
+#story{position:relative;z-index:10;min-height:100vh;display:flex;background:var(--pd);}
+.st-t{width:50%;display:flex;flex-direction:column;justify-content:center;padding:110px 6% 110px 8%;}
+.st-i{width:50%;position:relative;overflow:hidden;min-height:500px;}
+.st-i::before{content:'';position:absolute;inset:0;z-index:2;background:linear-gradient(90deg,var(--pd) 0%,transparent 30%);}
+.st-i img{width:100%;height:100%;object-fit:cover;filter:brightness(.7) saturate(1.3);}
+.lbl{font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--g);margin-bottom:18px;display:block;}
+.lbl-d{color:var(--pm);}
+.stl{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,5vw,68px);font-weight:300;line-height:1.08;}
+.stb{color:var(--mu);font-size:15.5px;line-height:1.92;margin-top:24px;}
+.sep{display:inline-block;width:52px;height:1.5px;background:var(--g);margin-top:36px;transform:scaleX(0);transform-origin:left;}
+.stq{margin-top:36px;padding:22px 24px;background:rgba(200,145,62,.06);border-left:2px solid var(--g);font-family:'Cormorant Garamond',serif;font-size:19px;font-style:italic;color:rgba(255,255,255,.68);line-height:1.6;}
+.word{display:inline;opacity:0;}
+
+/* ─ GALLERY ─ */
+#gallery{position:relative;z-index:10;padding:100px 0;background:#050c05;overflow:hidden;}
+.g-head{text-align:center;padding:0 5%;margin-bottom:60px;}
+.gsc{perspective:1100px;width:100%;height:500px;position:relative;}
+.gc{position:absolute;width:380px;height:460px;left:50%;top:50%;margin-left:-190px;margin-top:-230px;border-radius:4px;overflow:hidden;background:#1a2a1a;background-size:cover;background-position:center;box-shadow:0 30px 80px rgba(0,0,0,.6);transition:all .75s cubic-bezier(.23,1,.32,1);}
+.gc-info{position:absolute;bottom:0;left:0;right:0;padding:28px 24px;background:linear-gradient(to top,rgba(0,0,0,.8) 0%,transparent 100%);transform:translateY(10px);transition:transform .3s;}
+.gc:hover .gc-info{transform:translateY(0);}
+.gc-lbl{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;}
+.gc-sub{font-size:11px;letter-spacing:2px;color:rgba(255,255,255,.55);text-transform:uppercase;margin-top:4px;}
+.g-ctrl{position:absolute;top:50%;transform:translateY(-50%);z-index:20;width:48px;height:48px;background:rgba(200,145,62,.12);border:1px solid rgba(200,145,62,.3);border-radius:50%;color:var(--g);font-size:18px;display:flex;align-items:center;justify-content:center;cursor:none;transition:background .3s,transform .3s;}
+.g-ctrl:hover{background:rgba(200,145,62,.28);transform:translateY(-50%) scale(1.1);}
+#gprev{left:5%;}
+#gnext{right:5%;}
+.g-dots{display:flex;gap:8px;justify-content:center;margin-top:32px;}
+.g-dot{width:8px;height:8px;border-radius:50%;background:rgba(200,145,62,.25);cursor:none;transition:background .3s,transform .3s;}
+.g-dot.a{background:var(--g);transform:scale(1.3);}
+
+/* ─ LODGING ─ */
+#lodging{position:relative;z-index:10;padding:130px 5%;background:var(--cr);color:var(--tm);}
+#lodging .stl{color:var(--pg);}
+.lg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:64px;}
+.lg-card{background:white;border-radius:3px;overflow:hidden;box-shadow:0 4px 28px rgba(0,0,0,.07);opacity:0;transform:translateY(60px);transform-style:preserve-3d;transition:box-shadow .35s;cursor:none;}
+.lg-card:hover{box-shadow:0 0 0 2px var(--g),0 24px 64px rgba(0,0,0,.14);}
+.lg-img{height:248px;position:relative;overflow:hidden;}
+.lg-img img{width:100%;height:100%;object-fit:cover;transition:transform .65s;}
+.lg-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.25) 0%,transparent 50%);}
 .lg-card:hover .lg-img img{transform:scale(1.07);}
-.lg-badge{
-  position:absolute;top:16px;right:16px;z-index:2;
-  background:var(--gold);color:var(--pine-dark);
-  font-size:9.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
-  padding:5px 12px;border-radius:2px;
-}
-.lg-body{padding:30px 26px;}
-.lg-title{
-  font-family:'Cormorant Garamond',serif;
-  font-size:27px;font-weight:600;color:var(--pine);
-  margin-bottom:10px;
-}
-.lg-desc{font-size:13.5px;color:#5a5a5a;line-height:1.72;margin-bottom:20px;}
-.lg-feats{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:24px;}
-.lg-feat{
-  font-size:11px;letter-spacing:.3px;
-  background:var(--cream);color:var(--pine);
-  padding:4px 11px;border-radius:20px;
-}
-.lg-foot{
-  display:flex;align-items:center;justify-content:space-between;
-  padding-top:20px;border-top:1px solid var(--cream-dark);
-}
-.lg-price{
-  font-family:'Cormorant Garamond',serif;
-  font-size:30px;color:var(--gold);font-weight:600;
-}
+.lg-badge{position:absolute;top:16px;right:16px;z-index:2;background:var(--g);color:var(--pd);font-size:9.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:5px 12px;border-radius:2px;}
+.lg-body{padding:28px 24px;}
+.lg-title{font-family:'Cormorant Garamond',serif;font-size:27px;font-weight:600;color:var(--pg);margin-bottom:10px;}
+.lg-desc{font-size:13.5px;color:#5a5a5a;line-height:1.72;margin-bottom:18px;}
+.lg-feats{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:22px;}
+.lf-tag{font-size:11px;background:var(--cr);color:var(--pm);padding:4px 11px;border-radius:20px;}
+.lg-foot{display:flex;align-items:center;justify-content:space-between;padding-top:18px;border-top:1px solid var(--cd);}
+.lg-price{font-family:'Cormorant Garamond',serif;font-size:30px;color:var(--g);font-weight:600;}
 .lg-price small{font-size:13px;color:#aaa;font-family:'Inter',sans-serif;font-weight:300;}
-.lg-btn{
-  background:var(--pine);color:white;
-  padding:10px 24px;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;
-  border:none;border-radius:2px;text-decoration:none;
-  display:inline-block;transition:background .3s,transform .2s;cursor:none;
-}
-.lg-btn:hover{background:var(--pine-dark);transform:translateY(-2px);}
+.lg-btn{background:var(--pg);color:white;padding:10px 24px;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;border:none;border-radius:2px;text-decoration:none;display:inline-block;transition:background .3s,transform .2s;cursor:none;}
+.lg-btn:hover{background:var(--pd);transform:translateY(-2px);}
 
-/* ── POOL ── */
-#pool{
-  position:relative;z-index:10;
-  min-height:100vh;display:flex;align-items:center;
-  overflow:hidden;
-}
-.pool-bg{
-  position:absolute;inset:0;
-  background-image:url('https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=1920&q=80');
-  background-size:cover;background-position:center;
-  filter:brightness(.38) saturate(1.4);
-  transform:scale(1.12);
-}
-.pool-ov{
-  position:absolute;inset:0;
-  background:linear-gradient(135deg,rgba(7,15,7,.9) 0%,rgba(0,60,80,.55) 100%);
-}
-.pool-shimmer{
-  position:absolute;inset:0;pointer-events:none;
-  background:repeating-linear-gradient(
-    0deg,transparent,transparent 3px,
-    rgba(41,181,213,.025) 3px,rgba(41,181,213,.025) 4px
-  );
-  animation:shimmer 5s linear infinite;
-}
-@keyframes shimmer{from{background-position:0 0;}to{background-position:0 48px;}}
-.pool-cnt{
-  position:relative;z-index:2;
-  padding:110px 8%;max-width:900px;
-}
-.pool-nums{display:flex;gap:52px;margin-top:48px;flex-wrap:wrap;}
-.p-num-b{
-  font-family:'Cormorant Garamond',serif;
-  font-size:58px;font-weight:300;color:var(--sea);line-height:1;
-}
-.p-num-l{
-  font-size:10.5px;letter-spacing:3px;text-transform:uppercase;
-  color:rgba(255,255,255,.45);margin-top:6px;
-}
-.pool-tags{display:flex;flex-wrap:wrap;gap:14px;margin-top:42px;}
-.pool-tag{
-  display:flex;align-items:center;gap:10px;
-  background:rgba(255,255,255,.05);
-  border:1px solid rgba(255,255,255,.1);
-  padding:12px 20px;border-radius:3px;
-  font-size:13px;color:rgba(255,255,255,.78);
-  transition:border-color .3s,background .3s;
-}
-.pool-tag:hover{border-color:rgba(41,181,213,.4);background:rgba(41,181,213,.08);}
-.pool-tag span{font-size:22px;}
+/* ─ POOL ─ */
+#pool{position:relative;z-index:10;min-height:100vh;display:flex;overflow:hidden;background:var(--pd);}
+#pc{position:absolute;inset:0;width:100%;height:100%;z-index:1;}
+.pool-ov{position:absolute;inset:0;z-index:2;background:linear-gradient(90deg,rgba(7,15,7,.92) 0%,rgba(7,15,7,.6) 50%,rgba(7,15,7,.1) 100%);}
+.pool-cnt{position:relative;z-index:3;width:55%;display:flex;flex-direction:column;justify-content:center;padding:110px 5% 110px 8%;}
+.p-nums{display:flex;gap:48px;margin-top:46px;flex-wrap:wrap;}
+.p-n{font-family:'Cormorant Garamond',serif;font-size:56px;font-weight:300;color:var(--sea);line-height:1;}
+.p-l{font-size:10.5px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:5px;}
+.p-tags{display:flex;flex-wrap:wrap;gap:12px;margin-top:38px;}
+.p-tag{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);padding:12px 18px;border-radius:3px;font-size:13px;color:rgba(255,255,255,.75);transition:border-color .3s,background .3s;}
+.p-tag:hover{border-color:rgba(41,181,213,.4);background:rgba(41,181,213,.07);}
+.p-tag span{font-size:20px;}
 
-/* ── RESTAURANT ── */
-#restaurant{
-  position:relative;z-index:10;
-  min-height:80vh;display:flex;
-  background:var(--pine-dark);
-}
-.re-img{
-  width:50%;position:relative;overflow:hidden;min-height:600px;
-}
-.re-img img{
-  width:100%;height:100%;object-fit:cover;
-  filter:brightness(.75) saturate(1.2);
-  transition:transform 8s ease;
-}
-.re-img:hover img{transform:scale(1.05);}
-.re-img::after{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(-90deg,var(--pine-dark) 0%,transparent 28%);
-}
-.re-cnt{
-  width:50%;display:flex;flex-direction:column;
-  justify-content:center;padding:80px 7% 80px 5%;
-}
-.re-list{margin-top:36px;display:flex;flex-direction:column;gap:14px;}
-.re-item{
-  display:flex;align-items:flex-start;gap:16px;
-  padding:18px 20px;
-  background:rgba(255,255,255,.03);
-  border:1px solid rgba(200,145,62,.1);
-  border-radius:3px;
-  opacity:0;transform:translateX(44px);
-  transition:border-color .3s,background .3s;cursor:none;
-}
+/* ─ RESTAURANT ─ */
+#restaurant{position:relative;z-index:10;min-height:80vh;display:flex;background:var(--pd);}
+.re-i{width:50%;position:relative;overflow:hidden;min-height:560px;}
+.re-i img{width:100%;height:100%;object-fit:cover;filter:brightness(.75) saturate(1.2);transition:transform 8s ease;}
+.re-i:hover img{transform:scale(1.05);}
+.re-i::after{content:'';position:absolute;inset:0;background:linear-gradient(-90deg,var(--pd) 0%,transparent 30%);}
+.re-c{width:50%;display:flex;flex-direction:column;justify-content:center;padding:80px 6% 80px 5%;}
+.re-list{margin-top:34px;display:flex;flex-direction:column;gap:13px;}
+.re-item{display:flex;align-items:flex-start;gap:16px;padding:17px 20px;background:rgba(255,255,255,.03);border:1px solid rgba(200,145,62,.1);border-radius:3px;opacity:0;transform:translateX(44px);transition:border-color .3s,background .3s;cursor:none;}
 .re-item:hover{border-color:rgba(200,145,62,.3);background:rgba(200,145,62,.04);}
-.re-ico{font-size:26px;flex-shrink:0;margin-top:2px;}
-.re-name{font-size:15px;font-weight:500;margin-bottom:3px;}
-.re-desc{font-size:12.5px;color:rgba(255,255,255,.45);line-height:1.6;}
+.re-ico{font-size:24px;flex-shrink:0;margin-top:2px;}
+.re-n{font-size:15px;font-weight:500;margin-bottom:3px;}
+.re-d{font-size:12.5px;color:rgba(255,255,255,.45);line-height:1.58;}
 
-/* ── ACTIVITIES ── */
-#activities{
-  position:relative;z-index:10;
-  padding:130px 5% 0;
-  background:#09150a;overflow:hidden;
-}
-.acts-wrap{
-  overflow:hidden;
-  margin-top:64px;padding-bottom:130px;
-}
-.acts-track{
-  display:flex;gap:22px;
-  width:max-content;
-}
-.ac-card{
-  width:310px;flex-shrink:0;
-  background:rgba(255,255,255,.04);
-  border:1px solid rgba(200,145,62,.1);
-  border-radius:3px;overflow:hidden;
-  transition:border-color .3s,background .3s,transform .3s;
-  cursor:none;
-}
-.ac-card:hover{
-  border-color:rgba(200,145,62,.4);
-  background:rgba(200,145,62,.05);
-  transform:translateY(-6px);
-}
-.ac-img{
-  height:188px;position:relative;overflow:hidden;
-}
-.ac-img img{
-  width:100%;height:100%;object-fit:cover;
-  filter:brightness(.68) saturate(1.1);
-  transition:transform .55s,filter .55s;
-}
+/* ─ ACTIVITIES ─ */
+#activities{position:relative;z-index:10;padding:130px 5% 0;background:#09150a;overflow:hidden;}
+.acts-w{overflow:hidden;margin-top:62px;padding-bottom:130px;}
+.acts-t{display:flex;gap:22px;width:max-content;}
+.ac-card{width:310px;flex-shrink:0;background:rgba(255,255,255,.04);border:1px solid rgba(200,145,62,.1);border-radius:3px;overflow:hidden;transition:border-color .3s,background .3s,transform .3s;cursor:none;}
+.ac-card:hover{border-color:rgba(200,145,62,.4);background:rgba(200,145,62,.05);transform:translateY(-8px);}
+.ac-img{height:188px;position:relative;overflow:hidden;}
+.ac-img img{width:100%;height:100%;object-fit:cover;filter:brightness(.66) saturate(1.1);transition:transform .55s,filter .55s;}
 .ac-card:hover .ac-img img{transform:scale(1.1);filter:brightness(.82) saturate(1.3);}
-.ac-overlay{
-  position:absolute;top:50%;left:50%;
-  transform:translate(-50%,-50%);
-  font-size:44px;opacity:0;
-  transition:opacity .3s;
-}
-.ac-card:hover .ac-overlay{opacity:1;}
+.ac-ov{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:46px;opacity:0;transition:opacity .3s;}
+.ac-card:hover .ac-ov{opacity:1;}
 .ac-body{padding:22px 20px;}
-.ac-title{
-  font-family:'Cormorant Garamond',serif;
-  font-size:22px;font-weight:600;margin-bottom:8px;
-}
-.ac-desc{font-size:13px;color:rgba(255,255,255,.48);line-height:1.68;}
+.ac-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;margin-bottom:8px;}
+.ac-desc{font-size:12.5px;color:rgba(255,255,255,.46);line-height:1.66;}
 
-/* ── BEACH ── */
-#beach{
-  position:relative;z-index:10;
-  height:72vh;overflow:hidden;
-  display:flex;align-items:center;justify-content:center;
-}
-.be-bg{
-  position:absolute;inset:-20%;
-  background-image:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1920&q=80');
-  background-size:cover;background-position:center 40%;
-  filter:brightness(.58) saturate(1.5);
-}
-.be-ov{
-  position:absolute;inset:0;
-  background:linear-gradient(to bottom,rgba(9,21,10,.72) 0%,transparent 40%,rgba(9,21,10,.6) 100%);
-}
-.be-cnt{
-  position:relative;z-index:2;
-  text-align:center;padding:40px;
-}
-.be-cnt .s-title{font-size:clamp(44px,7vw,88px);margin-bottom:20px;}
-.be-cnt p{
-  font-size:18px;color:rgba(255,255,255,.65);
-  font-style:italic;font-family:'Cormorant Garamond',serif;
-}
-.wave-t{
-  position:absolute;top:0;left:0;right:0;z-index:3;
-  line-height:0;overflow:hidden;
-}
-.wave-t svg{display:block;}
-.wave-b{
-  position:absolute;bottom:0;left:0;right:0;z-index:3;
-  line-height:0;overflow:hidden;transform:rotate(180deg);
-}
-.wave-b svg{display:block;}
+/* ─ BEACH ─ */
+#beach{position:relative;z-index:10;height:72vh;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.be-bg{position:absolute;inset:-20%;background-image:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1920&q=80');background-size:cover;background-position:center 40%;filter:brightness(.58) saturate(1.5);}
+.be-ov{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(9,21,10,.72) 0%,transparent 40%,rgba(9,21,10,.6) 100%);}
+.be-c{position:relative;z-index:2;text-align:center;padding:40px;}
+.be-c .stl{font-size:clamp(44px,7vw,88px);margin-bottom:20px;}
+.be-c p{font-size:18px;color:rgba(255,255,255,.65);font-style:italic;font-family:'Cormorant Garamond',serif;}
+.wt{position:absolute;top:0;left:0;right:0;z-index:3;line-height:0;overflow:hidden;}
+.wt svg{display:block;}
+.wb{position:absolute;bottom:0;left:0;right:0;z-index:3;line-height:0;overflow:hidden;transform:rotate(180deg);}
+.wb svg{display:block;}
 
-/* ── BOOKING ── */
-#booking{
-  position:relative;z-index:10;
-  padding:130px 5%;
-  background:var(--pine-dark);
-}
-.bk-wrap{
-  display:flex;gap:80px;
-  align-items:flex-start;margin-top:60px;
-}
-.bk-info{flex:1;}
-.bk-form{flex:1;}
-.ci{
-  display:flex;align-items:flex-start;gap:18px;
-  margin-bottom:26px;opacity:0;transform:translateX(-32px);
-}
-.ci-ico{
-  width:46px;height:46px;flex-shrink:0;
-  background:rgba(200,145,62,.1);
-  border:1px solid rgba(200,145,62,.2);
-  border-radius:50%;
-  display:flex;align-items:center;justify-content:center;font-size:19px;
-}
-.ci-lbl{font-size:10.5px;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px;}
-.ci-val{font-size:14.5px;color:rgba(255,255,255,.78);line-height:1.5;}
+/* ─ BOOKING ─ */
+#booking{position:relative;z-index:10;padding:130px 5%;background:var(--pd);}
+.bk-w{display:flex;gap:80px;align-items:flex-start;margin-top:60px;}
+.bk-i{flex:1;}
+.bk-f{flex:1;}
+.ci{display:flex;align-items:flex-start;gap:18px;margin-bottom:24px;opacity:0;transform:translateX(-32px);}
+.ci-ic{width:46px;height:46px;flex-shrink:0;background:rgba(200,145,62,.09);border:1px solid rgba(200,145,62,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:19px;}
+.ci-l{font-size:10.5px;color:var(--g);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px;}
+.ci-v{font-size:14.5px;color:rgba(255,255,255,.76);line-height:1.5;}
 .fg{display:flex;flex-direction:column;gap:7px;flex:1;}
-.fg label{font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.44);}
-.fg input,.fg select,.fg textarea{
-  background:rgba(255,255,255,.045);
-  border:1px solid rgba(255,255,255,.1);
-  color:white;padding:13px 16px;
-  font-size:14px;font-family:'Inter',sans-serif;
-  border-radius:2px;outline:none;
-  transition:border-color .3s;cursor:none;
-}
-.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--gold);}
+.fg label{font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.4);}
+.fg input,.fg select,.fg textarea{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.1);color:white;padding:13px 16px;font-size:14px;font-family:'Inter',sans-serif;border-radius:2px;outline:none;transition:border-color .3s;cursor:none;}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--g);}
 .fg textarea{min-height:110px;resize:vertical;}
-.fg select option{background:var(--pine);}
+.fg select option{background:var(--pg);}
 .frow{display:flex;gap:14px;}
 .fgrid{display:flex;flex-direction:column;gap:14px;}
-.f-submit{
-  background:var(--gold);color:var(--pine-dark);
-  padding:16px 40px;font-size:12.5px;font-weight:700;
-  letter-spacing:2px;text-transform:uppercase;
-  border:none;border-radius:2px;cursor:none;width:100%;
-  margin-top:6px;
-  transition:background .3s,transform .2s;
-}
-.f-submit:hover{background:var(--gold-light);transform:translateY(-2px);}
+#pcalc{margin-top:-4px;font-size:13px;color:rgba(255,255,255,.5);min-height:18px;font-family:'Cormorant Garamond',serif;}
+#pcalc strong{color:var(--g);}
+.fsub{background:var(--g);color:var(--pd);padding:16px 40px;font-size:12.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border:none;border-radius:2px;cursor:none;width:100%;margin-top:6px;transition:background .3s,transform .2s;}
+.fsub:hover{background:var(--gl);transform:translateY(-2px);}
 
-/* ── FOOTER ── */
-footer{
-  position:relative;z-index:10;
-  background:#030803;
-  padding:68px 5% 32px;
-  border-top:1px solid rgba(200,145,62,.08);
-}
-.ft-top{
-  display:flex;justify-content:space-between;
-  flex-wrap:wrap;gap:44px;margin-bottom:52px;
-}
+/* ─ FOOTER ─ */
+footer{position:relative;z-index:10;background:#030803;padding:68px 5% 32px;border-top:1px solid rgba(200,145,62,.08);}
+.ft-top{display:flex;justify-content:space-between;flex-wrap:wrap;gap:44px;margin-bottom:52px;}
 .ft-brand{max-width:300px;}
-.ft-logo{
-  font-family:'Cormorant Garamond',serif;
-  font-size:28px;font-weight:600;
-  letter-spacing:2px;margin-bottom:14px;
-}
-.ft-logo em{color:var(--gold);font-style:normal;}
-.ft-brand p{font-size:13px;color:rgba(255,255,255,.35);line-height:1.75;}
-.ft-col h4{
-  font-size:10.5px;letter-spacing:3px;text-transform:uppercase;
-  color:var(--gold);margin-bottom:18px;
-}
+.ft-logo{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;letter-spacing:2px;margin-bottom:14px;}
+.ft-logo em{color:var(--g);font-style:normal;}
+.ft-brand p{font-size:13px;color:rgba(255,255,255,.34);line-height:1.75;}
+.ft-col h4{font-size:10.5px;letter-spacing:3px;text-transform:uppercase;color:var(--g);margin-bottom:18px;}
 .ft-col ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
-.ft-col a{
-  font-size:13px;color:rgba(255,255,255,.36);
-  text-decoration:none;transition:color .3s;
-}
-.ft-col a:hover{color:var(--gold);}
-.ft-bot{
-  padding-top:28px;border-top:1px solid rgba(255,255,255,.05);
-  display:flex;justify-content:space-between;
-  flex-wrap:wrap;gap:14px;align-items:center;
-}
-.ft-credit{font-size:11.5px;color:rgba(255,255,255,.22);}
-.ft-credit a{color:rgba(200,145,62,.5);text-decoration:none;transition:color .3s;}
-.ft-credit a:hover{color:var(--gold);}
+.ft-col a{font-size:13px;color:rgba(255,255,255,.35);text-decoration:none;transition:color .3s;}
+.ft-col a:hover{color:var(--g);}
+.ft-bot{padding-top:28px;border-top:1px solid rgba(255,255,255,.05);display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;align-items:center;}
+.ft-cr{font-size:11.5px;color:rgba(255,255,255,.22);}
+.ft-cr a{color:rgba(200,145,62,.5);text-decoration:none;transition:color .3s;}
+.ft-cr a:hover{color:var(--g);}
 
-/* ── SOUND BTN ── */
-#sound-btn{
-  position:fixed;bottom:28px;right:28px;z-index:300;
-  width:50px;height:50px;
-  background:rgba(200,145,62,.12);
-  border:1px solid rgba(200,145,62,.28);
-  border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  font-size:21px;cursor:none;
-  transition:background .3s,border-color .3s,transform .3s;
-  opacity:0;
-}
-#sound-btn:hover{
-  background:rgba(200,145,62,.28);
-  border-color:var(--gold);
-  transform:scale(1.1);
-}
-
-/* ── FADE UP ── */
+/* ─ UTILS ─ */
 .fu{opacity:0;transform:translateY(48px);}
+.s-title{font-family:'Cormorant Garamond',serif;font-size:clamp(38px,5.5vw,70px);font-weight:300;line-height:1.08;}
+.s-body{font-size:15px;line-height:1.84;color:var(--mu);max-width:560px;margin-top:20px;}
 
-/* ── RESPONSIVE ── */
 @media(max-width:980px){
-  .nav-links{display:none;}
+  .nlinks{display:none;}.ham{display:flex;}
   #story,#restaurant{flex-direction:column;}
-  .st-text,.st-img,.re-img,.re-cnt{width:100%;min-height:300px;}
+  .st-t,.st-i,.re-i,.re-c{width:100%;min-height:300px;}
   .lg-grid{grid-template-columns:1fr;}
-  .bk-wrap{flex-direction:column;}
-  .h-btns{flex-direction:column;align-items:center;}
+  .bk-w{flex-direction:column;}.hbtns{flex-direction:column;align-items:center;}
+  .pool-cnt{width:100%;padding:80px 5%;}
+  #pc{opacity:.3;}
+  .ft-top{flex-direction:column;}
 }
 </style>
 </head>
 <body>
 
-<!-- ══ LOADER ══ -->
+<!-- LOADER -->
 <div id="loader">
-  <div class="l-tree">🌲</div>
-  <div class="l-name">La Pinède</div>
+  <div class="l-trees"><span>🌲</span><span>🌲</span><span>🌲</span></div>
+  <div class="l-name">La <span style="color:var(--g)">Pinède</span></div>
+  <div class="l-sub">Calvi · Corse du Nord</div>
   <div class="l-bar"><div class="l-fill" id="lf"></div></div>
+  <div class="l-pct" id="lpct">0%</div>
 </div>
 
-<!-- ══ CURSOR ══ -->
-<div id="cur"></div>
-<div id="cur-f"></div>
+<!-- CURSOR -->
+<div id="cd"></div><div id="cr"></div><div id="cl"></div>
 
-<!-- ══ SOUND ══ -->
-<button id="sound-btn" title="Ambiance sonore">🔇</button>
+<!-- SOUND -->
+<div id="sw">
+  <div id="viz"><div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div></div>
+  <button id="sb">🔇</button>
+</div>
 
-<!-- ══ THREE.JS CANVAS ══ -->
-<canvas id="hero-canvas"></canvas>
+<!-- PROGRESS -->
+<div id="pgbar"><div id="pgfill"></div></div>
 
-<!-- ══ NAV ══ -->
+<!-- THREE.JS CANVAS -->
+<canvas id="mc"></canvas>
+
+<!-- NAV -->
 <nav id="nav">
-  <a href="#" class="nav-logo">La <em>Pinède</em></a>
-  <ul class="nav-links">
+  <a href="#" class="nl">La <em>Pinède</em></a>
+  <ul class="nlinks">
     <li><a href="#lodging">Hébergements</a></li>
     <li><a href="#pool">Bien-être</a></li>
     <li><a href="#restaurant">Restaurant</a></li>
     <li><a href="#activities">Activités</a></li>
-    <li><a href="#booking" class="nav-book">Réserver</a></li>
+    <li><a href="#booking" class="nb" data-cur="Réserver">Réserver</a></li>
   </ul>
+  <button class="ham" id="ham"><span></span><span></span><span></span></button>
 </nav>
 
-<!-- ══ HERO ══ -->
+<!-- MOBILE MENU -->
+<div id="mm">
+  <div class="mm-trees">🌲 🌲 🌲</div>
+  <a href="#lodging">Hébergements</a>
+  <a href="#pool">Bien-être</a>
+  <a href="#restaurant">Restaurant</a>
+  <a href="#activities">Activités</a>
+  <a href="#booking" style="color:var(--g)">Réserver</a>
+</div>
+
+<!-- HERO -->
 <section id="hero">
-  <div class="h-eye" id="h-eye">Calvi · Corse du Nord · Camping 4 étoiles</div>
-  <h1 class="h-title">
-    <span class="ln"><span>Camping</span></span>
-    <span class="ln"><span>La Pinède</span></span>
-  </h1>
-  <div class="h-stars" id="h-stars">★ ★ ★ ★</div>
-  <div class="h-sub" id="h-sub">La forêt de pins de Calvi vous accueille</div>
-  <div class="h-tag" id="h-tag">2 minutes à pied · Plage de sable blanc · Vue sur la citadelle</div>
-  <div class="h-btns" id="h-btns">
-    <a href="#booking" class="btn-p mag">Réserver un séjour</a>
-    <a href="#story" class="btn-g mag">Découvrir</a>
+  <div class="h-eye" id="he">Calvi · Corse du Nord · Camping 4 étoiles</div>
+  <h1 class="h-title" id="ht">Camping La Pinède</h1>
+  <div class="h-stars" id="hs">★ ★ ★ ★</div>
+  <p class="h-sub" id="hsub">La forêt de pins de Calvi vous accueille</p>
+  <p class="h-tag" id="htag">2 minutes à pied · Plage de sable blanc · Vue sur la citadelle</p>
+  <div class="hbtns" id="hbtns">
+    <a href="#booking" class="bp mag" data-cur="Réserver">Réserver un séjour</a>
+    <a href="#story" class="bg mag" data-cur="Découvrir">Découvrir</a>
   </div>
-  <div class="h-scroll" id="h-scroll">
-    <span class="h-scroll-txt">Défiler</span>
-    <div class="h-scroll-line"></div>
-  </div>
+  <div class="hscr" id="hscr"><span class="hscr-t">Défiler</span><div class="hscr-l"></div></div>
 </section>
 
-<!-- ══ STATS ══ -->
+<!-- STATS -->
 <section id="stats">
-  <div class="s-item"><span class="s-num" data-t="4">0</span><span class="s-label">étoiles</span></div>
-  <div class="s-item"><span class="s-num" data-t="262">0</span><span class="s-label">emplacements</span></div>
-  <div class="s-item"><span class="s-num" data-t="8">0</span><span class="s-label">hectares de pins</span></div>
-  <div class="s-item"><span class="s-num" data-t="2">0</span><span class="s-label">min de la plage</span></div>
-  <div class="s-item"><span class="s-num" data-t="115">0</span><span class="s-label">hébergements</span></div>
+  <div class="si"><span class="sn" data-t="4">0</span><span class="sl">étoiles</span></div>
+  <div class="si"><span class="sn" data-t="262">0</span><span class="sl">emplacements</span></div>
+  <div class="si"><span class="sn" data-t="8">0</span><span class="sl">hectares de pins</span></div>
+  <div class="si"><span class="sn" data-t="2">0</span><span class="sl">min de la plage</span></div>
+  <div class="si"><span class="sn" data-t="115">0</span><span class="sl">hébergements</span></div>
 </section>
 
-<!-- ══ STORY ══ -->
+<!-- STORY -->
 <section id="story">
-  <div class="st-text">
+  <div class="st-t">
     <span class="lbl fu">Notre histoire</span>
-    <h2 class="s-title fu">Une oasis entre<br><em>mer &amp; pinède</em></h2>
-    <p class="st-body fu">
-      Niché au cœur d'une pinède centenaire à seulement deux minutes à pied de l'une des plus belles plages de Méditerranée et à moins d'un quart d'heure du cœur historique de Calvi, notre camping 4 étoiles est un sanctuaire naturel où la Corse révèle toute son âme.
-    </p>
-    <p class="st-body fu" style="margin-top:14px;">
-      Ici, les senteurs de pins dominent l'air marin. Les cigales rythment vos siestes. Et le soir venu, les étoiles de Corse illuminent un ciel d'une pureté rare, pendant que les lucioles dansent entre les arbres.
-    </p>
-    <div class="st-sep fu"></div>
-    <div class="st-quote fu">
-      « La Pinède, c'est la Corse telle qu'elle devrait toujours être vécue — sauvage, généreuse, inoubliable. »
-    </div>
+    <h2 class="stl fu">Une oasis entre<br><em>mer &amp; pinède</em></h2>
+    <p class="stb fu">Niché au cœur d'une pinède centenaire à deux minutes de l'une des plus belles plages de Méditerranée et à moins d'un quart d'heure du cœur historique de Calvi, notre camping 4 étoiles est un sanctuaire naturel où la Corse révèle toute son âme.</p>
+    <p class="stb fu" style="margin-top:14px">Ici, les senteurs de pins dominent l'air marin. Les cigales rythment vos siestes. Et le soir venu, les lucioles dansent entre les arbres.</p>
+    <div class="sep fu"></div>
+    <blockquote class="stq" id="stquote">« La Pinède, c'est la Corse telle qu'elle devrait toujours être vécue — sauvage, généreuse, inoubliable. »</blockquote>
   </div>
-  <div class="st-img">
+  <div class="st-i">
     <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?w=1000&q=85" alt="Pinède centenaire de Calvi">
   </div>
 </section>
 
-<!-- ══ LODGING ══ -->
-<section id="lodging">
-  <span class="lbl lbl-dark">Hébergements</span>
-  <h2 class="s-title" style="color:var(--pine);">Votre havre de confort<br>en Corse</h2>
-  <div class="lg-grid">
-
-    <div class="lg-card" id="lc0">
-      <div class="lg-img">
-        <img src="https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=700&q=80" alt="Chalet Premium">
-        <div class="lg-badge">Coup de cœur</div>
-      </div>
-      <div class="lg-body">
-        <div class="lg-title">Chalet Premium</div>
-        <div class="lg-desc">Spacieux et entièrement climatisé, ce chalet offre une terrasse privée ombragée au cœur des pins. Cuisine équipée, salle de bain complète, tout le confort d'un appartement en pleine nature.</div>
-        <div class="lg-feats">
-          <span class="lg-feat">❄️ Climatisation</span>
-          <span class="lg-feat">🍳 Cuisine équipée</span>
-          <span class="lg-feat">📺 TV satellite</span>
-          <span class="lg-feat">🛁 Salle de bain</span>
-          <span class="lg-feat">🌳 Terrasse privée</span>
-          <span class="lg-feat">👨‍👩‍👧‍👦 2–6 pers.</span>
-        </div>
-        <div class="lg-foot">
-          <div class="lg-price">145€ <small>/ nuit</small></div>
-          <a href="#booking" class="lg-btn">Réserver</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="lg-card" id="lc1">
-      <div class="lg-img">
-        <img src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=700&q=80" alt="Mobilhome Confort">
-        <div class="lg-badge" style="background:#29b5d5;color:#fff;">Populaire</div>
-      </div>
-      <div class="lg-body">
-        <div class="lg-title">Mobilhome Confort</div>
-        <div class="lg-desc">Le choix idéal pour les familles. Deux chambres lumineuses, salon cosy, cuisine aménagée et terrasse couverte entre les pins. WiFi inclus, tout le nécessaire pour un séjour sans prise de tête.</div>
-        <div class="lg-feats">
-          <span class="lg-feat">🏠 2 chambres</span>
-          <span class="lg-feat">🍽️ Cuisine aménagée</span>
-          <span class="lg-feat">📡 WiFi inclus</span>
-          <span class="lg-feat">🌲 Entre les pins</span>
-          <span class="lg-feat">👨‍👩‍👦 2–4 pers.</span>
-        </div>
-        <div class="lg-foot">
-          <div class="lg-price">89€ <small>/ nuit</small></div>
-          <a href="#booking" class="lg-btn">Réserver</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="lg-card" id="lc2">
-      <div class="lg-img">
-        <img src="https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=700&q=80" alt="Emplacement Ombragé">
-        <div class="lg-badge" style="background:var(--pine-mid);">Nature</div>
-      </div>
-      <div class="lg-body">
-        <div class="lg-title">Emplacement Ombragé</div>
-        <div class="lg-desc">Parcelles de 100 m² délimitées, nichées à l'ombre des pins centenaires. Branchement électrique, accès aux sanitaires premium. Pour les amoureux du camping authentique sous les étoiles de Corse.</div>
-        <div class="lg-feats">
-          <span class="lg-feat">⚡ Électricité 10A</span>
-          <span class="lg-feat">🌲 100 m² ombragés</span>
-          <span class="lg-feat">🚿 Sanitaires premium</span>
-          <span class="lg-feat">🐕 Animaux bienvenus</span>
-        </div>
-        <div class="lg-foot">
-          <div class="lg-price">32€ <small>/ nuit</small></div>
-          <a href="#booking" class="lg-btn">Réserver</a>
-        </div>
-      </div>
-    </div>
-
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="g-head">
+    <span class="lbl fu" style="color:var(--g)">Galerie</span>
+    <h2 class="s-title fu" style="color:var(--w)">La Pinède en images</h2>
+  </div>
+  <div class="gsc" id="gsc">
+    <div id="g0" class="gc" style="background-image:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=700&q=80')">
+      <div class="gc-info"><div class="gc-lbl">La Plage de Calvi</div><div class="gc-sub">2 minutes à pied</div></div></div>
+    <div id="g1" class="gc" style="background-image:url('https://images.unsplash.com/photo-1448375240586-882707db888b?w=700&q=80')">
+      <div class="gc-info"><div class="gc-lbl">La Pinède Centenaire</div><div class="gc-sub">8 hectares de nature</div></div></div>
+    <div id="g2" class="gc" style="background-image:url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=700&q=80')">
+      <div class="gc-info"><div class="gc-lbl">Espace Aquatique</div><div class="gc-sub">Piscine 27°C · Spa · Jacuzzi</div></div></div>
+    <div id="g3" class="gc" style="background-image:url('https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=700&q=80')">
+      <div class="gc-info"><div class="gc-lbl">Nos Hébergements</div><div class="gc-sub">Chalets, mobilhomes, emplacements</div></div></div>
+    <div id="g4" class="gc" style="background-image:url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=700&q=80')">
+      <div class="gc-info"><div class="gc-lbl">La Table</div><div class="gc-sub">Restaurant au cœur des pins</div></div></div>
+    <button class="g-ctrl" id="gprev">‹</button>
+    <button class="g-ctrl" id="gnext">›</button>
+  </div>
+  <div class="g-dots" id="gdots">
+    <div class="g-dot a"></div><div class="g-dot"></div><div class="g-dot"></div><div class="g-dot"></div><div class="g-dot"></div>
   </div>
 </section>
 
-<!-- ══ POOL ══ -->
+<!-- LODGING -->
+<section id="lodging">
+  <span class="lbl lbl-d">Hébergements</span>
+  <h2 class="stl" style="color:var(--pg)">Votre havre de confort<br>en Corse</h2>
+  <div class="lg-grid">
+    <div class="lg-card" id="lc0">
+      <div class="lg-img"><img src="https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=700&q=80" alt="Chalet Premium"><div class="lg-badge">Coup de cœur</div></div>
+      <div class="lg-body">
+        <div class="lg-title">Chalet Premium</div>
+        <div class="lg-desc">Spacieux et climatisé, ce chalet offre une terrasse privée ombragée au cœur des pins. Tout le confort d'un appartement en pleine nature corse.</div>
+        <div class="lg-feats"><span class="lf-tag">❄️ Climatisation</span><span class="lf-tag">🍳 Cuisine équipée</span><span class="lf-tag">📺 TV satellite</span><span class="lf-tag">🌳 Terrasse privée</span><span class="lf-tag">👨‍👩‍👧‍👦 2–6 pers.</span></div>
+        <div class="lg-foot"><div class="lg-price">145€ <small>/ nuit</small></div><a href="#booking" class="lg-btn">Réserver</a></div>
+      </div>
+    </div>
+    <div class="lg-card" id="lc1">
+      <div class="lg-img"><img src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=700&q=80" alt="Mobilhome Confort"><div class="lg-badge" style="background:#29b5d5;color:#fff">Populaire</div></div>
+      <div class="lg-body">
+        <div class="lg-title">Mobilhome Confort</div>
+        <div class="lg-desc">Deux chambres lumineuses, salon cosy, cuisine aménagée et terrasse couverte entre les pins. WiFi inclus. Idéal pour les familles.</div>
+        <div class="lg-feats"><span class="lf-tag">🏠 2 chambres</span><span class="lf-tag">🍽️ Cuisine aménagée</span><span class="lf-tag">📡 WiFi inclus</span><span class="lf-tag">🌲 Entre les pins</span><span class="lf-tag">👨‍👩‍👦 2–4 pers.</span></div>
+        <div class="lg-foot"><div class="lg-price">89€ <small>/ nuit</small></div><a href="#booking" class="lg-btn">Réserver</a></div>
+      </div>
+    </div>
+    <div class="lg-card" id="lc2">
+      <div class="lg-img"><img src="https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=700&q=80" alt="Emplacement Ombragé"><div class="lg-badge" style="background:var(--pm)">Nature</div></div>
+      <div class="lg-body">
+        <div class="lg-title">Emplacement Ombragé</div>
+        <div class="lg-desc">100 m² délimités à l'ombre des pins centenaires, avec branchement électrique. Sanitaires premium. Pour les amoureux du camping authentique.</div>
+        <div class="lg-feats"><span class="lf-tag">⚡ Électricité 10A</span><span class="lf-tag">🌲 100 m² ombragés</span><span class="lf-tag">🚿 Sanitaires premium</span><span class="lf-tag">🐕 Animaux bienvenus</span></div>
+        <div class="lg-foot"><div class="lg-price">32€ <small>/ nuit</small></div><a href="#booking" class="lg-btn">Réserver</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POOL -->
 <section id="pool">
-  <div class="pool-bg" id="pbg"></div>
+  <canvas id="pc"></canvas>
   <div class="pool-ov"></div>
-  <div class="pool-shimmer"></div>
   <div class="pool-cnt">
     <span class="lbl fu">Espace Bien-Être</span>
     <h2 class="s-title fu">Piscine, Spa<br>&amp; Sérénité absolue</h2>
-    <p class="s-body fu">
-      Un sanctuaire de bien-être ouvert toute la saison pour vous ressourcer en profondeur. Plongez dans notre piscine chauffée à 27°C avec jets de massage, laissez-vous porter par le jacuzzi, puis glissez dans le hammam ou le sauna. Votre corps vous remerciera.
-    </p>
-    <div class="pool-nums">
-      <div>
-        <div class="p-num-b">27°C</div>
-        <div class="p-num-l">Piscine chauffée</div>
-      </div>
-      <div>
-        <div class="p-num-b">365</div>
-        <div class="p-num-l">Jours / Spa ouvert</div>
-      </div>
-      <div>
-        <div class="p-num-b">∞</div>
-        <div class="p-num-l">Moments de sérénité</div>
-      </div>
+    <p class="s-body fu">Piscine chauffée à 27°C avec jets de massage, jacuzzi, hammam, sauna — un sanctuaire ouvert toute la saison. Votre corps vous remerciera.</p>
+    <div class="p-nums">
+      <div><div class="p-n">27°C</div><div class="p-l">Piscine chauffée</div></div>
+      <div><div class="p-n">365j</div><div class="p-l">Spa ouvert</div></div>
+      <div><div class="p-n">∞</div><div class="p-l">Sérénité</div></div>
     </div>
-    <div class="pool-tags fu">
-      <div class="pool-tag"><span>🏊</span> Piscine chauffée 27°C</div>
-      <div class="pool-tag"><span>💆</span> Spa &amp; massages</div>
-      <div class="pool-tag"><span>🧖</span> Sauna &amp; hammam</div>
-      <div class="pool-tag"><span>🌊</span> Jacuzzi &amp; jets massage</div>
-      <div class="pool-tag"><span>🏋️</span> Salle de sport</div>
-      <div class="pool-tag"><span>🍹</span> Bar de la piscine</div>
+    <div class="p-tags fu">
+      <div class="p-tag"><span>🏊</span> Piscine 27°C</div>
+      <div class="p-tag"><span>💆</span> Spa &amp; massages</div>
+      <div class="p-tag"><span>🧖</span> Sauna &amp; hammam</div>
+      <div class="p-tag"><span>🌊</span> Jacuzzi</div>
+      <div class="p-tag"><span>🏋️</span> Salle de sport</div>
+      <div class="p-tag"><span>🍹</span> Bar de la piscine</div>
     </div>
   </div>
 </section>
 
-<!-- ══ RESTAURANT ══ -->
+<!-- RESTAURANT -->
 <section id="restaurant">
-  <div class="re-img">
-    <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=900&q=85" alt="La Table — Restaurant La Pinède">
-  </div>
-  <div class="re-cnt">
+  <div class="re-i"><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=900&q=85" alt="La Table"></div>
+  <div class="re-c">
     <span class="lbl fu">Gastronomie</span>
-    <h2 class="s-title fu">La Table<br><em>au cœur des pins</em></h2>
-    <p class="s-body fu">
-      Notre restaurant « La Table » vous accueille chaque soir dans un cadre unique, encerclé par les pins millénaires de Calvi. Produits locaux, recettes méditerranéennes généreuses et vins corses d'exception : chaque repas est un voyage.
-    </p>
+    <h2 class="stl fu">La Table<br><em>au cœur des pins</em></h2>
+    <p class="stb fu">Produits locaux, recettes méditerranéennes et vins corses d'exception. Chaque repas est un voyage.</p>
     <div class="re-list">
-      <div class="re-item" id="ri0">
-        <div class="re-ico">🍽️</div>
-        <div>
-          <div class="re-name">La Table</div>
-          <div class="re-desc">Restaurant gastronomique · Ouvert tous les soirs · Cuisine méditerranéenne &amp; produits corses</div>
-        </div>
-      </div>
-      <div class="re-item" id="ri1">
-        <div class="re-ico">🍕</div>
-        <div>
-          <div class="re-name">Snack-Bar &amp; Pizzeria</div>
-          <div class="re-desc">Pizzas au feu de bois, salades fraîches, paninis · Déjeuner &amp; snacking toute la journée</div>
-        </div>
-      </div>
-      <div class="re-item" id="ri2">
-        <div class="re-ico">🍹</div>
-        <div>
-          <div class="re-name">Bar de la Piscine</div>
-          <div class="re-desc">Cocktails, crêpes, glaces artisanales, smoothies · Du matin au coucher du soleil</div>
-        </div>
-      </div>
-      <div class="re-item" id="ri3">
-        <div class="re-ico">🛒</div>
-        <div>
-          <div class="re-name">Épicerie du Camping</div>
-          <div class="re-desc">Produits frais, spécialités corses, charcuterie, fromages · Pain chaud chaque matin</div>
-        </div>
-      </div>
+      <div class="re-item" id="ri0"><div class="re-ico">🍽️</div><div><div class="re-n">La Table</div><div class="re-d">Restaurant gastronomique · Ouvert tous les soirs · Cuisine méditerranéenne</div></div></div>
+      <div class="re-item" id="ri1"><div class="re-ico">🍕</div><div><div class="re-n">Snack-Bar &amp; Pizzeria</div><div class="re-d">Pizzas au feu de bois, salades fraîches · Déjeuner &amp; snacking</div></div></div>
+      <div class="re-item" id="ri2"><div class="re-ico">🍹</div><div><div class="re-n">Bar de la Piscine</div><div class="re-d">Cocktails, crêpes, glaces artisanales · Du matin au coucher du soleil</div></div></div>
+      <div class="re-item" id="ri3"><div class="re-ico">🛒</div><div><div class="re-n">Épicerie</div><div class="re-d">Produits frais, spécialités corses · Pain chaud chaque matin</div></div></div>
     </div>
   </div>
 </section>
 
-<!-- ══ ACTIVITIES ══ -->
+<!-- ACTIVITIES -->
 <section id="activities">
   <span class="lbl fu">Pour toute la famille</span>
   <h2 class="s-title fu">Des activités<br>sans limite</h2>
-  <div class="acts-wrap">
-    <div class="acts-track" id="atrack">
-
-      <div class="ac-card">
-        <div class="ac-img">
-          <img src="https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?w=450&q=75" alt="Parc aquatique">
-          <div class="ac-overlay">💦</div>
-        </div>
-        <div class="ac-body">
-          <div class="ac-title">Parc Aquatique</div>
-          <div class="ac-desc">Toboggans, jeux d'eau et bassins pour des heures de fous rires en famille sous le soleil corse.</div>
-        </div>
-      </div>
-
-      <div class="ac-card">
-        <div class="ac-img">
-          <img src="https://images.unsplash.com/photo-1551524559-8af4e6624178?w=450&q=75" alt="Accrobranche">
-          <div class="ac-overlay">🌲</div>
-        </div>
-        <div class="ac-body">
-          <div class="ac-title">Accrobranche</div>
-          <div class="ac-desc">Parcours dans les cimes des pins de Calvi. Sensations fortes et grand air garantis pour les aventuriers.</div>
-        </div>
-      </div>
-
-      <div class="ac-card">
-        <div class="ac-img">
-          <img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=450&q=75" alt="Tennis">
-          <div class="ac-overlay">🎾</div>
-        </div>
-        <div class="ac-body">
-          <div class="ac-title">Tennis &amp; Sports</div>
-          <div class="ac-desc">2 courts de tennis éclairés, terrain multisports et tournois organisés tout l'été par nos animateurs.</div>
-        </div>
-      </div>
-
-      <div class="ac-card">
-        <div class="ac-img">
-          <img src="https://images.unsplash.com/photo-1566438480900-0609be27a4be?w=450&q=75" alt="Club enfants">
-          <div class="ac-overlay">🎨</div>
-        </div>
-        <div class="ac-body">
-          <div class="ac-title">Club Enfants</div>
-          <div class="ac-desc">Animateurs diplômés BAFA, ateliers créatifs, sorties nature et spectacles (juillet &amp; août). Dès 4 ans.</div>
-        </div>
-      </div>
-
-      <div class="ac-card">
-        <div class="ac-img">
-          <img src="https://images.unsplash.com/photo-1593341646782-e0b495cff86d?w=450&q=75" alt="Mini-golf">
-          <div class="ac-overlay">⛳</div>
-        </div>
-        <div class="ac-body">
-          <div class="ac-title">Mini-Golf</div>
-          <div class="ac-desc">18 trous dans un décor naturel entre les pins. Le parcours idéal pour un moment ludique et détendu.</div>
-        </div>
-      </div>
-
-      <div class="ac-card">
-        <div class="ac-img">
-          <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=450&q=75" alt="Laser Game">
-          <div class="ac-overlay">🔫</div>
-        </div>
-        <div class="ac-body">
-          <div class="ac-title">Laser Game</div>
-          <div class="ac-desc">Batailles épiques dans la nuit de la pinède. Le jeu qui transforme chaque soirée en moment inoubliable.</div>
-        </div>
-      </div>
-
-      <div class="ac-card">
-        <div class="ac-img">
-          <img src="https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?w=450&q=75" alt="Balades en poney">
-          <div class="ac-overlay">🐴</div>
-        </div>
-        <div class="ac-body">
-          <div class="ac-title">Balades en Poney</div>
-          <div class="ac-desc">Initiations et balades encadrées à travers la pinède pour les enfants. Une expérience magique dès 2 ans.</div>
-        </div>
-      </div>
-
-    </div>
-  </div>
+  <div class="acts-w"><div class="acts-t" id="at">
+    <div class="ac-card"><div class="ac-img"><img src="https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?w=450&q=75" alt="Aquatique"><div class="ac-ov">💦</div></div><div class="ac-body"><div class="ac-title">Parc Aquatique</div><div class="ac-desc">Toboggans, jeux d'eau et bassins pour des heures de fous rires sous le soleil corse.</div></div></div>
+    <div class="ac-card"><div class="ac-img"><img src="https://images.unsplash.com/photo-1551524559-8af4e6624178?w=450&q=75" alt="Accrobranche"><div class="ac-ov">🌲</div></div><div class="ac-body"><div class="ac-title">Accrobranche</div><div class="ac-desc">Parcours dans les cimes des pins de Calvi. Sensations fortes et grand air garantis.</div></div></div>
+    <div class="ac-card"><div class="ac-img"><img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=450&q=75" alt="Tennis"><div class="ac-ov">🎾</div></div><div class="ac-body"><div class="ac-title">Tennis &amp; Sports</div><div class="ac-desc">2 courts éclairés, terrain multisports, tournois organisés tout l'été.</div></div></div>
+    <div class="ac-card"><div class="ac-img"><img src="https://images.unsplash.com/photo-1566438480900-0609be27a4be?w=450&q=75" alt="Club enfants"><div class="ac-ov">🎨</div></div><div class="ac-body"><div class="ac-title">Club Enfants</div><div class="ac-desc">Animateurs diplômés BAFA, ateliers créatifs, spectacles — juillet &amp; août, dès 4 ans.</div></div></div>
+    <div class="ac-card"><div class="ac-img"><img src="https://images.unsplash.com/photo-1593341646782-e0b495cff86d?w=450&q=75" alt="Mini-golf"><div class="ac-ov">⛳</div></div><div class="ac-body"><div class="ac-title">Mini-Golf</div><div class="ac-desc">18 trous dans un décor naturel entre les pins — ludique et détendu.</div></div></div>
+    <div class="ac-card"><div class="ac-img"><img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=450&q=75" alt="Laser Game"><div class="ac-ov">🔫</div></div><div class="ac-body"><div class="ac-title">Laser Game</div><div class="ac-desc">Batailles épiques dans la nuit de la pinède. Le jeu qui anime chaque soirée.</div></div></div>
+    <div class="ac-card"><div class="ac-img"><img src="https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?w=450&q=75" alt="Poney"><div class="ac-ov">🐴</div></div><div class="ac-body"><div class="ac-title">Balades en Poney</div><div class="ac-desc">Initiations encadrées à travers la pinède pour les enfants dès 2 ans.</div></div></div>
+  </div></div>
 </section>
 
-<!-- ══ BEACH ══ -->
+<!-- BEACH -->
 <section id="beach">
-  <div class="wave-t">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 64" preserveAspectRatio="none" height="64">
-      <path d="M0,32 C240,64 480,0 720,32 C960,64 1200,0 1440,32 L1440,0 L0,0 Z" fill="#09150a"/>
-    </svg>
-  </div>
+  <div class="wt"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 64" preserveAspectRatio="none" height="64"><path d="M0,32 C240,64 480,0 720,32 C960,64 1200,0 1440,32 L1440,0 L0,0 Z" fill="#09150a"/></svg></div>
   <div class="be-bg" id="bebg"></div>
   <div class="be-ov"></div>
-  <div class="be-cnt">
+  <div class="be-c">
     <span class="lbl">La Plage</span>
-    <h2 class="s-title">La plage de Calvi,<br>à deux pas</h2>
-    <p>4 km de sable blanc · Eaux cristallines turquoise · Vue sur la citadelle génoise</p>
+    <h2 class="stl">La plage de Calvi,<br>à deux pas</h2>
+    <p>4 km de sable blanc · Eaux turquoise · Vue sur la citadelle génoise</p>
   </div>
-  <div class="wave-b">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 64" preserveAspectRatio="none" height="64">
-      <path d="M0,32 C240,64 480,0 720,32 C960,64 1200,0 1440,32 L1440,0 L0,0 Z" fill="var(--pine-dark)"/>
-    </svg>
-  </div>
+  <div class="wb"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 64" preserveAspectRatio="none" height="64"><path d="M0,32 C240,64 480,0 720,32 C960,64 1200,0 1440,32 L1440,0 L0,0 Z" fill="var(--pd)"/></svg></div>
 </section>
 
-<!-- ══ BOOKING ══ -->
+<!-- BOOKING -->
 <section id="booking">
   <span class="lbl fu">Réservation</span>
   <h2 class="s-title fu">Planifiez votre séjour<br>en Corse</h2>
-  <div class="bk-wrap">
-    <div class="bk-info">
-      <div class="ci" id="ci0">
-        <div class="ci-ico">📍</div>
-        <div>
-          <div class="ci-lbl">Adresse</div>
-          <div class="ci-val">Route de la Pinède<br>20260 Calvi, Haute-Corse</div>
-        </div>
-      </div>
-      <div class="ci" id="ci1">
-        <div class="ci-ico">📞</div>
-        <div>
-          <div class="ci-lbl">Téléphone</div>
-          <div class="ci-val">+33 (0)4 95 65 17 80</div>
-        </div>
-      </div>
-      <div class="ci" id="ci2">
-        <div class="ci-ico">✉️</div>
-        <div>
-          <div class="ci-lbl">Email</div>
-          <div class="ci-val">contact@camping-calvi.com</div>
-        </div>
-      </div>
-      <div class="ci" id="ci3">
-        <div class="ci-ico">📅</div>
-        <div>
-          <div class="ci-lbl">Saison</div>
-          <div class="ci-val">Avril → Octobre<br>Spa ouvert toute l'année</div>
-        </div>
-      </div>
-      <div class="ci" id="ci4">
-        <div class="ci-ico">🗺️</div>
-        <div>
-          <div class="ci-lbl">Accès</div>
-          <div class="ci-val">2 min à pied de la plage<br>15 min du centre de Calvi</div>
-        </div>
-      </div>
+  <div class="bk-w">
+    <div class="bk-i">
+      <div class="ci" id="ci0"><div class="ci-ic">📍</div><div><div class="ci-l">Adresse</div><div class="ci-v">Route de la Pinède<br>20260 Calvi, Haute-Corse</div></div></div>
+      <div class="ci" id="ci1"><div class="ci-ic">📞</div><div><div class="ci-l">Téléphone</div><div class="ci-v">+33 (0)4 95 65 17 80</div></div></div>
+      <div class="ci" id="ci2"><div class="ci-ic">✉️</div><div><div class="ci-l">Email</div><div class="ci-v">contact@camping-calvi.com</div></div></div>
+      <div class="ci" id="ci3"><div class="ci-ic">📅</div><div><div class="ci-l">Saison</div><div class="ci-v">Avril → Octobre · Spa toute l'année</div></div></div>
+      <div class="ci" id="ci4"><div class="ci-ic">🗺️</div><div><div class="ci-l">Accès</div><div class="ci-v">2 min à pied de la plage · 15 min du centre</div></div></div>
     </div>
-    <div class="bk-form">
+    <div class="bk-f">
       <div class="fgrid">
-        <div class="frow">
-          <div class="fg"><label>Prénom</label><input type="text" placeholder="Votre prénom"></div>
-          <div class="fg"><label>Nom</label><input type="text" placeholder="Votre nom"></div>
-        </div>
+        <div class="frow"><div class="fg"><label>Prénom</label><input type="text" placeholder="Prénom"></div><div class="fg"><label>Nom</label><input type="text" placeholder="Nom"></div></div>
         <div class="fg"><label>Email</label><input type="email" placeholder="votre@email.com"></div>
-        <div class="fg"><label>Téléphone</label><input type="tel" placeholder="+33 6 00 00 00 00"></div>
         <div class="frow">
-          <div class="fg"><label>Arrivée</label><input type="date"></div>
-          <div class="fg"><label>Départ</label><input type="date"></div>
+          <div class="fg"><label>Arrivée</label><input type="date" id="arr" oninput="calcPrice()"></div>
+          <div class="fg"><label>Départ</label><input type="date" id="dep" oninput="calcPrice()"></div>
         </div>
         <div class="fg">
           <label>Type d'hébergement</label>
-          <select>
+          <select id="htype" onchange="calcPrice()">
             <option value="">Sélectionnez...</option>
-            <option>Chalet Premium (à partir de 145€/nuit)</option>
-            <option>Mobilhome Confort (à partir de 89€/nuit)</option>
-            <option>Emplacement Ombragé (à partir de 32€/nuit)</option>
+            <option value="145">Chalet Premium (145€/nuit)</option>
+            <option value="89">Mobilhome Confort (89€/nuit)</option>
+            <option value="32">Emplacement Ombragé (32€/nuit)</option>
           </select>
         </div>
-        <div class="fg"><label>Nombre de personnes</label><input type="number" min="1" max="8" placeholder="2"></div>
-        <div class="fg"><label>Message (optionnel)</label><textarea placeholder="Précisions, demandes spéciales, animaux..."></textarea></div>
-        <button class="f-submit mag" id="fsubmit">Envoyer ma demande de réservation</button>
+        <div id="pcalc"></div>
+        <div class="fg"><label>Message</label><textarea placeholder="Demandes spéciales, animaux..."></textarea></div>
+        <button class="fsub mag" id="fsub">Envoyer ma demande de réservation</button>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══ FOOTER ══ -->
+<!-- FOOTER -->
 <footer>
   <div class="ft-top">
     <div class="ft-brand">
       <div class="ft-logo">La <em>Pinède</em> ★★★★</div>
-      <p>Camping 4 étoiles à Calvi en Corse du Nord. Une parenthèse nature entre pinède centenaire et mer Méditerranée depuis 1987.</p>
+      <p>Camping 4 étoiles à Calvi, Corse du Nord. Une parenthèse nature entre pinède centenaire et mer Méditerranée.</p>
     </div>
-    <div class="ft-col">
-      <h4>Hébergements</h4>
-      <ul>
-        <li><a href="#lodging">Chalet Premium</a></li>
-        <li><a href="#lodging">Mobilhome Confort</a></li>
-        <li><a href="#lodging">Emplacement Ombragé</a></li>
-        <li><a href="#booking">Tarifs &amp; disponibilités</a></li>
-      </ul>
-    </div>
-    <div class="ft-col">
-      <h4>Le camping</h4>
-      <ul>
-        <li><a href="#pool">Piscine &amp; Bien-être</a></li>
-        <li><a href="#restaurant">Restaurant La Table</a></li>
-        <li><a href="#activities">Activités</a></li>
-        <li><a href="#beach">La plage</a></li>
-      </ul>
-    </div>
-    <div class="ft-col">
-      <h4>Contact</h4>
-      <ul>
-        <li><a href="tel:+33495651780">+33 (0)4 95 65 17 80</a></li>
-        <li><a href="mailto:contact@camping-calvi.com">contact@camping-calvi.com</a></li>
-        <li><a href="#">Route de la Pinède, Calvi 20260</a></li>
-        <li><a href="#">Mentions légales</a></li>
-      </ul>
-    </div>
+    <div class="ft-col"><h4>Hébergements</h4><ul><li><a href="#lodging">Chalet Premium</a></li><li><a href="#lodging">Mobilhome Confort</a></li><li><a href="#lodging">Emplacement Ombragé</a></li></ul></div>
+    <div class="ft-col"><h4>Le Camping</h4><ul><li><a href="#pool">Piscine &amp; Spa</a></li><li><a href="#restaurant">Restaurant</a></li><li><a href="#activities">Activités</a></li><li><a href="#beach">La Plage</a></li></ul></div>
+    <div class="ft-col"><h4>Contact</h4><ul><li><a href="tel:+33495651780">+33 4 95 65 17 80</a></li><li><a href="mailto:contact@camping-calvi.com">contact@camping-calvi.com</a></li><li><a href="#">Route de la Pinède, Calvi 20260</a></li></ul></div>
   </div>
   <div class="ft-bot">
-    <div class="ft-credit">© 2025 Camping La Pinède · Tous droits réservés</div>
-    <div class="ft-credit">Site conçu par <a href="#">Marquilly Studio</a> — Calvi, Corse</div>
+    <div class="ft-cr">© 2025 Camping La Pinède · Tous droits réservés</div>
+    <div class="ft-cr">Site conçu par <a href="#">Marquilly Studio</a></div>
   </div>
 </footer>
 
 <script>
-/* ══════════════════════════════════════════
-   THREE.JS — FORÊT DE PINS LA NUIT
-══════════════════════════════════════════ */
-(function () {
-  const cvs = document.getElementById('hero-canvas');
-  const W = window.innerWidth, H = window.innerHeight;
-
+/* ═══════════════════════════════════════════════════
+   THREE.JS — SCÈNE HÉRO : FORÊT DE PINS LA NUIT
+   Milky Way shader · lucioles GLSL · sapins 3D · lune
+═══════════════════════════════════════════════════ */
+(function() {
+  const cvs = document.getElementById('mc');
+  const W = innerWidth, H = innerHeight;
   const renderer = new THREE.WebGLRenderer({ canvas: cvs, antialias: true });
   renderer.setSize(W, H);
   renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-  renderer.setClearColor(0x070f07, 1);
 
   const scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(0x070f07, 0.022);
+  scene.fog = new THREE.FogExp2(0x070f07, 0.018);
 
-  const camera = new THREE.PerspectiveCamera(62, W / H, 0.1, 600);
+  const camera = new THREE.PerspectiveCamera(62, W/H, 0.1, 600);
   camera.position.set(0, 5, 34);
   camera.lookAt(0, 4, 0);
 
-  /* LIGHTS */
-  scene.add(new THREE.AmbientLight(0x0a1a0c, 0.45));
-  const moon = new THREE.DirectionalLight(0xb0cce0, 0.7);
-  moon.position.set(-30, 60, 20);
-  scene.add(moon);
-  const warm = new THREE.PointLight(0xc8913e, 1.4, 70);
-  warm.position.set(0, 3, 12);
-  scene.add(warm);
+  // ── LIGHTS ──
+  scene.add(new THREE.AmbientLight(0x0a1a0c, 0.4));
+  const moonL = new THREE.DirectionalLight(0xb0cce0, 0.65);
+  moonL.position.set(-30, 60, 20); scene.add(moonL);
+  const warm = new THREE.PointLight(0xc8913e, 1.4, 75);
+  warm.position.set(0, 2, 10); scene.add(warm);
 
-  /* GROUND */
-  const gGeo = new THREE.PlaneGeometry(400, 400);
-  const gMat = new THREE.MeshLambertMaterial({ color: 0x040a04 });
-  const ground = new THREE.Mesh(gGeo, gMat);
-  ground.rotation.x = -Math.PI / 2;
-  ground.position.y = -0.2;
-  scene.add(ground);
+  // ── GROUND ──
+  const ground = new THREE.Mesh(new THREE.PlaneGeometry(400,400), new THREE.MeshLambertMaterial({color:0x040a04}));
+  ground.rotation.x = -Math.PI/2; ground.position.y = -0.2; scene.add(ground);
 
-  /* STARS */
-  const SC = 7000;
-  const sPos = new Float32Array(SC * 3);
-  for (let i = 0; i < SC; i++) {
-    const th = Math.random() * Math.PI * 2;
-    const ph = Math.random() * Math.PI * 0.48;
-    const r = 160 + Math.random() * 120;
-    sPos[i * 3]     = r * Math.sin(ph) * Math.cos(th);
-    sPos[i * 3 + 1] = Math.abs(r * Math.cos(ph)) + 6;
-    sPos[i * 3 + 2] = r * Math.sin(ph) * Math.sin(th);
-  }
-  const sGeo = new THREE.BufferGeometry();
-  sGeo.setAttribute('position', new THREE.BufferAttribute(sPos, 3));
-  const sMat = new THREE.PointsMaterial({ color: 0xcce0ff, size: 0.32, transparent: true, opacity: 0.9 });
-  const stars = new THREE.Points(sGeo, sMat);
-  scene.add(stars);
-
-  /* MOON SPHERE */
-  const moonMesh = new THREE.Mesh(
-    new THREE.SphereGeometry(5, 18, 18),
-    new THREE.MeshBasicMaterial({ color: 0xeee8d0 })
-  );
-  moonMesh.position.set(-70, 100, -160);
-  scene.add(moonMesh);
-  /* Moon glow sprite */
-  const mgc = document.createElement('canvas');
-  mgc.width = mgc.height = 128;
-  const mgx = mgc.getContext('2d');
-  const mg = mgx.createRadialGradient(64, 64, 0, 64, 64, 64);
-  mg.addColorStop(0, 'rgba(238,232,208,.45)');
-  mg.addColorStop(1, 'rgba(238,232,208,0)');
-  mgx.fillStyle = mg; mgx.fillRect(0, 0, 128, 128);
-  const moonGlow = new THREE.Sprite(
-    new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(mgc), transparent: true, blending: THREE.AdditiveBlending })
-  );
-  moonGlow.position.copy(moonMesh.position);
-  moonGlow.scale.set(50, 50, 1);
-  scene.add(moonGlow);
-
-  /* FIREFLIES */
-  const FC = 140;
-  const fPos = new Float32Array(FC * 3);
-  const fSz  = new Float32Array(FC);
-  const fSd  = new Float32Array(FC);
-  for (let i = 0; i < FC; i++) {
-    fPos[i * 3]     = (Math.random() - .5) * 70;
-    fPos[i * 3 + 1] = 1 + Math.random() * 12;
-    fPos[i * 3 + 2] = (Math.random() - .5) * 36;
-    fSz[i] = Math.random() * 5 + 2;
-    fSd[i] = Math.random() * Math.PI * 2;
-  }
-  const fGeo = new THREE.BufferGeometry();
-  fGeo.setAttribute('position', new THREE.BufferAttribute(fPos, 3));
-  fGeo.setAttribute('aSize', new THREE.BufferAttribute(fSz, 1));
-  fGeo.setAttribute('aSeed', new THREE.BufferAttribute(fSd, 1));
-  const fMat = new THREE.ShaderMaterial({
-    uniforms: { uT: { value: 0 }, uPR: { value: Math.min(devicePixelRatio, 2) } },
-    vertexShader: `
-      uniform float uT; uniform float uPR;
-      attribute float aSize; attribute float aSeed;
+  // ── SKY SPHERE (Milky Way Shader) ──
+  const skyMat = new THREE.ShaderMaterial({
+    side: THREE.BackSide,
+    uniforms: { uTime:{value:0}, uDay:{value:0} },
+    vertexShader:`varying vec3 vP; void main(){vP=position;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`,
+    fragmentShader:`
+      varying vec3 vP; uniform float uTime; uniform float uDay;
+      float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+      float stars(vec3 dir,float thr){
+        vec2 uv=vec2(atan(dir.x,dir.z)/6.283,dir.y*.5+.5);
+        vec2 g=floor(uv*500.); float h=hash(g);
+        if(h>thr)return 0.;
+        vec2 lc=fract(uv*500.)-.5; float d=length(lc);
+        float sz=mix(.08,.22,hash(g+13.7));
+        float tw=.65+.35*sin(uTime*(1.8+hash(g+7.)*3.)+h*6.28);
+        return (1.-smoothstep(0.,sz,d))*hash(g+2.3)*tw;
+      }
       void main(){
-        vec3 p=position;
-        float t=uT*.65+aSeed;
-        p.y+=sin(t*1.2)*.65+cos(t*.75)*.3;
-        p.x+=cos(t*.85+aSeed)*.55;
-        p.z+=sin(t*.55)*.35;
-        gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.);
-        float pulse=.45+.55*sin(uT*2.8+aSeed*6.28);
-        gl_PointSize=aSize*uPR*pulse*(260./-gl_Position.z);
-      }`,
-    fragmentShader: `
-      void main(){
-        float d=distance(gl_PointCoord,vec2(.5));
-        if(d>.5) discard;
-        float a=(1.-smoothstep(0.,.5,d))*.88;
-        gl_FragColor=vec4(.94,.84,.22,a);
-      }`,
-    transparent: true,
-    blending: THREE.AdditiveBlending,
-    depthWrite: false
+        vec3 dir=normalize(vP);
+        // Night base
+        vec3 nb=mix(vec3(.005,.012,.025),vec3(.0,.04,.1),dir.y*.5+.5);
+        // Milky Way band
+        float mw=exp(-pow(dot(dir,normalize(vec3(.45,.0,.893)))/.28,2.));
+        float s1=stars(dir,.018); float s2=stars(dir,.006)*mw*2.5;
+        vec3 night=nb+vec3(.88,.9,1.)*s1*.8+vec3(.7,.76,1.)*s2*.65+vec3(.15,.1,.35)*mw*.08;
+        // Day sky
+        vec3 zen=vec3(.18,.52,.9); vec3 hor=mix(vec3(1.,.62,.25),vec3(.62,.82,1.),uDay);
+        vec3 day=mix(hor,zen,max(0.,dir.y));
+        // Dawn glow
+        float dg=(1.-uDay)*(1.-max(0.,dir.y));
+        day=mix(day,vec3(1.,.7,.25),dg*.5);
+        gl_FragColor=vec4(mix(night,day,uDay),1.);
+      }`
   });
-  scene.add(new THREE.Points(fGeo, fMat));
+  const sky = new THREE.Mesh(new THREE.SphereGeometry(280,32,32), skyMat);
+  scene.add(sky);
 
-  /* PINE TREES */
-  function pine(x, z, sc, dark) {
-    const g = new THREE.Group();
-    const c = dark || 0.022;
-    const m = new THREE.MeshLambertMaterial({ color: new THREE.Color(c, c * 2.2, c) });
-    const tm = new THREE.MeshLambertMaterial({ color: 0x180c05 });
-    for (let i = 0; i < 4; i++) {
-      const mesh = new THREE.Mesh(
-        new THREE.ConeGeometry((4 - i) * 1.35 * sc, 3 * sc, 7),
-        m
-      );
-      mesh.position.y = i * 2.1 * sc + 2 * sc;
-      g.add(mesh);
-    }
-    const tr = new THREE.Mesh(new THREE.CylinderGeometry(.22 * sc, .34 * sc, 3.2 * sc, 6), tm);
-    tr.position.y = 1.6 * sc;
-    g.add(tr);
-    g.position.set(x, 0, z);
-    g.rotation.y = Math.random() * Math.PI * 2;
-    return g;
+  // ── STARS (points backup) ──
+  const SC=6000, sP=new Float32Array(SC*3);
+  for(let i=0;i<SC;i++){const t=Math.random()*Math.PI*2,p=Math.random()*Math.PI*.48,r=160+Math.random()*120;sP[i*3]=r*Math.sin(p)*Math.cos(t);sP[i*3+1]=Math.abs(r*Math.cos(p))+5;sP[i*3+2]=r*Math.sin(p)*Math.sin(t);}
+  const sGeo=new THREE.BufferGeometry(); sGeo.setAttribute('position',new THREE.BufferAttribute(sP,3));
+  const sMat=new THREE.PointsMaterial({color:0xcce0ff,size:.28,transparent:true,opacity:.85});
+  const starP=new THREE.Points(sGeo,sMat); scene.add(starP);
+
+  // ── MOON ──
+  const moonM=new THREE.Mesh(new THREE.SphereGeometry(5,16,16),new THREE.MeshBasicMaterial({color:0xeee8d0}));
+  moonM.position.set(-70,100,-160); scene.add(moonM);
+  const mgc=document.createElement('canvas'); mgc.width=mgc.height=128;
+  const mgx=mgc.getContext('2d'),mg=mgx.createRadialGradient(64,64,0,64,64,64);
+  mg.addColorStop(0,'rgba(238,232,208,.42)'); mg.addColorStop(1,'rgba(238,232,208,0)');
+  mgx.fillStyle=mg; mgx.fillRect(0,0,128,128);
+  const moonGlow=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(mgc),transparent:true,blending:THREE.AdditiveBlending}));
+  moonGlow.position.copy(moonM.position); moonGlow.scale.set(52,52,1); scene.add(moonGlow);
+
+  // ── FIREFLIES (GLSL) ──
+  const FC=160,fP=new Float32Array(FC*3),fSz=new Float32Array(FC),fSd=new Float32Array(FC);
+  for(let i=0;i<FC;i++){fP[i*3]=(Math.random()-.5)*80;fP[i*3+1]=1+Math.random()*14;fP[i*3+2]=(Math.random()-.5)*40;fSz[i]=Math.random()*5+2;fSd[i]=Math.random()*Math.PI*2;}
+  const fGeo=new THREE.BufferGeometry();
+  fGeo.setAttribute('position',new THREE.BufferAttribute(fP,3));
+  fGeo.setAttribute('aSize',new THREE.BufferAttribute(fSz,1));
+  fGeo.setAttribute('aSeed',new THREE.BufferAttribute(fSd,1));
+  const ffMat=new THREE.ShaderMaterial({
+    uniforms:{uT:{value:0},uPR:{value:Math.min(devicePixelRatio,2)},uDay:{value:0}},
+    vertexShader:`uniform float uT;uniform float uPR;uniform float uDay;attribute float aSize;attribute float aSeed;
+      void main(){vec3 p=position;float t=uT*.65+aSeed;p.y+=sin(t*1.2)*.7+cos(t*.75)*.32;p.x+=cos(t*.85+aSeed)*.6;p.z+=sin(t*.55)*.38;gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.);float pulse=.4+.6*sin(uT*3.+aSeed*6.28);gl_PointSize=aSize*uPR*pulse*(1.-uDay)*(270./-gl_Position.z);}`,
+    fragmentShader:`uniform float uDay;void main(){float d=distance(gl_PointCoord,vec2(.5));if(d>.5)discard;float a=(1.-smoothstep(0.,.5,d))*.9*(1.-uDay);gl_FragColor=vec4(.94,.84,.22,a);}`,
+    transparent:true,blending:THREE.AdditiveBlending,depthWrite:false
+  });
+  scene.add(new THREE.Points(fGeo,ffMat));
+
+  // ── CAMPFIRE SPARKS ──
+  const SpC=40,spPos=new Float32Array(SpC*3),spL=new Float32Array(SpC);
+  for(let i=0;i<SpC;i++){spPos[i*3]=(Math.random()-.5)*.6;spPos[i*3+1]=0;spPos[i*3+2]=(Math.random()-.5)*.6;spL[i]=Math.random();}
+  const spGeo=new THREE.BufferGeometry();
+  spGeo.setAttribute('position',new THREE.BufferAttribute(spPos,3));
+  spGeo.setAttribute('aL',new THREE.BufferAttribute(spL,1));
+  const spMat=new THREE.ShaderMaterial({
+    uniforms:{uT:{value:0},uPR:{value:Math.min(devicePixelRatio,2)}},
+    vertexShader:`uniform float uT;uniform float uPR;attribute float aL;void main(){vec3 p=position;float t=fract(aL+uT*.4);p.y+=t*4.;p.x+=sin(t*6.28+aL*10.)*.4;p.z+=cos(t*6.28+aL*7.)*.4;gl_Position=projectionMatrix*modelViewMatrix*vec4(p+vec3(0,2,8),1.);gl_PointSize=(1.-t)*4.*uPR;}`,
+    fragmentShader:`void main(){float d=distance(gl_PointCoord,vec2(.5));if(d>.5)discard;gl_FragColor=vec4(1.,.55,.1,(1.-d*2.)*.9);}`,
+    transparent:true,blending:THREE.AdditiveBlending,depthWrite:false
+  });
+  scene.add(new THREE.Points(spGeo,spMat));
+
+  // ── PINE TREES ──
+  const trees=[];
+  function pine(x,z,sc,dk){
+    const g=new THREE.Group();
+    const c=dk||.022,m=new THREE.MeshLambertMaterial({color:new THREE.Color(c,c*2.2,c)});
+    const tm=new THREE.MeshLambertMaterial({color:0x180c05});
+    for(let i=0;i<4;i++){const mh=new THREE.Mesh(new THREE.ConeGeometry((4-i)*1.35*sc,3*sc,7),m);mh.position.y=i*2.1*sc+2*sc;g.add(mh);}
+    const tr=new THREE.Mesh(new THREE.CylinderGeometry(.22*sc,.34*sc,3.2*sc,6),tm);tr.position.y=1.6*sc;g.add(tr);
+    g.position.set(x,0,z);g.rotation.y=Math.random()*Math.PI*2;scene.add(g);trees.push(g);return g;
   }
+  [[-26,-6,.52],[-19,-9,.68],[-32,-16,.4],[26,-6,.52],[19,-9,.68],[32,-16,.4],[-13,-13,.58],[13,-13,.58],[-38,-22,.34],[38,-22,.34],[-8,-22,.38],[8,-22,.38],[0,-24,.32],[-22,-4,.92,.014],[22,-4,.92,.014],[-44,-3,1.1,.01],[44,-3,1.1,.01],[-55,-9,.8,.009],[55,-9,.8,.009],[-60,-18,.6,.008],[60,-18,.6,.008],[-10,-5,.45],[10,-5,.45]].forEach(([x,z,s,d])=>pine(x,z,s,d));
 
-  [
-    [-26,-6,.52],[-19,-9,.68],[-32,-16,.4],
-    [26,-6,.52],[19,-9,.68],[32,-16,.4],
-    [-13,-13,.58],[13,-13,.58],
-    [-38,-22,.34],[38,-22,.34],
-    [-8,-22,.38],[8,-22,.38],[0,-24,.32],
-    [-22,-4,.92,0.014],[22,-4,.92,0.014],
-    [-44,-3,1.1,0.01],[44,-3,1.1,0.01],
-    [-55,-9,.8,0.009],[55,-9,.8,0.009],
-    [-60,-18,.6,0.008],[60,-18,.6,0.008],
-    [-10,-5,.45],[ 10,-5,.45],
-    [-3,-10,.5],[3,-10,.5],
-  ].forEach(([x,z,s,d]) => scene.add(pine(x,z,s,d)));
+  // ── MOUSE ──
+  let mx=0,my=0,tx=0,ty=0,dayP=0,mouseX=0;
+  document.addEventListener('mousemove',e=>{mx=(e.clientX/innerWidth-.5)*2;my=(e.clientY/innerHeight-.5)*2;mouseX=mx;});
 
-  /* MOUSE PARALLAX */
-  let mx = 0, my = 0, tx = 0, ty = 0;
-  document.addEventListener('mousemove', e => {
-    mx = (e.clientX / innerWidth - .5) * 2;
-    my = (e.clientY / innerHeight - .5) * 2;
-  });
+  // ── RENDER LOOP ──
+  let t=0;
+  window._threeLoop=function(){
+    requestAnimationFrame(window._threeLoop);
+    t+=.016;
+    tx+=(mx-tx)*.028; ty+=(my-ty)*.028;
+    camera.position.x=tx*5; camera.position.y=5-ty*2; camera.lookAt(0,4,0);
+    skyMat.uniforms.uTime.value=t; skyMat.uniforms.uDay.value=dayP;
+    ffMat.uniforms.uT.value=t; ffMat.uniforms.uDay.value=dayP;
+    spMat.uniforms.uT.value=t;
+    sMat.opacity=Math.max(0,(1-dayP*2)*.85);
+    starP.rotation.y=t*.004;
+    warm.intensity=.8+.55*Math.sin(t*2.1);
+    trees.forEach((tr,i)=>{tr.rotation.z=Math.sin(t*.7+i*.9)*.016+(mouseX*.008*(i%3===0?.5:.25));});
+    renderer.render(scene,camera);
+  };
+  window._threeLoop();
+  window._setDay=v=>{dayP=v;};
 
-  /* RENDER LOOP */
-  let t = 0;
-  (function loop() {
-    requestAnimationFrame(loop);
-    t += 0.016;
-    tx += (mx - tx) * 0.028;
-    ty += (my - ty) * 0.028;
-    camera.position.x = tx * 5;
-    camera.position.y = 5 - ty * 2;
-    camera.lookAt(0, 4, 0);
-    fMat.uniforms.uT.value = t;
-    stars.rotation.y = t * 0.004;
-    warm.intensity = 0.85 + .55 * Math.sin(t * 2.1);
-    renderer.render(scene, camera);
-  })();
-
-  window.addEventListener('resize', () => {
-    const W = innerWidth, H = innerHeight;
-    renderer.setSize(W, H);
-    camera.aspect = W / H;
-    camera.updateProjectionMatrix();
-  });
+  window.addEventListener('resize',()=>{const W=innerWidth,H=innerHeight;renderer.setSize(W,H);camera.aspect=W/H;camera.updateProjectionMatrix();});
 })();
 
-/* ══ CURSOR ══ */
-const cur = document.getElementById('cur');
-const curf = document.getElementById('cur-f');
-let cx = 0, cy = 0, cfx = 0, cfy = 0;
-document.addEventListener('mousemove', e => { cx = e.clientX; cy = e.clientY; });
-(function cl() {
-  requestAnimationFrame(cl);
-  cfx += (cx - cfx) * .13; cfy += (cy - cfy) * .13;
-  cur.style.left  = cx + 'px';  cur.style.top  = cy + 'px';
-  curf.style.left = cfx + 'px'; curf.style.top = cfy + 'px';
+/* ═══════════════════════════════════════════════════
+   THREE.JS — PISCINE : EAU TEMPS RÉEL (CAUSTICS)
+═══════════════════════════════════════════════════ */
+(function(){
+  const pc=document.getElementById('pc');
+  const pR=new THREE.WebGLRenderer({canvas:pc,antialias:true,alpha:true});
+  pR.setPixelRatio(1);
+  pR.setClearColor(0x0a2a3a,1);
+  const pS=new THREE.Scene();
+  const pCam=new THREE.PerspectiveCamera(55,pc.offsetWidth/pc.offsetHeight,0.1,100);
+  pCam.position.set(0,5,5); pCam.lookAt(0,0,0);
+  pS.add(new THREE.AmbientLight(0x1a4060,.5));
+  const sunL=new THREE.DirectionalLight(0xfff5d0,1.5);
+  sunL.position.set(3,8,5); pS.add(sunL);
+  const pPt=new THREE.PointLight(0x29b5d5,2,20);
+  pPt.position.set(0,3,2); pS.add(pPt);
+
+  const wGeo=new THREE.PlaneGeometry(14,10,120,90);
+  const wMat=new THREE.ShaderMaterial({
+    uniforms:{uT:{value:0},uSun:{value:new THREE.Vector3(.4,.8,.4)}},
+    side:THREE.DoubleSide,transparent:true,
+    vertexShader:`uniform float uT;varying vec2 vUV;varying float vE;
+      void main(){vUV=uv;vec3 p=position;
+        float w1=sin(p.x*2.1+uT*1.1)*.09;float w2=cos(p.y*2.7+uT*.85)*.07;
+        float w3=sin((p.x+p.y)*4.8+uT*1.9)*.03;float w4=cos(p.x*7.2-p.y*3.1+uT*2.8)*.015;
+        p.z+=w1+w2+w3+w4;vE=w1+w2+w3+w4;gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.);}`,
+    fragmentShader:`uniform float uT;uniform vec3 uSun;varying vec2 vUV;varying float vE;
+      void main(){
+        vec3 sh=vec3(.15,.72,.88),dp=vec3(.02,.28,.55);
+        vec3 col=mix(dp,sh,vE*4.5+.5);
+        float cx=sin(vUV.x*24.+uT*1.5)*cos(vUV.y*20.+uT*1.2);
+        float cy=cos(vUV.x*18.-uT*1.8)*sin(vUV.y*22.+uT*.9);
+        float ca=pow(abs(cx*cy),2.5)*.8;
+        col+=vec3(ca)*vec3(.3,1.,1.)*.45;
+        vec3 vd=vec3(0.,0.,1.),hd=normalize(uSun+vd);
+        float sp=pow(max(dot(normalize(vec3(-vE*2.,1.,-vE*2.)),hd),0.),60.)*1.8;
+        col+=vec3(1.,.98,.9)*sp;
+        float fo=smoothstep(.09,.14,vE)*.7; col=mix(col,vec3(.92,.97,1.),fo);
+        vec2 fc=abs(vUV-.5)*2.;float ed=max(fc.x,fc.y);
+        gl_FragColor=vec4(col,(1.-smoothstep(.7,1.,ed))*.92);}`
+  });
+  const water=new THREE.Mesh(wGeo,wMat);
+  water.rotation.x=-Math.PI*.3; pS.add(water);
+
+  let pVis=false;
+  const obs=new IntersectionObserver(e=>{pVis=e[0].isIntersecting;},{threshold:.1});
+  obs.observe(document.getElementById('pool'));
+
+  function resizePool(){const s=document.getElementById('pool');pR.setSize(s.offsetWidth,s.offsetHeight);pCam.aspect=s.offsetWidth/s.offsetHeight;pCam.updateProjectionMatrix();}
+  resizePool(); window.addEventListener('resize',resizePool);
+
+  let pt=0;
+  (function pl(){requestAnimationFrame(pl);if(!pVis)return;pt+=.016;wMat.uniforms.uT.value=pt;pPt.intensity=1.8+.5*Math.sin(pt*1.8);pR.render(pS,pCam);})();
 })();
-document.querySelectorAll('a,button,input,textarea,select,.lg-card,.ac-card').forEach(el => {
-  el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
-  el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+
+/* ═══════════════════════════════════════════════════
+   CURSOR CONTEXTUEL
+═══════════════════════════════════════════════════ */
+const cd=document.getElementById('cd'),cr=document.getElementById('cr'),cl=document.getElementById('cl');
+let cx=0,cy=0,cfx=0,cfy=0;
+document.addEventListener('mousemove',e=>{cx=e.clientX;cy=e.clientY;});
+(function cl2(){requestAnimationFrame(cl2);cfx+=(cx-cfx)*.13;cfy+=(cy-cfy)*.13;cd.style.left=cx+'px';cd.style.top=cy+'px';cr.style.left=cfx+'px';cr.style.top=cfy+'px';cl.style.left=cx+'px';cl.style.top=cy+'px';})();
+document.querySelectorAll('a,button,input,textarea,select').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{document.body.classList.add('hov');const t=el.dataset.cur;if(t){cl.textContent=t;document.body.classList.add('hov-cta');}});
+  el.addEventListener('mouseleave',()=>{document.body.classList.remove('hov','hov-cta');});
+});
+document.querySelectorAll('.lg-card,.ac-card,.gc').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cl.textContent='Voir';document.body.classList.add('hov-cta');});
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('hov-cta'));
 });
 
-/* ══ MAGNETIC ══ */
-document.querySelectorAll('.mag').forEach(el => {
-  el.addEventListener('mousemove', e => {
-    const r = el.getBoundingClientRect();
-    const x = e.clientX - r.left - r.width / 2;
-    const y = e.clientY - r.top - r.height / 2;
-    gsap.to(el, { x: x * .28, y: y * .28, duration: .4, ease: 'power2.out' });
-  });
-  el.addEventListener('mouseleave', () => {
-    gsap.to(el, { x: 0, y: 0, duration: .8, ease: 'elastic.out(1,.5)' });
-  });
+/* ═══════════════════════════════════════════════════
+   MAGNETIC BUTTONS
+═══════════════════════════════════════════════════ */
+document.querySelectorAll('.mag').forEach(el=>{
+  el.addEventListener('mousemove',e=>{const r=el.getBoundingClientRect();const x=e.clientX-r.left-r.width/2;const y=e.clientY-r.top-r.height/2;gsap.to(el,{x:x*.3,y:y*.3,duration:.4,ease:'power2.out'});});
+  el.addEventListener('mouseleave',()=>gsap.to(el,{x:0,y:0,duration:.8,ease:'elastic.out(1,.5)'}));
 });
 
-/* ══ LOADER ══ */
-const lf = document.getElementById('lf');
-let prog = 0;
-const li = setInterval(() => {
-  prog += Math.random() * 20 + 6;
-  if (prog >= 100) {
-    prog = 100; clearInterval(li);
-    lf.style.width = '100%';
-    setTimeout(() => {
-      gsap.to('#loader', {
-        opacity: 0, duration: .9, ease: 'power2.inOut',
-        onComplete() { document.getElementById('loader').style.display='none'; launch(); }
-      });
-    }, 280);
-  }
-  lf.style.width = Math.min(prog, 100) + '%';
-}, 90);
+/* ═══════════════════════════════════════════════════
+   LOADER
+═══════════════════════════════════════════════════ */
+const lf=document.getElementById('lf'),lpct=document.getElementById('lpct');
+let prog=0;
+const li=setInterval(()=>{
+  prog+=Math.random()*18+7;
+  if(prog>=100){prog=100;clearInterval(li);}
+  lf.style.width=Math.min(prog,100)+'%';
+  lpct.textContent=Math.min(Math.round(prog),100)+'%';
+  if(prog>=100)setTimeout(()=>{
+    gsap.to('#loader',{opacity:0,duration:.9,ease:'power2.inOut',onComplete(){document.getElementById('loader').style.display='none';launch();}});
+  },300);
+},80);
 
-/* ══ HERO ENTRANCE ══ */
-function launch() {
-  const tl = gsap.timeline({ delay: .15 });
-  tl.to('#h-eye',  { opacity:1, y:0, duration:1, ease:'power3.out' })
-    .to('#hero .h-title .ln span', { y:'0%', duration:1.3, stagger:.18, ease:'power4.out' }, '-=.5')
-    .to('#h-stars', { opacity:1, duration:.6, ease:'power2.out' }, '-=.35')
-    .to('#h-sub',   { opacity:1, duration:.8, ease:'power2.out' }, '-=.3')
-    .to('#h-tag',   { opacity:1, duration:.8, ease:'power2.out' }, '-=.5')
-    .to('#h-btns',  { opacity:1, duration:.8, ease:'power2.out' }, '-=.4')
-    .to('#h-scroll',{ opacity:1, duration:.8, ease:'power2.out' }, '-=.3')
-    .to('#sound-btn',{ opacity:1, duration:.6 }, '-=.4');
+/* ═══════════════════════════════════════════════════
+   HERO ENTRANCE — SPLIT TEXT PER LETTER
+═══════════════════════════════════════════════════ */
+function splitIntoLetters(el){
+  const txt=el.textContent;el.textContent='';
+  txt.split('').forEach(ch=>{
+    const w=document.createElement('span');w.style.cssText='display:inline-block;overflow:hidden;';
+    const i=document.createElement('span');i.className='ch';i.style.display='inline-block';
+    i.textContent=ch===' '?' ':ch;w.appendChild(i);el.appendChild(w);
+  });
+  return el.querySelectorAll('.ch');
 }
 
-/* ══ GSAP SCROLL ══ */
+function launch(){
+  const letters=splitIntoLetters(document.getElementById('ht'));
+  const tl=gsap.timeline({delay:.1});
+  tl.to('#he',{opacity:1,y:0,duration:1,ease:'power3.out'})
+    .to(letters,{y:'0%',opacity:1,duration:1,stagger:.03,ease:'power4.out'},'-=.5')
+    .to('#hs',{opacity:1,duration:.6},'-=.2')
+    .to('#hsub',{opacity:1,duration:.8},'-=.3')
+    .to('#htag',{opacity:1,duration:.8},'-=.5')
+    .to('#hbtns',{opacity:1,duration:.8},'-=.4')
+    .to('#hscr',{opacity:1,duration:.8},'-=.3')
+    .to('#sw',{opacity:1,duration:.6},'-=.4');
+}
+
+/* ═══════════════════════════════════════════════════
+   GSAP SCROLL
+═══════════════════════════════════════════════════ */
 gsap.registerPlugin(ScrollTrigger);
 
-/* Nav */
+// Nav
+ScrollTrigger.create({start:'top -80',onEnter:()=>document.getElementById('nav').classList.add('sc'),onLeaveBack:()=>document.getElementById('nav').classList.remove('sc')});
+
+// Page progress
+ScrollTrigger.create({start:0,end:'max',onUpdate:s=>document.getElementById('pgfill').style.height=(s.progress*100)+'%'});
+
+// Night→Day transition (hero scroll)
 ScrollTrigger.create({
-  start: 'top -80',
-  onEnter: () => document.getElementById('nav').classList.add('scrolled'),
-  onLeaveBack: () => document.getElementById('nav').classList.remove('scrolled'),
+  trigger:'#hero',start:'top top',end:'bottom top',scrub:2,
+  onUpdate:s=>{window._setDay&&window._setDay(s.progress);}
 });
 
-/* Stats */
-document.querySelectorAll('.s-item').forEach((el, i) => {
-  gsap.to(el, { opacity:1, y:0, duration:.85, delay: i*.1, ease:'power3.out',
-    scrollTrigger: { trigger:'#stats', start:'top 80%' } });
-  const n = el.querySelector('.s-num');
-  const t = parseInt(n.dataset.t);
-  ScrollTrigger.create({ trigger:'#stats', start:'top 80%', once:true,
-    onEnter() {
-      gsap.to({ v:0 }, { v:t, duration:2.2, ease:'power2.out',
-        onUpdate() { n.textContent = Math.round(this.targets()[0].v); }
-      });
-    }
+// Stats counters
+document.querySelectorAll('.si').forEach((el,i)=>{
+  gsap.to(el,{opacity:1,y:0,duration:.85,delay:i*.1,ease:'power3.out',scrollTrigger:{trigger:'#stats',start:'top 80%'}});
+  const n=el.querySelector('.sn'),t=parseInt(n.dataset.t);
+  ScrollTrigger.create({trigger:'#stats',start:'top 80%',once:true,onEnter(){
+    gsap.to({v:0},{v:t,duration:2.2,ease:'power2.out',onUpdate(){n.textContent=Math.round(this.targets()[0].v);}});
+  }});
+});
+
+// Fade-up universal
+gsap.utils.toArray('.fu').forEach(el=>{
+  gsap.to(el,{opacity:1,y:0,duration:1.05,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 87%'}});
+});
+
+// Story image parallax
+gsap.to('.st-i img',{y:'-12%',scrollTrigger:{trigger:'#story',start:'top bottom',end:'bottom top',scrub:1.8}});
+// Decorative separator
+ScrollTrigger.create({trigger:'.sep',start:'top 85%',once:true,onEnter(){gsap.to('.sep',{scaleX:1,duration:1.4,ease:'power3.out'});}});
+
+// Quote word-by-word
+(function(){
+  const q=document.getElementById('stquote');
+  const words=q.textContent.split(' ');
+  q.innerHTML='';
+  words.forEach((w,i)=>{
+    const s=document.createElement('span');s.textContent=w+' ';s.style.opacity='0';s.style.display='inline';
+    q.appendChild(s);
+    gsap.to(s,{opacity:1,duration:.4,delay:i*.08,ease:'power2.out',scrollTrigger:{trigger:q,start:'top 80%',once:true}});
   });
+})();
+
+// Lodging cards 3D tilt
+['lc0','lc1','lc2'].forEach((id,i)=>{
+  gsap.to('#'+id,{opacity:1,y:0,duration:.95,delay:i*.15,ease:'power3.out',scrollTrigger:{trigger:'#lodging',start:'top 72%'}});
+  const card=document.getElementById(id);
+  card.addEventListener('mousemove',e=>{const r=card.getBoundingClientRect();const x=(e.clientX-r.left)/r.width-.5;const y=(e.clientY-r.top)/r.height-.5;gsap.to(card,{rotateY:x*18,rotateX:-y*11,transformPerspective:900,duration:.4,ease:'power2.out'});});
+  card.addEventListener('mouseleave',()=>gsap.to(card,{rotateY:0,rotateX:0,duration:.85,ease:'elastic.out(1,.5)'}));
 });
 
-/* Fade-up */
-gsap.utils.toArray('.fu').forEach(el => {
-  gsap.to(el, { opacity:1, y:0, duration:1.05, ease:'power3.out',
-    scrollTrigger: { trigger:el, start:'top 87%' } });
+// Restaurant items
+['ri0','ri1','ri2','ri3'].forEach((id,i)=>{
+  gsap.to('#'+id,{opacity:1,x:0,duration:.75,delay:i*.12,ease:'power3.out',scrollTrigger:{trigger:'#restaurant',start:'top 72%'}});
 });
 
-/* Story parallax */
-gsap.to('.st-img img', { y:'-12%',
-  scrollTrigger:{ trigger:'#story', start:'top bottom', end:'bottom top', scrub:1.8 } });
-ScrollTrigger.create({ trigger:'.st-sep', start:'top 85%', once:true,
-  onEnter(){ gsap.to('.st-sep',{ scaleX:1, duration:1.4, ease:'power3.out' }); }
+// Activities horizontal scroll
+const at=document.getElementById('at');
+gsap.to(at,{x:()=>-(at.scrollWidth-innerWidth+100),ease:'none',scrollTrigger:{trigger:'#activities',start:'top top',end:()=>'+='+(at.scrollWidth-innerWidth+200),pin:true,scrub:1,anticipatePin:1,invalidateOnRefresh:true}});
+
+// Beach parallax
+gsap.to('#bebg',{y:'18%',scrollTrigger:{trigger:'#beach',start:'top bottom',end:'bottom top',scrub:2}});
+
+// Contact items
+['ci0','ci1','ci2','ci3','ci4'].forEach((id,i)=>{
+  gsap.to('#'+id,{opacity:1,x:0,duration:.75,delay:i*.11,ease:'power3.out',scrollTrigger:{trigger:'#booking',start:'top 78%'}});
 });
 
-/* Lodging cards */
-['lc0','lc1','lc2'].forEach((id,i) => {
-  gsap.to(`#${id}`, { opacity:1, y:0, duration:.95, delay:i*.15, ease:'power3.out',
-    scrollTrigger:{ trigger:'#lodging', start:'top 72%' } });
-});
+/* ═══════════════════════════════════════════════════
+   GALLERY 3D PERSPECTIVE SLIDER
+═══════════════════════════════════════════════════ */
+(function(){
+  const cards=[0,1,2,3,4].map(i=>document.getElementById('g'+i));
+  const dots=document.querySelectorAll('.g-dot');
+  let cur=0,auto;
 
-/* 3D tilt */
-document.querySelectorAll('.lg-card').forEach(card => {
-  card.addEventListener('mousemove', e => {
-    const r = card.getBoundingClientRect();
-    const x = (e.clientX - r.left) / r.width - .5;
-    const y = (e.clientY - r.top) / r.height - .5;
-    gsap.to(card, { rotateY:x*18, rotateX:-y*11, transformPerspective:900, duration:.4, ease:'power2.out' });
-  });
-  card.addEventListener('mouseleave', () => {
-    gsap.to(card, { rotateY:0, rotateX:0, duration:.85, ease:'elastic.out(1,.5)' });
-  });
-});
-
-/* Pool parallax */
-gsap.to('#pbg', { y:'22%',
-  scrollTrigger:{ trigger:'#pool', start:'top bottom', end:'bottom top', scrub:1.8 } });
-
-/* Restaurant items */
-['ri0','ri1','ri2','ri3'].forEach((id,i) => {
-  gsap.to(`#${id}`, { opacity:1, x:0, duration:.75, delay:i*.12, ease:'power3.out',
-    scrollTrigger:{ trigger:'#restaurant', start:'top 72%' } });
-});
-
-/* Activities — horizontal scroll pinned */
-const atrack = document.getElementById('atrack');
-gsap.to(atrack, {
-  x: () => -(atrack.scrollWidth - innerWidth + 100),
-  ease: 'none',
-  scrollTrigger: {
-    trigger: '#activities',
-    start: 'top top',
-    end: () => '+=' + (atrack.scrollWidth - innerWidth + 200),
-    pin: true,
-    scrub: 1,
-    anticipatePin: 1,
-    invalidateOnRefresh: true,
-  }
-});
-
-/* Beach parallax */
-gsap.to('#bebg', { y:'18%',
-  scrollTrigger:{ trigger:'#beach', start:'top bottom', end:'bottom top', scrub:2 } });
-
-/* Booking contact */
-['ci0','ci1','ci2','ci3','ci4'].forEach((id,i) => {
-  gsap.to(`#${id}`, { opacity:1, x:0, duration:.75, delay:i*.11, ease:'power3.out',
-    scrollTrigger:{ trigger:'#booking', start:'top 78%' } });
-});
-
-/* ══ AMBIENT SOUND ══ */
-let actx = null, gain = null, on = false;
-document.getElementById('sound-btn').addEventListener('click', function() {
-  if (!actx) {
-    actx = new (AudioContext || webkitAudioContext)();
-    gain = actx.createGain(); gain.gain.value = 0; gain.connect(actx.destination);
-    function noise() {
-      const buf = actx.createBuffer(1, actx.sampleRate*4, actx.sampleRate);
-      const d = buf.getChannelData(0);
-      let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0;
-      for(let i=0;i<d.length;i++){
-        const w=Math.random()*2-1;
-        b0=.99886*b0+w*.0555179;b1=.99332*b1+w*.0750759;b2=.96900*b2+w*.1538520;
-        b3=.86650*b3+w*.3104856;b4=.55000*b4+w*.5329522;b5=-.7616*b5-w*.0168980;
-        d[i]=(b0+b1+b2+b3+b4+b5+b6+w*.5362)*.11; b6=w*.115926;
-      }
-      return buf;
-    }
-    [[280,.8,.65],[820,.5,.2],[140,.4,.45]].forEach(([f,q,v])=>{
-      const s=actx.createBufferSource(); s.buffer=noise(); s.loop=true;
-      const bp=actx.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=f; bp.Q.value=q;
-      const g=actx.createGain(); g.gain.value=v;
-      s.connect(bp); bp.connect(g); g.connect(gain); s.start();
+  function show(idx){
+    cur=((idx%5)+5)%5;
+    cards.forEach((c,i)=>{
+      const off=((i-cur+5)%5);
+      const d=off>2?off-5:off;
+      const z=-Math.abs(d)*160,scale=1-Math.abs(d)*.14,ry=d*-28,opacity=1-Math.abs(d)*.28;
+      const xShift=d*320;
+      gsap.to(c,{x:xShift,z:z,rotateY:ry,scale:scale,opacity:opacity,zIndex:10-Math.abs(d),duration:.75,ease:'power3.out'});
     });
+    dots.forEach((d,i)=>{d.classList.toggle('a',i===cur);});
   }
-  on=!on;
-  if(on){ actx.resume(); gain.gain.setTargetAtTime(.38,actx.currentTime,1.8); this.textContent='🔊'; }
-  else  { gain.gain.setTargetAtTime(0,actx.currentTime,.6); this.textContent='🔇'; }
+  show(0);
+  document.getElementById('gprev').addEventListener('click',()=>{clearInterval(auto);show(cur-1);startAuto();});
+  document.getElementById('gnext').addEventListener('click',()=>{clearInterval(auto);show(cur+1);startAuto();});
+  dots.forEach((d,i)=>d.addEventListener('click',()=>{clearInterval(auto);show(i);startAuto();}));
+  function startAuto(){auto=setInterval(()=>show(cur+1),4200);}
+  startAuto();
+
+  // Swipe support
+  let sx=0;
+  document.getElementById('gsc').addEventListener('pointerdown',e=>sx=e.clientX);
+  document.getElementById('gsc').addEventListener('pointerup',e=>{
+    const dx=e.clientX-sx;
+    if(Math.abs(dx)>60){clearInterval(auto);show(dx<0?cur+1:cur-1);startAuto();}
+  });
+})();
+
+/* ═══════════════════════════════════════════════════
+   WEB AUDIO — AMBIANCE SENSORIELLE CORSE
+   Vagues · Brise dans les pins · Cigales
+═══════════════════════════════════════════════════ */
+let actx=null,gain=null,ana=null,sOn=false;
+const vbs=document.querySelectorAll('.vb');
+const viz=document.getElementById('viz');
+
+function initAudio(){
+  actx=new(AudioContext||webkitAudioContext)();
+  gain=actx.createGain();gain.gain.value=0;
+  ana=actx.createAnalyser();ana.fftSize=32;
+  gain.connect(ana);ana.connect(actx.destination);
+
+  function noise(){
+    const buf=actx.createBuffer(1,actx.sampleRate*4,actx.sampleRate);
+    const d=buf.getChannelData(0);
+    let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0;
+    for(let i=0;i<d.length;i++){const w=Math.random()*2-1;b0=.99886*b0+w*.0555179;b1=.99332*b1+w*.0750759;b2=.969*b2+w*.153852;b3=.8665*b3+w*.3104856;b4=.55*b4+w*.5329522;b5=-.7616*b5-w*.016898;d[i]=(b0+b1+b2+b3+b4+b5+b6+w*.5362)*.11;b6=w*.115926;}
+    return buf;
+  }
+  // Vagues méditerranéennes
+  [[220,.9,.7],[340,.7,.5],[160,.6,.5]].forEach(([f,q,v])=>{
+    const s=actx.createBufferSource();s.buffer=noise();s.loop=true;
+    const bp=actx.createBiquadFilter();bp.type='bandpass';bp.frequency.value=f;bp.Q.value=q;
+    const g=actx.createGain();g.gain.value=v;
+    s.connect(bp);bp.connect(g);g.connect(gain);s.start();
+  });
+  // Brise dans les pins (haute fréquence)
+  [[900,.5,.18],[1200,.4,.12]].forEach(([f,q,v])=>{
+    const s=actx.createBufferSource();s.buffer=noise();s.loop=true;
+    const bp=actx.createBiquadFilter();bp.type='bandpass';bp.frequency.value=f;bp.Q.value=q;
+    const g=actx.createGain();g.gain.value=v;
+    s.connect(bp);bp.connect(g);g.connect(gain);s.start();
+  });
+  // Cigales (oscillateur modulé)
+  const cig=actx.createOscillator();cig.frequency.value=4200;
+  const lfo=actx.createOscillator();lfo.frequency.value=18;
+  const lfog=actx.createGain();lfog.gain.value=600;
+  lfo.connect(lfog);lfog.connect(cig.frequency);
+  const cg=actx.createGain();cg.gain.value=.04;
+  cig.connect(cg);cg.connect(gain);
+  cig.start();lfo.start();
+
+  // LFO global sur gain (respiration)
+  const lfg=actx.createOscillator();lfg.frequency.value=.08;
+  const lfgg=actx.createGain();lfgg.gain.value=.06;
+  lfg.connect(lfgg);lfgg.connect(gain.gain);
+  lfg.start();
+}
+
+document.getElementById('sb').addEventListener('click',function(){
+  if(!actx)initAudio();
+  sOn=!sOn;
+  if(sOn){actx.resume();gain.gain.setTargetAtTime(.36,actx.currentTime,1.8);this.textContent='🔊';viz.classList.add('on');}
+  else{gain.gain.setTargetAtTime(0,actx.currentTime,.6);this.textContent='🔇';viz.classList.remove('on');}
 });
 
-/* ══ FORM ══ */
-document.getElementById('fsubmit').addEventListener('click', function() {
-  this.textContent = '✓ Demande envoyée — Nous vous répondons sous 24h';
-  this.style.background = 'var(--sea-dark)';
-  setTimeout(() => {
-    this.textContent = 'Envoyer ma demande de réservation';
-    this.style.background = '';
-  }, 4000);
+// Visualizer
+const vizData=new Uint8Array(16);
+(function vl(){requestAnimationFrame(vl);
+  if(!sOn||!ana)return;
+  ana.getByteFrequencyData(vizData);
+  vbs.forEach((b,i)=>{b.style.height=(vizData[i*2]/255*26+3)+'px';});
+})();
+
+/* ═══════════════════════════════════════════════════
+   FORMULAIRE INTELLIGENT
+═══════════════════════════════════════════════════ */
+function calcPrice(){
+  const a=document.getElementById('arr').value,d=document.getElementById('dep').value,h=document.getElementById('htype').value;
+  const pc=document.getElementById('pcalc');
+  if(!a||!d||!h){pc.innerHTML='';return;}
+  const nights=Math.round((new Date(d)-new Date(a))/86400000);
+  if(nights<=0){pc.innerHTML='<span style="color:var(--su)">Date de départ invalide</span>';return;}
+  pc.innerHTML=`<strong>${nights}</strong> nuit${nights>1?'s':''} × <strong>${h}€</strong> = <strong style="color:var(--g);font-size:18px">${nights*h}€</strong>`;
+}
+
+/* CONFETTI */
+function confetti(){
+  const cv=document.createElement('canvas');
+  cv.style.cssText='position:fixed;inset:0;z-index:9990;pointer-events:none;';
+  cv.width=innerWidth;cv.height=innerHeight;document.body.appendChild(cv);
+  const ctx=cv.getContext('2d');
+  const COLS=['#c8913e','#e6b96a','#172e18','#29b5d5','#e8724a','#fff','#c1121f'];
+  const ps=Array.from({length:220},()=>({
+    x:Math.random()*innerWidth,y:-20,
+    vx:(Math.random()-.5)*5,vy:Math.random()*5+2,
+    rot:Math.random()*360,vr:(Math.random()-.5)*9,
+    c:COLS[Math.floor(Math.random()*COLS.length)],
+    w:Math.random()*11+5,h:Math.random()*6+3
+  }));
+  let f=0;
+  (function draw(){
+    ctx.clearRect(0,0,cv.width,cv.height);
+    let alive=0;
+    ps.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;p.rot+=p.vr;p.vy+=.14;
+      if(p.y<innerHeight+20)alive++;
+      ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);
+      ctx.fillStyle=p.c;ctx.globalAlpha=Math.max(0,1-p.y/innerHeight*.8);
+      ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore();
+    });
+    f++;if(alive>0&&f<200)requestAnimationFrame(draw);else cv.remove();
+  })();
+}
+
+document.getElementById('fsub').addEventListener('click',function(){
+  this.textContent='✓ Demande envoyée — Réponse sous 24h';
+  this.style.background='var(--sea2)';
+  confetti();
+  setTimeout(()=>{this.textContent='Envoyer ma demande de réservation';this.style.background='';},5000);
 });
+
+/* ═══════════════════════════════════════════════════
+   MOBILE MENU
+═══════════════════════════════════════════════════ */
+const ham=document.getElementById('ham'),mm=document.getElementById('mm');
+ham.addEventListener('click',()=>{ham.classList.toggle('open');mm.classList.toggle('open');});
+mm.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{ham.classList.remove('open');mm.classList.remove('open');}));
 </script>
 </body>
 </html>

@@ -8,4 +8,7 @@
 !lib/
 !lib/**
 !suivi.csv
+!upload.py
+!upload_log.csv
+!playlists.json
 lib/__pycache__/

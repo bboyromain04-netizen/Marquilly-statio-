@@ -1,0 +1,11 @@
+# Les kits générés (publication/<slug>/*) sont des sorties régénérables — pas versionnées.
+# Seuls les outils et le suivi le sont.
+*
+!.gitignore
+!README.md
+!requirements.txt
+!generate_kit.py
+!lib/
+!lib/**
+!suivi.csv
+lib/__pycache__/

@@ -12,6 +12,11 @@ dist
 dist-ssr
 *.local
 
+# Usine vidéo — rendus volumineux, régénérables via publication/generate_kit.py
+episodes/**/*.mp4
+compilations/**/*.mp4
+.env
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

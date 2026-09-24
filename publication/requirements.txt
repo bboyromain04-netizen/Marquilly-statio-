@@ -1,0 +1,7 @@
+# Phase 1 — kit de publication
+Pillow>=10.0
+
+# Phase 2 (uploader API) — à activer quand l'audit sera validé
+# google-api-python-client
+# google-auth-oauthlib
+# python-dotenv

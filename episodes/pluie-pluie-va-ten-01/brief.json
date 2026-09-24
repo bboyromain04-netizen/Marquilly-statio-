@@ -1,0 +1,23 @@
+{
+  "slug": "pluie-pluie-va-ten-01",
+  "type": "episode",
+  "title": "Pluie, pluie, va-t'en ! 👏 avec Nino - Chansons pour bébé - Comptines Maternelles",
+  "comptine": "Pluie, pluie, va-t'en (domaine public)",
+  "thumbnail_text": "Pluie pluie va-t'en",
+  "characters": ["Nino"],
+  "duration_seconds": 105,
+  "chapters": [
+    {"time": "00:00", "label": "Intro - Nino regarde la pluie tomber"},
+    {"time": "00:12", "label": "Refrain 1 - Pluie pluie va-t'en"},
+    {"time": "00:45", "label": "Couplet - Reviens un autre jour"},
+    {"time": "01:10", "label": "Refrain 2"},
+    {"time": "01:35", "label": "Final - Nino fait coucou"}
+  ],
+  "tags": [
+    "comptines bébé", "chansons pour bébé", "comptines maternelles",
+    "pluie pluie va-t'en", "Nino comptines", "comptine pluie enfant"
+  ],
+  "playlist": "Chansons de bain et de pluie",
+  "pedagogie": ["la météo", "dire au revoir poliment"],
+  "synthetic_content_declared": true
+}

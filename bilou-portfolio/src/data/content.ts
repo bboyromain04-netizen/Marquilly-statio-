@@ -63,7 +63,7 @@ export const GALLERY = [
     title: 'battle pro — théâtre du châtelet, paris',
     tag: 'compétition internationale',
     span: 'large',
-    video: 'https://youtu.be/tltPbu8zYZY',
+    video: 'https://www.youtube.com/live/xVjkX-pEGwg',
   },
   {
     src: 'media/street-flip.jpg',
@@ -96,12 +96,14 @@ export const GALLERY = [
     title: 'salto arrière — grand paris sud',
     tag: 'spectacle',
     span: 'normal',
+    video: 'https://youtu.be/1YQy9YI_gzo',
   },
   {
     src: 'media/flip-2.jpg',
     title: 'figure aérienne — crew legend',
     tag: 'spectacle',
     span: 'tall',
+    video: 'https://youtu.be/jfwNE4E5s8U',
   },
   {
     src: 'media/musee.jpg',
@@ -109,6 +111,21 @@ export const GALLERY = [
     tag: 'spectacle',
     span: 'tall',
     video: 'https://youtu.be/6Ks4Gf7kew8',
+  },
+  {
+    src: 'media/redbull-bcone.jpg',
+    title: 'red bull bc one camp — battle',
+    tag: 'compétition internationale',
+    span: 'tall',
+    video: 'https://www.instagram.com/reel/C5x1Hh6Iw24/',
+  },
+  {
+    src: 'media/crew-breaking-mag.jpg',
+    title: 'crew breaking mag — battle',
+    tag: 'battle',
+    span: 'tall',
+    video: 'https://youtu.be/aC6VYmA7Pus',
+    video2: 'https://www.instagram.com/reel/DdfAJNUtvY3/',
   },
 ]
 

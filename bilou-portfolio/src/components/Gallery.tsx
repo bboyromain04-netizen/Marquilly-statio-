@@ -61,7 +61,29 @@ export default function Gallery() {
                   className="h-full w-full object-contain transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent opacity-80 transition-opacity duration-300 group-hover:opacity-100" />
-                {item.video && (
+                {item.video && item.video2 && (
+                  <div className="absolute inset-0 flex items-center justify-center gap-3">
+                    <a
+                      href={item.video}
+                      target="_blank"
+                      rel="noreferrer"
+                      aria-label={`Voir le battle complet : ${item.title}`}
+                      className="flex h-14 items-center gap-2 rounded-full bg-bilou-yellow/90 px-4 text-xs font-bold uppercase tracking-wider text-black transition-transform hover:scale-110"
+                    >
+                      <Play size={20} fill="currentColor" /> battle
+                    </a>
+                    <a
+                      href={item.video2}
+                      target="_blank"
+                      rel="noreferrer"
+                      aria-label={`Voir le reel Instagram : ${item.title}`}
+                      className="flex h-14 items-center gap-2 rounded-full bg-white/90 px-4 text-xs font-bold uppercase tracking-wider text-black transition-transform hover:scale-110"
+                    >
+                      <Play size={20} fill="currentColor" /> reel
+                    </a>
+                  </div>
+                )}
+                {item.video && !item.video2 && (
                   <a
                     href={item.video}
                     target="_blank"

@@ -115,7 +115,7 @@ export const GALLERY = [
   {
     src: 'media/redbull-bcone.jpg',
     title: 'red bull bc one camp — battle',
-    tag: 'compétition internationale',
+    tag: 'battle national',
     span: 'tall',
     video: 'https://www.instagram.com/reel/C5x1Hh6Iw24/',
   },

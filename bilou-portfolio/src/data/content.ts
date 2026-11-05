@@ -94,14 +94,14 @@ export const GALLERY = [
   {
     src: 'media/flip-1.jpg',
     title: 'salto arrière — grand paris sud',
-    tag: 'spectacle',
+    tag: 'battle international',
     span: 'normal',
     video: 'https://youtu.be/1YQy9YI_gzo',
   },
   {
     src: 'media/flip-2.jpg',
     title: 'figure aérienne — crew legend',
-    tag: 'spectacle',
+    tag: 'battle international',
     span: 'tall',
     video: 'https://youtu.be/jfwNE4E5s8U',
   },

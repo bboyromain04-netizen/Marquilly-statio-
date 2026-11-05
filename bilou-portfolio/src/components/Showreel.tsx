@@ -56,17 +56,18 @@ export default function Showreel() {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.7 }}
-          className="relative mt-12 overflow-hidden rounded-[2rem] border border-white/10"
+          className="relative mx-auto mt-12 max-w-sm overflow-hidden rounded-[2rem] border border-white/10"
         >
           <div className="absolute -inset-1 -z-10 bg-gradient-to-r from-bilou-yellow via-bilou-orange to-bilou-yellow opacity-30 blur-2xl" />
           <video
             ref={videoRef}
-            className="aspect-video w-full bg-black object-contain"
+            className="aspect-[9/16] w-full bg-black object-contain"
             autoPlay
             loop
             muted
             playsInline
-            src={asset('media/showreel.mp4')}
+            preload="metadata"
+            src={asset('media/demo-complete.mp4')}
           />
 
           <div className="absolute bottom-4 left-4 flex gap-2 sm:bottom-6 sm:left-6">
